@@ -222,6 +222,17 @@ function resetAll() {
   show('sc-editor');
 }
 
+// ── Parsear fecha de ciudad para ordenar ──
+function parseCityDate(dates) {
+  if (!dates) return new Date(0);
+  var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,feb:1,mar:2,abr:3,may:4,jun:5,jul:6,ago:7,sep:8,oct:9,nov:10,dic:11};
+  var m = dates.toLowerCase().match(/(\d+)\s+([a-z]+)/);
+  if (!m) return new Date(0);
+  var day = parseInt(m[1]);
+  var mon = months[m[2].substring(0,3)] || 0;
+  return new Date(2026, mon, day);
+}
+
 // ── GENERAR ──
 async function generar() {
   var client=document.getElementById('inp-client').value.trim();
@@ -264,7 +275,7 @@ async function generar() {
         }
       }
 
-      content.push({type:'text',text:'Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks. Estructura:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre completo","detail":"Check-in: X jun\\nCheck-out: Y jun\\nDirección","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- Agrupá por ciudad en orden cronológico\n- Emoji de bandera correcto\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo con ese voucher\n- Extraé TODAS las reservas\n- "detail" con \\n para saltos de línea\n- "confirmation" con número/localizador o "—"'});
+      content.push({type:'text',text:'Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks. Estructura:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre completo","detail":"Check-in: X jun\\nCheck-out: Y jun\\nDirección","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- ORDEN CRONOLÓGICO ESTRICTO: ordená las ciudades por fecha de llegada, de más antigua a más reciente. Revisá las fechas de check-in, salida de vuelo o llegada a cada ciudad para determinar el orden correcto.\n- Dentro de cada ciudad, ordená las reservas también cronológicamente\n- Emoji de bandera correcto para cada país\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo que contiene ese voucher. Omití si no hay voucher específico\n- Extraé ABSOLUTAMENTE TODAS las reservas de todos los documentos\n- "detail" con \\n para saltos de línea\n- "confirmation" con número/localizador si existe, sino "—"\n- "dates" en formato "DD mon – DD mon" (ej: "20 may – 23 may")\n- "nights" en formato "N noche/s"'});
 
       setStep(start===0?2:3);
 
@@ -301,6 +312,11 @@ async function generar() {
     }
 
     setStep(4);
+    // Reordenar ciudades por fecha de inicio
+    allCities.sort(function(a, b) {
+      var da = parseCityDate(a.dates), db = parseCityDate(b.dates);
+      return da - db;
+    });
     var parsed = { cities: allCities };
     gData={client:client,dates:dates,cities:parsed.cities||[]};
     await new Promise(function(r){setTimeout(r,400);});
@@ -347,7 +363,7 @@ function agregarMas() {
           if(mt==='application/pdf') content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:filesB64[idx]}});
           else content.push({type:'image',source:{type:'base64',media_type:mt,data:filesB64[idx]}});
         }
-        content.push({type:'text',text:'Analizá y devolvé ÚNICAMENTE JSON válido:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre","detail":"Línea1\\nLínea2","confirmation":"# o —","sourceFile":0}]}]}\n\nMismas reglas: agrupá por ciudad, emoji de bandera, type=hotel/tour/vuelo/tren/transfer, sourceFile=índice del archivo.'});
+        content.push({type:'text',text:'Analizá y devolvé ÚNICAMENTE JSON válido:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre","detail":"Línea1\\nLínea2","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas: ORDEN CRONOLÓGICO ESTRICTO por fecha de llegada. Emoji de bandera correcto. type=hotel/tour/vuelo/tren/transfer. sourceFile=índice del archivo. dates en formato "DD mon – DD mon".'});
 
         var headers={'Content-Type':'application/json'};
         if(IN_IFRAME) headers['anthropic-version']='2023-06-01';
