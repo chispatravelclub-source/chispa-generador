@@ -148,6 +148,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
   </div>
   <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
   <button class="btn-out" onclick="descargar()">⬇ Descargar HTML para el cliente</button>
+  <button class="btn-out" style="border-color:#8aac7a;color:#4a6741;margin-top:.5rem" onclick="agregarMas()">➕ Agregar más documentos</button>
   <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
   <div class="itin" id="itin-preview"></div>
 </div>
@@ -311,6 +312,70 @@ async function generar() {
     document.getElementById('rsub').textContent='';
     document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisá que los archivos sean legibles e intentá de nuevo. Si el error persiste, verificá que <code>ANTHROPIC_API_KEY</code> esté configurada en Vercel.</div>';
   }
+}
+
+// ── Agregar más documentos al itinerario existente ──
+function agregarMas() {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.accept = '.pdf,image/*';
+  input.onchange = async function() {
+    if (!input.files.length) return;
+    var nuevos = Array.from(input.files);
+    var offset = files.length;
+
+    show('sc-loading'); setStep(1);
+    try {
+      for (var i=0;i<nuevos.length;i++){
+        files.push(nuevos[i]);
+        filesB64.push(await toB64(nuevos[i]));
+        filesType.push(getMT(nuevos[i]));
+      }
+      setStep(2);
+
+      var allNewCities = [];
+      var BATCH_SIZE = 3;
+      for (var start=0; start<nuevos.length; start+=BATCH_SIZE) {
+        var batch = nuevos.slice(start, start+BATCH_SIZE);
+        var content = [];
+        content.push({type:'text', text:'Documentos adicionales de viaje:\n\n'+batch.map(function(f,i){return 'Índice '+(offset+start+i)+': '+f.name;}).join('\n')});
+        for (var j=0;j<batch.length;j++){
+          var idx = offset+start+j;
+          content.push({type:'text',text:'--- Archivo '+idx+': '+batch[j].name+' ---'});
+          var mt=filesType[idx];
+          if(mt==='application/pdf') content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:filesB64[idx]}});
+          else content.push({type:'image',source:{type:'base64',media_type:mt,data:filesB64[idx]}});
+        }
+        content.push({type:'text',text:'Analizá y devolvé ÚNICAMENTE JSON válido:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre","detail":"Línea1\\nLínea2","confirmation":"# o —","sourceFile":0}]}]}\n\nMismas reglas: agrupá por ciudad, emoji de bandera, type=hotel/tour/vuelo/tren/transfer, sourceFile=índice del archivo.'});
+
+        var headers={'Content-Type':'application/json'};
+        if(IN_IFRAME) headers['anthropic-version']='2023-06-01';
+        var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:content}]})});
+        if(!resp.ok){var e=await resp.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Error '+resp.status);}
+        var data=await resp.json();
+        if(data.error) throw new Error(data.error.message);
+        var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('').replace(/```json|```/g,'').trim();
+        var parsed=JSON.parse(raw);
+        (parsed.cities||[]).forEach(function(c){ allNewCities.push(c); });
+      }
+
+      setStep(4);
+      // Mergear con el itinerario existente
+      allNewCities.forEach(function(newCity){
+        var existing=gData.cities.find(function(c){return c.name.toLowerCase()===newCity.name.toLowerCase();});
+        if(existing) existing.reservations=existing.reservations.concat(newCity.reservations||[]);
+        else gData.cities.push(newCity);
+      });
+
+      await new Promise(function(r){setTimeout(r,300);});
+      renderResult();
+    } catch(e) {
+      show('sc-result');
+      document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';
+    }
+  };
+  input.click();
 }
 
 // ── Ver voucher (preview) ──
