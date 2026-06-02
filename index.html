@@ -17,7 +17,7 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
 .screen{display:none}.screen.active{display:block}
 
-/* ── HEADER ── */
+/* HEADER */
 .hdr{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.25rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px}
 .lmark{width:32px;height:32px;flex-shrink:0}
 .lc{font-size:14px;font-weight:700;color:var(--green-light);letter-spacing:.05em;line-height:1}
@@ -26,7 +26,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
 .back{margin-left:auto;font-size:12px;font-weight:600;color:var(--green);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;font-family:'DM Sans';padding:5px 12px;transition:all .15s}
 .back:hover{background:var(--green-pale);border-color:var(--green-light)}
 
-/* ── EDITOR ── */
+/* EDITOR */
 .body{padding:1.25rem;display:flex;flex-direction:column;gap:1.1rem}
 label.lbl{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;font-weight:700;display:block;margin-bottom:6px}
 input.inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'DM Sans';color:var(--ink);background:var(--white);transition:border-color .15s}
@@ -48,7 +48,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .btn-main:hover{background:#2e4828}
 .btn-main:disabled{opacity:.45;cursor:not-allowed}
 
-/* ── LOADING ── */
+/* LOADING */
 .lscreen{padding:3.5rem 1.25rem;text-align:center}
 .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--green-light);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 1.25rem}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -58,131 +58,132 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .step{display:flex;align-items:center;gap:9px;font-size:12px;color:#ccc;padding:9px 13px;border-radius:10px;background:var(--white);border:1px solid var(--border);font-weight:500}
 .step.done{color:var(--green-mid)}.step.act{color:var(--ink);font-weight:700}
 
-/* ── RESULT ACTIONS ── */
-.actions-bar{padding:.85rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:1px solid var(--border);background:var(--white)}
-.btn-pub{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:14px;border:none;background:var(--green);color:var(--white);font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer;transition:background .15s}
-.btn-pub:hover{background:#2e4828}
-.btn-sec-row{display:flex;gap:.5rem}
-.btn-sec-row .btn-o{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer;transition:all .15s}
-.btn-sec-row .btn-o:hover{border-color:var(--green-light);background:var(--green-xpale);color:var(--green)}
-
-/* ── MODAL ── */
+/* MODAL */
 #modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
-.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;padding:1.5rem 1.25rem 2rem;width:100%;max-width:480px}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.25rem}
 
-/* ══════════════════════════════════
-   OUTPUT — HERO
-══════════════════════════════════ */
+/* ══ HERO ══ */
 .hero{position:relative;height:240px;overflow:hidden;background:linear-gradient(135deg,#2d4a28 0%,#4a7a3a 100%)}
-.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 60%,transparent 100%)}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 65%,transparent 100%)}
 .hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
-.hero-dest{font-family:'DM Serif Display',serif;font-size:30px;color:#fff;line-height:1.1;margin-bottom:4px}
-.hero-names{font-size:15px;font-weight:500;color:rgba(255,255,255,.88);margin-bottom:2px}
-.hero-dates{font-size:12px;color:rgba(255,255,255,.65);font-weight:400}
-.hero-wa{position:absolute;top:1rem;right:1rem;width:40px;height:40px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+.hero-dest{font-family:'DM Serif Display',serif;font-size:32px;color:#fff;line-height:1.1;margin-bottom:5px}
+.hero-names{font-size:14px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px}
+.hero-dates{font-size:12px;color:rgba(255,255,255,.6);font-weight:400}
 
-/* ── STATS PILLS ── */
-.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+/* WhatsApp FAB */
+.wa-fab{position:fixed;bottom:1.25rem;right:1.25rem;z-index:90;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.45);cursor:pointer;text-decoration:none;transition:transform .15s}
+.wa-fab:hover{transform:scale(1.08)}
+.wa-fab svg{width:28px;height:28px;fill:#fff}
+
+/* STATS */
+.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
 .stats-row::-webkit-scrollbar{display:none}
-.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:52px}
-.stat-num{font-size:18px;font-weight:700;color:var(--green);line-height:1}
-.stat-lbl{font-size:10px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:52px;padding:0 .25rem}
+.stat+.stat{border-left:1px solid var(--border)}
+.stat-num{font-size:20px;font-weight:700;color:var(--green);line-height:1}
+.stat-lbl{font-size:9px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 
-/* ── PROXIMO EVENTO ── */
-.next-evt{margin:1rem 1.25rem 0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;display:flex;align-items:center;gap:12px}
+/* PRÓXIMO EVENTO */
+.next-evt{margin:1rem 1.25rem 0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;display:flex;align-items:center;gap:12px;cursor:pointer}
 .next-icon{width:38px;height:38px;background:var(--green-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .next-label{font-size:10px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
-.next-text{font-size:13px;font-weight:600;color:var(--ink)}
-.next-arrow{margin-left:auto;font-size:18px;color:var(--ink3)}
+.next-text{font-size:13px;font-weight:700;color:var(--ink)}
+.next-arrow{margin-left:auto;font-size:20px;color:var(--ink3)}
 
-/* ── TABS ── */
+/* TABS */
 .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--white);margin-top:1rem;position:sticky;top:52px;z-index:40}
-.tab{flex:1;padding:.75rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.tab{flex:1;padding:.8rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
-
-/* ── TAB PANELS ── */
 .tab-panel{display:none}.tab-panel.active{display:block}
 
-/* ── ITINERARIO (timeline) ── */
-.itin-body{padding:1rem 1.25rem 2rem}
+/* ITINERARIO */
+.itin-body{padding:.85rem 1.25rem 3rem}
 
-.day-group{margin-bottom:1.5rem}
-.day-label{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;padding-left:2px}
+/* ── City card colapsable ── */
+.city-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden}
+.city-card-hdr{display:flex;align-items:center;gap:12px;padding:1rem 1.1rem;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.city-card-hdr:active{background:var(--green-xpale)}
+.city-flag{font-size:24px;flex-shrink:0}
+.city-card-info{flex:1}
+.city-name{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink);line-height:1}
+.city-dates-small{font-size:12px;color:var(--ink3);margin-top:3px}
+.city-nights-badge{background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.city-chev{font-size:14px;color:#ccc;transition:transform .25s;flex-shrink:0;margin-left:6px}
+.city-card.open .city-chev{transform:rotate(180deg)}
+.city-body{display:none;padding:.25rem .9rem .9rem}
+.city-card.open .city-body{display:block}
 
-/* city header */
-.city-hdr{display:flex;align-items:center;gap:10px;padding:.85rem 1rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--green-light);border-radius:var(--radius);margin-bottom:.6rem}
-.city-flag{font-size:22px;flex-shrink:0}
-.city-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);line-height:1}
-.city-sub{font-size:11px;color:var(--ink3);margin-top:2px}
-.city-nights-badge{margin-left:auto;background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}
+/* ── Event cards dentro de city ── */
+.evt-card{border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;overflow:hidden;background:var(--white)}
 
-/* event card — NEW STYLE */
-.evt-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden}
+/* Alojamiento: fecha grande primero */
+.evt-hotel-date{padding:.75rem 1rem .5rem;border-bottom:1px solid var(--border)}
+.evt-hotel-date-big{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);font-weight:400}
+.evt-hotel-date-sub{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}
+.evt-hotel-body{padding:.65rem 1rem}
+.evt-hotel-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.evt-hotel-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.evt-hotel-detail{font-size:11px;color:var(--ink3);line-height:1.55}
+
+/* Actividades y traslados: con horario */
 .evt-card-top{display:flex;align-items:stretch}
-.evt-time-col{width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .5rem;border-right:1px solid var(--border);gap:3px}
-.evt-time{font-size:13px;font-weight:700;color:var(--green);line-height:1}
-.evt-time-lbl{font-size:9px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
-.evt-icon-circle{width:28px;height:28px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:4px}
+.evt-time-col{width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .4rem;border-right:1px solid var(--border);gap:4px}
+.evt-time{font-size:14px;font-weight:700;color:var(--green);line-height:1}
+.evt-time-lbl{font-size:8px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.evt-no-time{font-size:20px;color:var(--green-pale)}
+.evt-icon-circle{width:26px;height:26px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:4px}
 .evt-main{flex:1;padding:.85rem .9rem}
 .evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
 .evt-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}
 .evt-detail{font-size:11px;color:var(--ink3);line-height:1.55}
-.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.6rem .9rem;background:var(--green-xpale);border-top:1px solid #deefd0}
+
+/* Footer badges */
+.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.55rem 1rem;background:var(--green-xpale);border-top:1px solid #deefd0}
 .badge-conf{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:3px 9px;border-radius:20px}
 .badge-conf::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-light);flex-shrink:0}
-.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#b06000;background:#fff3e0;padding:3px 9px;border-radius:20px}
+.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#9a6000;background:#fff3e0;padding:3px 9px;border-radius:20px}
 .badge-pend::before{content:'';width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}
 .btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:'DM Sans';font-weight:700;display:flex;align-items:center;gap:4px}
 
-/* connector between cities */
-.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1.25rem;gap:0}
+/* Connector entre ciudades */
+.connector{display:flex;flex-direction:column;align-items:center;margin:.5rem 0 1rem}
 .conn-line{width:2px;height:20px;background:var(--border)}
-.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.55rem 1rem;font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}
+.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.5rem 1rem;font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}
 .conn-icon{font-size:16px}
 .conn-info{flex:1}
 .conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}
 .conn-sub{font-size:10px;color:var(--ink3);margin-top:1px}
 .conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}
 
-/* ── DOCUMENTOS TAB ── */
+/* DOCUMENTOS */
 .docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.5rem}
 .doc-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.85rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .doc-item:active{background:var(--green-xpale)}
 .doc-icon-wrap{width:36px;height:36px;background:var(--green-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .doc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1}
 .doc-type{font-size:11px;color:var(--ink3);margin-top:1px}
-.doc-arrow{color:var(--ink3);font-size:16px}
 
-/* ── INFO UTIL TAB ── */
+/* INFO ÚTIL */
 .info-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.75rem}
 .info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
-.info-card-title{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.info-card-title{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
 .info-row{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:12px}
 .info-row:last-child{border-bottom:none}
-.info-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.info-icon{font-size:15px;flex-shrink:0;margin-top:1px}
 .info-key{color:var(--ink3);font-weight:500;min-width:80px}
 .info-val{color:var(--ink);font-weight:600;flex:1}
 
-/* ── FOOTER ── */
-.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
-.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.2}
+/* FOOTER */
+.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem 2.5rem;text-align:center;margin-top:.5rem}
+.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.3}
 .pf-contacts a{color:var(--green);text-decoration:none;font-weight:600}
 
 .err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:var(--radius);font-size:13px;color:#791F1F;line-height:1.5}
-
-/* ── BOTONES RESULTADO ── */
-.btn-out{width:calc(100% - 2.5rem);margin:.85rem 1.25rem 0;padding:13px;border-radius:14px;border:1.5px solid var(--border);background:var(--white);color:var(--ink2);font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
-.btn-out:hover{border-color:var(--green-light);background:var(--green-xpale);color:var(--green)}
-.btn-out.primary{background:var(--green);border-color:var(--green);color:#fff}
-.btn-out.primary:hover{background:#2e4828}
-.btn-sec{width:calc(100% - 2.5rem);margin:.5rem 1.25rem 1.5rem;padding:12px;border-radius:14px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);font-size:12px;font-weight:700;font-family:'DM Sans';cursor:pointer}
 </style>
 </head>
 <body>
 
-<!-- ══ SCREEN: EDITOR ══ -->
+<!-- EDITOR -->
 <div class="screen active" id="sc-editor">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
@@ -207,7 +208,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
   </div>
 </div>
 
-<!-- ══ SCREEN: LOADING ══ -->
+<!-- LOADING -->
 <div class="screen" id="sc-loading">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
@@ -226,7 +227,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
   </div>
 </div>
 
-<!-- ══ SCREEN: RESULTADO ══ -->
+<!-- RESULTADO -->
 <div class="screen" id="sc-result">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
@@ -234,12 +235,12 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
     <button class="back" onclick="resetAll()">← Nuevo</button>
   </div>
 
-  <!-- Acciones -->
+  <!-- Acciones agente -->
   <div style="padding:.85rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:1px solid var(--border);background:var(--white)">
-    <button class="btn-out primary" onclick="publicar()">🌐 Publicar y obtener link</button>
+    <button style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:14px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer" onclick="publicar()">🌐 Publicar y obtener link</button>
     <div style="display:flex;gap:.5rem">
-      <button class="btn-out" style="margin:0;width:auto;flex:1" onclick="descargar()">⬇ Descargar HTML</button>
-      <button class="btn-out" style="margin:0;width:auto;flex:1" onclick="agregarMas()">➕ Más docs</button>
+      <button style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer" onclick="descargar()">⬇ Descargar HTML</button>
+      <button style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer" onclick="agregarMas()">➕ Más docs</button>
     </div>
     <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-family:'DM Sans';cursor:pointer;padding:.25rem;font-weight:500" onclick="resetAll()">Generar otro itinerario</button>
   </div>
@@ -259,9 +260,13 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
     </div>
   </div>
 
-  <!-- Output del itinerario -->
   <div id="itin-preview"></div>
 </div>
+
+<!-- WhatsApp FAB (visible en pantalla resultado) -->
+<a class="wa-fab" id="wa-fab" href="https://wa.me/5491136358451" target="_blank" style="display:none" title="WhatsApp Chispa Travel">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <script>
 var IN_IFRAME=(window.self!==window.top);
@@ -269,9 +274,13 @@ var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generat
 var files=[],filesB64=[],filesType=[],gData=null,_vData={};
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
 var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
-var catIcons={hotel:'🏨',actividad:'🎟️',traslado:'🚐',vuelo:'✈️',tren:'🚄',bus:'🚌'};
 
-function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('wa-fab').style.display=(id==='sc-result')?'flex':'none';
+}
 function handleFiles(fl){for(var i=0;i<fl.length;i++){var f=fl[i];if(!files.find(function(x){return x.name===f.name&&x.size===f.size;}))files.push(f);}renderFiles();document.getElementById('finput').value='';}
 function renderFiles(){document.getElementById('flist').innerHTML=files.map(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';}).join('');}
 function removeFile(i){files.splice(i,1);renderFiles();}
@@ -283,30 +292,67 @@ function toB64(f){return new Promise(function(res,rej){var r=new FileReader();r.
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
 function resetAll(){files=[];filesB64=[];filesType=[];gData=null;_vData={};document.getElementById('flist').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
-function parseCityDate(dates){
-  if(!dates)return new Date(0);
-  var months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11};
-  var m=dates.toLowerCase().match(/(\d+)\s+([a-z]+)/);
-  if(!m)return new Date(0);
-  return new Date(2026,months[m[2].substring(0,3)]||0,parseInt(m[1]));
-}
+
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelector('.tab[data-tab="'+name+'"]').classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
+function toggleCity(el){el.classList.toggle('open');}
+
+// ── Parsear fecha desde string como "23 may" o "23 may – 25 may" ──
+var MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11,oct:9};
+function parseDate(str){
+  if(!str)return null;
+  var m=str.toLowerCase().match(/(\d{1,2})\s+([a-záéíóú]+)/);
+  if(!m)return null;
+  var mon=MONTHS[m[2].substring(0,3)];
+  if(mon===undefined)return null;
+  return new Date(2026,mon,parseInt(m[1]));
+}
+function parseCityDate(dates){return parseDate(dates)||new Date(0);}
+
+// Extraer primera y última fecha de todas las ciudades
+function getTripDateRange(cities){
+  var all=[];
+  cities.forEach(function(c){
+    var d1=parseDate(c.dates);
+    if(d1)all.push(d1);
+    // también intentar checkout
+    var m=c.dates&&c.dates.match(/–\s*(\d{1,2}\s+[a-z]+)/i);
+    if(m){var d2=parseDate(m[1]);if(d2)all.push(d2);}
+    if(c.hotel&&c.hotel.detail){
+      var co=c.hotel.detail.match(/[Cc]heck-?out[:\s]+(\d{1,2}\s+[a-z]+)/i);
+      if(co){var d3=parseDate(co[1]);if(d3)all.push(d3);}
+    }
+  });
+  if(!all.length)return null;
+  all.sort(function(a,b){return a-b;});
+  return {first:all[0],last:all[all.length-1]};
+}
+var MONTH_NAMES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){return d.getDate()+' '+MONTH_NAMES[d.getMonth()];}
+
+// Contar ciudades únicas (por nombre, ignorando mayúsculas)
+function countUniqueCities(cities){
+  var seen={};
+  cities.forEach(function(c){seen[c.name.toLowerCase().trim()]=true;});
+  return Object.keys(seen).length;
+}
+
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:5000,messages:[{role:'user',content:content}]})});
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){var e=await resp.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Error '+resp.status);}
   var data=await resp.json();
   if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
-var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks:\n{"cities":[{\n  "name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección","checkinTime":"15:00","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre","detail":"DD mon · Lugar","time":"HH:MM","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción","detail":"DD mon · Origen → Destino","time":"HH:MM","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","time":"HH:MM","confirmation":"# o —","sourceFile":3}\n}]}\nREGLAS: ORDEN CRONOLÓGICO. Extraé siempre el campo "time" con formato HH:MM si existe en el documento. "hotel" solo alojamiento principal. "activities" tours y excursiones. "localTransfers" traslados dentro de la ciudad. "departure" transporte AL SIGUIENTE DESTINO. "type" en departure: vuelo/tren/bus/ferry. "sourceFile": índice del archivo. Extraé TODAS las reservas.';
+
+var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks:\n{\n"countries":["País1","País2"],\n"cities":[{\n  "name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Dirección o info extra","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre","detail":"Descripción · Lugar","time":"HH:MM","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción","detail":"Origen → Destino","time":"HH:MM","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","confirmation":"# o —","sourceFile":3}\n}]\n}\nREGLAS ESTRICTAS:\n1. ORDEN CRONOLÓGICO por fecha de llegada.\n2. "countries": lista de países únicos del viaje (ej: ["Japón"] o ["Italia","Francia"]).\n3. Si hay varios hoteles en la misma ciudad, crear UNA SOLA entrada por ciudad con el hotel principal (el primero cronológicamente).\n4. "hotel.checkinDate" y "hotel.checkoutDate": solo fecha en formato "DD mon" (ej: "23 may"). SIN horario.\n5. "activities" y "localTransfers": incluir siempre "time" en HH:MM si está en el documento.\n6. "departure": transporte AL SIGUIENTE DESTINO. OMITIR en la última ciudad. "type": vuelo/tren/bus/ferry.\n7. "sourceFile": índice del archivo fuente del voucher. Omitir si no hay.\n8. NO inventar datos que no estén en los documentos.\n9. Extraé TODAS las reservas de actividades y traslados.';
 
 async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   var content=[];
@@ -320,11 +366,19 @@ async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   content.push({type:'text',text:PROMPT});
   return callAI(content);
 }
+
 function mergeCity(allCities,newCity){
-  var ex=allCities.find(function(c){return c.name.toLowerCase()===newCity.name.toLowerCase();});
-  if(ex){if(!ex.hotel&&newCity.hotel)ex.hotel=newCity.hotel;ex.activities=(ex.activities||[]).concat(newCity.activities||[]);ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;}
-  else{allCities.push(newCity);}
+  var ex=allCities.find(function(c){return c.name.toLowerCase().trim()===newCity.name.toLowerCase().trim();});
+  if(ex){
+    if(!ex.hotel&&newCity.hotel)ex.hotel=newCity.hotel;
+    ex.activities=(ex.activities||[]).concat(newCity.activities||[]);
+    ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);
+    if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;
+    // actualizar dates si el nuevo tiene rango mayor
+    if(newCity.dates&&(!ex.dates||parseCityDate(newCity.dates)<parseCityDate(ex.dates)))ex.dates=newCity.dates;
+  } else {allCities.push(newCity);}
 }
+
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();
   var dates=document.getElementById('inp-dates').value.trim();
@@ -335,15 +389,16 @@ async function generar(){
     filesB64=[];filesType=[];
     for(var i=0;i<files.length;i++){filesB64.push(await toB64(files[i]));filesType.push(getMT(files[i]));}
     setStep(2);
-    var allCities=[];var BS=3;
+    var allCities=[];var allCountries=[];var BS=3;
     for(var start=0;start<files.length;start+=BS){
       setStep(start===0?2:3);
       var parsed=await procesarBatch(files.slice(start,start+BS),filesB64.slice(start,start+BS),filesType.slice(start,start+BS),start);
       (parsed.cities||[]).forEach(function(c){mergeCity(allCities,c);});
+      (parsed.countries||[]).forEach(function(c){if(allCountries.indexOf(c)<0)allCountries.push(c);});
     }
     setStep(4);
     allCities.sort(function(a,b){return parseCityDate(a.dates)-parseCityDate(b.dates);});
-    gData={client:client,dates:dates,cities:allCities};
+    gData={client:client,dates:dates,cities:allCities,countries:allCountries};
     await new Promise(function(r){setTimeout(r,400);});
     renderResult();
   }catch(e){
@@ -351,6 +406,7 @@ async function generar(){
     document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisá que los archivos sean legibles e intentá de nuevo.</div>';
   }
 }
+
 function agregarMas(){
   var input=document.createElement('input');input.type='file';input.multiple=true;input.accept='.pdf,image/*';
   input.onchange=async function(){
@@ -360,47 +416,57 @@ function agregarMas(){
     try{
       var newB64=[],newTypes=[];
       for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
-      setStep(2);var allNew=[];var BS=3;
-      for(var start=0;start<nuevos.length;start+=BS){setStep(start===0?2:3);var p=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);(p.cities||[]).forEach(function(c){allNew.push(c);});}
-      setStep(4);allNew.forEach(function(c){mergeCity(gData.cities,c);});
+      setStep(2);var BS=3;var newCountries=[];
+      for(var start=0;start<nuevos.length;start+=BS){
+        setStep(start===0?2:3);
+        var p=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);
+        (p.cities||[]).forEach(function(c){mergeCity(gData.cities,c);});
+        (p.countries||[]).forEach(function(c){if((gData.countries||[]).indexOf(c)<0){if(!gData.countries)gData.countries=[];gData.countries.push(c);}});
+      }
+      setStep(4);
       gData.cities.sort(function(a,b){return parseCityDate(a.dates)-parseCityDate(b.dates);});
-      await new Promise(function(r){setTimeout(r,300);});renderResult();
+      await new Promise(function(r){setTimeout(r,300);});
+      renderResult();
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };input.click();
 }
+
 function openVoucher(key){
   var v=_vData[key];if(!v)return;
   try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}
   catch(e){alert('No se pudo abrir el voucher');}
 }
-
-// ── Buscar foto del destino via Unsplash ──
-async function fetchHeroImage(destination){
-  var query=destination.replace(/·.*$/,'').trim();
-  try{
-    var url='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(query+',travel,landscape');
-    return url;
-  }catch(e){return null;}
+function openFileByIndex(i){
+  if(!filesB64[i])return;
+  try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}
+  catch(e){alert('No se pudo abrir');}
 }
 
-// ── Detectar próximo evento ──
-function getNextEvent(cities){
-  var now=new Date();
-  var events=[];
-  cities.forEach(function(city){
-    if(city.hotel&&city.hotel.checkinTime){
-      var d=parseCityDate(city.dates);d.setHours(parseInt((city.hotel.checkinTime||'15:00').split(':')[0])||15);
-      events.push({label:'Check-in '+city.name,time:d,icon:'🏨'});
-    }
-    (city.activities||[]).forEach(function(a){
-      if(a.time){var d=parseCityDate(a.detail||'');d.setHours(parseInt((a.time||'').split(':')[0])||10);events.push({label:a.title,time:d,icon:'🎟️'});}
-    });
-  });
-  events.sort(function(a,b){return a.time-b.time;});
-  var next=events.find(function(e){return e.time>now;});
-  return next;
+// ── Construir card de hotel (sin horario, fecha grande) ──
+function makeHotelCard(hotel,key){
+  var hasV=(hotel.sourceFile!==undefined&&filesB64[hotel.sourceFile]);
+  if(hasV)_vData[key]={b64:filesB64[hotel.sourceFile],type:filesType[hotel.sourceFile]};
+  var hasConf=(hotel.confirmation&&hotel.confirmation!=='—');
+  var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+hotel.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
+  var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';
+  var checkin=hotel.checkinDate||'';
+  var checkout=hotel.checkoutDate||'';
+  var dateRange=checkin+(checkout?' – '+checkout:'');
+  var det=(hotel.detail||'').replace(/\n/g,'<br>');
+  return '<div class="evt-card">'+
+    '<div class="evt-hotel-date">'+
+      '<div class="evt-hotel-date-sub">Alojamiento</div>'+
+      '<div class="evt-hotel-date-big">'+dateRange+'</div>'+
+    '</div>'+
+    '<div class="evt-hotel-body">'+
+      '<div class="evt-hotel-title">'+hotel.title+'</div>'+
+      (det?'<div class="evt-hotel-detail">'+det+'</div>':'')+
+    '</div>'+
+    '<div class="evt-footer">'+confBadge+vBtn+'</div>'+
+  '</div>';
 }
 
+// ── Construir card de actividad/traslado (con horario) ──
 function makeEvtCard(res,key,typeLabel,icon){
   var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
   if(hasV)_vData[key]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
@@ -408,17 +474,17 @@ function makeEvtCard(res,key,typeLabel,icon){
   var hasConf=(res.confirmation&&res.confirmation!=='—');
   var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+res.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
   var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';
-  var timeStr=res.time||(res.checkinTime?res.checkinTime:'');
+  var timeStr=res.time||'';
   return '<div class="evt-card">'+
     '<div class="evt-card-top">'+
       '<div class="evt-time-col">'+
-        (timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'')+
-        '<div class="evt-icon-circle">'+icon+'</div>'+
+        (timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'<div class="evt-no-time">'+icon+'</div>')+
+        (timeStr?'<div class="evt-icon-circle">'+icon+'</div>':'')+
       '</div>'+
       '<div class="evt-main">'+
         '<div class="evt-type">'+typeLabel+'</div>'+
         '<div class="evt-title">'+(res.title||'')+'</div>'+
-        '<div class="evt-detail">'+det+'</div>'+
+        (det?'<div class="evt-detail">'+det+'</div>':'')+
       '</div>'+
     '</div>'+
     '<div class="evt-footer">'+confBadge+vBtn+'</div>'+
@@ -427,93 +493,116 @@ function makeEvtCard(res,key,typeLabel,icon){
 
 function renderResult(){
   var d=gData;_vData={};
-  var nh=0,na=0,nt=0,nd=0;
-  d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
 
-  // Hero image via Unsplash (source URL directo, no necesita API key)
-  var destino=(d.dates||d.cities[0]&&d.cities[0].name||'travel').replace(/·.*$/,'').trim();
-  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(destino+' travel landscape');
+  // ── Stats ──
+  // Vuelos: solo departure entries
+  var nVuelos=0,nHoteles=0,nTraslados=0,nActividades=0;
+  d.cities.forEach(function(c){
+    if(c.hotel)nHoteles++;
+    nActividades+=(c.activities||[]).length;
+    nTraslados+=(c.localTransfers||[]).length;
+    if(c.departure&&c.departure.type==='vuelo')nVuelos++;
+  });
+  var nCiudadesUnicas=countUniqueCities(d.cities);
 
-  // Próximo evento
-  var next=getNextEvent(d.cities);
-  var nextHtml=next?'<div class="next-evt"><div class="next-icon">'+next.icon+'</div><div><div class="next-label">Próximo evento</div><div class="next-text">'+next.label+'</div></div><div class="next-arrow">›</div></div>':'';
+  // ── Hero title: países + fechas dinámicas ──
+  var paises=(d.countries&&d.countries.length)?d.countries.join(' & '):(d.dates||'').replace(/·.*$/,'').trim()||'Viaje';
+  var flags=d.cities.map(function(c){return c.flag||'';}).filter(function(f,i,a){return f&&a.indexOf(f)===i;}).join(' ');
+  var dateRange=getTripDateRange(d.cities);
+  var heroDateStr=dateRange?(fmtDate(dateRange.first)+' — '+fmtDate(dateRange.last)+' '+dateRange.last.getFullYear()):d.dates;
+  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent((paises||'travel')+' travel landscape');
 
-  // Stats
-  var statsHtml='<div class="stats-row">'+
-    (nd+nt?'<div class="stat"><div class="stat-num">'+(nd)+'</div><div class="stat-lbl">vuelos</div></div>':'')+
-    (nh?'<div class="stat"><div class="stat-num">'+nh+'</div><div class="stat-lbl">hoteles</div></div>':'')+
-    (nt?'<div class="stat"><div class="stat-num">'+nt+'</div><div class="stat-lbl">traslados</div></div>':'')+
-    (na?'<div class="stat"><div class="stat-num">'+na+'</div><div class="stat-lbl">actividades</div></div>':'')+
-    '<div class="stat"><div class="stat-num" style="font-size:14px">24/7</div><div class="stat-lbl">soporte</div></div>'+
-  '</div>';
+  // ── Stats row ──
+  var statsItems=[];
+  if(nVuelos)statsItems.push({n:nVuelos,l:'vuelos'});
+  statsItems.push({n:nCiudadesUnicas,l:'destinos'});
+  if(nHoteles)statsItems.push({n:nHoteles,l:'hoteles'});
+  if(nTraslados)statsItems.push({n:nTraslados,l:'traslados'});
+  if(nActividades)statsItems.push({n:nActividades,l:'actividades'});
+  statsItems.push({n:'24/7',l:'soporte',small:true});
+  var statsHtml='<div class="stats-row">'+statsItems.map(function(s){return '<div class="stat"><div class="stat-num'+(s.small?' stat-num-sm':'')+'">'+s.n+'</div><div class="stat-lbl">'+s.l+'</div></div>';}).join('')+'</div>';
 
-  // ── TAB: ITINERARIO ──
+  // ── Itinerario ──
   var itinHtml='<div class="itin-body">';
   d.cities.forEach(function(city,ci){
-    itinHtml+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-sub">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span></div>';
-    if(city.hotel)itinHtml+=makeEvtCard(city.hotel,'h'+ci+'_0','Alojamiento','🏨');
+    // City card colapsable (abierta por defecto)
+    itinHtml+='<div class="city-card open" onclick="if(event.target.closest(\'.btn-voucher\')||event.target.closest(\'.evt-footer\'))return;if(!event.target.closest(\'.city-card-hdr\'))return;this.classList.toggle(\'open\')">';
+    itinHtml+='<div class="city-card-hdr">'+
+      '<span class="city-flag">'+(city.flag||'📍')+'</span>'+
+      '<div class="city-card-info">'+
+        '<div class="city-name">'+city.name+'</div>'+
+        '<div class="city-dates-small">'+city.dates+'</div>'+
+      '</div>'+
+      '<span class="city-nights-badge">'+city.nights+'</span>'+
+      '<span class="city-chev">▼</span>'+
+    '</div>';
+    itinHtml+='<div class="city-body">';
+    if(city.hotel)itinHtml+=makeHotelCard(city.hotel,'h'+ci+'_0');
     (city.activities||[]).forEach(function(a,i){itinHtml+=makeEvtCard(a,'a'+ci+'_'+i,'Actividad','🎟️');});
     (city.localTransfers||[]).forEach(function(t,i){itinHtml+=makeEvtCard(t,'t'+ci+'_'+i,'Traslado','🚐');});
+    itinHtml+='</div></div>';
 
     if(city.departure){
       var dep=city.departure,dkey='dep'+ci;
       var hasV=(dep.sourceFile!==undefined&&filesB64[dep.sourceFile]);
       if(hasV)_vData[dkey]={b64:filesB64[dep.sourceFile],type:filesType[dep.sourceFile]};
       var icon=depIcons[dep.type]||'🚌';
-      var depTitle=dep.title||dep.name||dep.transport||'Siguiente destino';
-      var depDetail=dep.detail||dep.info||'';
+      var depTitle=dep.title||dep.name||'Siguiente destino';
+      var depDetail=dep.detail||'';
       var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
       var vb=hasV?'<button class="btn-voucher" style="margin-left:4px" onclick="openVoucher(\''+dkey+'\')">📄</button>':'';
-      itinHtml+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div style="font-size:10px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+      itinHtml+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div class="conn-sub">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
     }
   });
   var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
-  itinHtml+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  itinHtml+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div>'+
+    '<div class="pf-contacts">'+
+      '<a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br>'+
+      '<a href="https://wa.me/5491136358451">+54 9 11 3635-8451</a><br>'+
+      '<a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br>'+
+      '<a href="https://chispatravel.com">CHISPATRAVEL.COM</a>'+
+    '</div></div>';
   itinHtml+='</div>';
 
-  // ── TAB: DOCUMENTOS ──
+  // ── Documentos ──
   var docsHtml='<div class="docs-body">';
   if(files.length){
     files.forEach(function(f,i){
       var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
       var ext=f.name.split('.').pop().toUpperCase();
-      docsHtml+='<div class="doc-item" onclick="openFileByIndex('+i+')"><div class="doc-icon-wrap">'+icon+'</div><div><div class="doc-name">'+f.name+'</div><div class="doc-type">'+ext+' · '+(f.size/1024).toFixed(0)+' KB</div></div><span class="doc-arrow">›</span></div>';
+      docsHtml+='<div class="doc-item" onclick="openFileByIndex('+i+')"><div class="doc-icon-wrap">'+icon+'</div><div><div class="doc-name">'+f.name+'</div><div class="doc-type">'+ext+' · '+(f.size/1024).toFixed(0)+' KB</div></div><span style="color:#ccc;font-size:18px">›</span></div>';
     });
   } else {
     docsHtml+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">No hay documentos cargados</div>';
   }
   docsHtml+='</div>';
 
-  // ── TAB: INFO ÚTIL ──
+  // ── Info útil ──
   var infoHtml='<div class="info-body">'+
-    '<div class="info-card">'+
-      '<div class="info-card-title">📞 Contacto Chispa</div>'+
+    '<div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div>'+
       '<div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div>'+
-      '<div class="info-row"><span class="info-icon">📱</span><span class="info-key">WhatsApp</span><span class="info-val">+54 9 11 2329-4562</span></div>'+
+      '<div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:var(--green);text-decoration:none">+54 9 11 3635-8451</a></div>'+
       '<div class="info-row"><span class="info-icon">📸</span><span class="info-key">Instagram</span><span class="info-val">@chispa.travelclub</span></div>'+
     '</div>'+
-    '<div class="info-card">'+
-      '<div class="info-card-title">✈️ Tu viaje</div>'+
+    '<div class="info-card"><div class="info-card-title">✈️ Tu viaje</div>'+
       '<div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div>'+
-      '<div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+d.dates+'</span></div>'+
-      '<div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+d.cities.length+' ciudades</span></div>'+
+      '<div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDateStr+'</span></div>'+
+      '<div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nCiudadesUnicas+' ciudad'+(nCiudadesUnicas!==1?'es':'')+'</span></div>'+
     '</div>'+
   '</div>';
 
-  // ── ARMAR HTML COMPLETO ──
+  // ── Armar HTML completo del output ──
   var fullHtml=
     '<div class="hero">'+
-      '<img class="hero-img" src="'+heroUrl+'" alt="'+destino+'" onerror="this.style.display=\'none\'">'+
+      '<img class="hero-img" src="'+heroUrl+'" alt="'+paises+'" onerror="this.style.display=\'none\'">'+
       '<div class="hero-grad"></div>'+
-      '<div class="wa-btn hero-wa">💬</div>'+
       '<div class="hero-content">'+
-        '<div class="hero-dest" style="font-family:\'DM Serif Display\',serif">'+destino+' '+(d.cities[0]&&d.cities[0].flag||'')+'</div>'+
+        '<div class="hero-dest">'+paises+' '+flags+'</div>'+
         '<div class="hero-names">'+d.client+'</div>'+
-        '<div class="hero-dates">'+d.dates+'</div>'+
+        '<div class="hero-dates">'+heroDateStr+'</div>'+
       '</div>'+
     '</div>'+
     statsHtml+
-    nextHtml+
     '<div class="tabs">'+
       '<div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div>'+
       '<div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div>'+
@@ -527,13 +616,7 @@ function renderResult(){
   show('sc-result');
 }
 
-function openFileByIndex(i){
-  if(!filesB64[i])return;
-  try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}
-  catch(e){alert('No se pudo abrir');}
-}
-
-// ── GENERAR HTML PARA CLIENTE (publicar / descargar) ──
+// ── Generar HTML para cliente (publicar/descargar) ──
 function generarHTMLString(){
   var d=gData;
   var vouchers={};
@@ -545,72 +628,84 @@ function generarHTMLString(){
     if(city.departure)addV(city.departure,'dep'+ci);
   });
 
+  var nVuelos=0,nHoteles=0,nTraslados=0,nActividades=0;
+  d.cities.forEach(function(c){if(c.hotel)nHoteles++;nActividades+=(c.activities||[]).length;nTraslados+=(c.localTransfers||[]).length;if(c.departure&&c.departure.type==='vuelo')nVuelos++;});
+  var nCiudadesUnicas=countUniqueCities(d.cities);
+  var paises=(d.countries&&d.countries.length)?d.countries.join(' & '):(d.dates||'').replace(/·.*$/,'').trim()||'Viaje';
+  var flags=d.cities.map(function(c){return c.flag||'';}).filter(function(f,i,a){return f&&a.indexOf(f)===i;}).join(' ');
+  var dateRange=getTripDateRange(d.cities);
+  var heroDateStr=dateRange?(fmtDate(dateRange.first)+' — '+fmtDate(dateRange.last)+' '+dateRange.last.getFullYear()):d.dates;
+  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent((paises||'travel')+' travel landscape');
+
+  var statsItems=[];
+  if(nVuelos)statsItems.push({n:nVuelos,l:'vuelos'});
+  statsItems.push({n:nCiudadesUnicas,l:'destinos'});
+  if(nHoteles)statsItems.push({n:nHoteles,l:'hoteles'});
+  if(nTraslados)statsItems.push({n:nTraslados,l:'traslados'});
+  if(nActividades)statsItems.push({n:nActividades,l:'actividades'});
+  statsItems.push({n:'24/7',l:'soporte'});
+  var statsH=statsItems.map(function(s){return '<div class="stat"><div class="stat-num">'+s.n+'</div><div class="stat-lbl">'+s.l+'</div></div>';}).join('');
+
+  function rHotel(hotel,key){
+    var hasV=!!vouchers[key];
+    var hasConf=(hotel.confirmation&&hotel.confirmation!=='—');
+    var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+hotel.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
+    var vBtn=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
+    var checkin=hotel.checkinDate||'';var checkout=hotel.checkoutDate||'';
+    var dateRange2=checkin+(checkout?' – '+checkout:'');
+    var det=(hotel.detail||'').replace(/\n/g,'<br>');
+    return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dateRange2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+hotel.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+confBadge+vBtn+'</div></div>';
+  }
   function rCard(res,key,typeLabel,icon){
     var hasV=!!vouchers[key];
     var det=(res.detail||'').replace(/\n/g,'<br>');
     var hasConf=(res.confirmation&&res.confirmation!=='—');
     var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+res.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
     var vBtn=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
-    var timeStr=res.time||(res.checkinTime?res.checkinTime:'');
-    return '<div class="evt-card">'+
-      '<div class="evt-card-top">'+
-        '<div class="evt-time-col">'+
-          (timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'')+
-          '<div class="evt-icon-circle">'+icon+'</div>'+
-        '</div>'+
-        '<div class="evt-main">'+
-          '<div class="evt-type">'+typeLabel+'</div>'+
-          '<div class="evt-title">'+(res.title||'')+'</div>'+
-          '<div class="evt-detail">'+det+'</div>'+
-        '</div>'+
-      '</div>'+
-      '<div class="evt-footer">'+confBadge+vBtn+'</div>'+
-    '</div>';
+    var timeStr=res.time||'';
+    return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#e8f2e0">'+icon+'</div>')+(timeStr?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(res.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+'</div></div><div class="evt-footer">'+confBadge+vBtn+'</div></div>';
   }
 
-  var nh=0,na=0,nt=0,nd=0;
-  d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
-  var destino=(d.dates||d.cities[0]&&d.cities[0].name||'travel').replace(/·.*$/,'').trim();
-  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(destino+' travel landscape');
-
-  var statsH=(nd?'<div class="stat"><div class="stat-num">'+nd+'</div><div class="stat-lbl">vuelos</div></div>':'')+
-    (nh?'<div class="stat"><div class="stat-num">'+nh+'</div><div class="stat-lbl">hoteles</div></div>':'')+
-    (nt?'<div class="stat"><div class="stat-num">'+nt+'</div><div class="stat-lbl">traslados</div></div>':'')+
-    (na?'<div class="stat"><div class="stat-num">'+na+'</div><div class="stat-lbl">actividades</div></div>':'')+
-    '<div class="stat"><div class="stat-num" style="font-size:14px">24/7</div><div class="stat-lbl">soporte</div></div>';
-
-  var body='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+destino+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+destino+' '+(d.cities[0]&&d.cities[0].flag||'')+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+d.dates+'</div></div></div>';
+  var body='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+paises+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+paises+' '+flags+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+heroDateStr+'</div></div></div>';
   body+='<div class="stats-row">'+statsH+'</div>';
   body+='<div class="tabs"><div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div><div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div><div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info útil</div></div>';
 
   var itinBody='<div class="itin-body">';
   d.cities.forEach(function(city,ci){
-    itinBody+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-sub">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span></div>';
-    if(city.hotel)itinBody+=rCard(city.hotel,'h'+ci+'_0','Alojamiento','🏨');
+    itinBody+='<div class="city-card open" onclick="if(event.target.closest(\'.btn-voucher\')||event.target.closest(\'.evt-footer\'))return;if(!event.target.closest(\'.city-card-hdr\'))return;this.classList.toggle(\'open\')">';
+    itinBody+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span><span class="city-chev">▼</span></div>';
+    itinBody+='<div class="city-body">';
+    if(city.hotel)itinBody+=rHotel(city.hotel,'h'+ci+'_0');
     (city.activities||[]).forEach(function(a,i){itinBody+=rCard(a,'a'+ci+'_'+i,'Actividad','🎟️');});
     (city.localTransfers||[]).forEach(function(t,i){itinBody+=rCard(t,'t'+ci+'_'+i,'Traslado','🚐');});
+    itinBody+='</div></div>';
     if(city.departure){
       var dep=city.departure,dkey='dep'+ci,hasV=!!vouchers[dkey];
       var icon={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'}[dep.type]||'🚌';
-      var depTitle=dep.title||dep.name||dep.transport||'Siguiente destino';
-      var depDetail=dep.detail||dep.info||'';
+      var depTitle=dep.title||dep.name||'Siguiente destino';
+      var depDetail=dep.detail||'';
       var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
       var vb=hasV?'<button class="btn-voucher" style="margin-left:4px" onclick="openV(\''+dkey+'\')">📄</button>':'';
-      itinBody+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div style="font-size:10px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+      itinBody+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div class="conn-sub">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
     }
   });
   var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
-  itinBody+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
+  itinBody+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="https://wa.me/5491136358451">+54 9 11 3635-8451</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
 
-  var infoBody='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">📱</span><span class="info-key">WhatsApp</span><span class="info-val">+54 9 11 2329-4562</span></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+d.dates+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+d.cities.length+' ciudades</span></div></div></div>';
+  var infoBody='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:#3d5c36;text-decoration:none">+54 9 11 3635-8451</a></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDateStr+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nCiudadesUnicas+' ciudad'+(nCiudadesUnicas!==1?'es':'')+'</span></div></div></div>';
 
-  body+='<div id="panel-itin" class="tab-panel active">'+itinBody+'</div><div id="panel-docs" class="tab-panel"><div class="docs-body"><div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers están disponibles en cada reserva ↑</div></div></div><div id="panel-info" class="tab-panel">'+infoBody+'</div>';
+  var docsBody='<div class="docs-body"><div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers están disponibles en cada reserva ↑</div></div>';
 
-  var css=':root{--green:#3d5c36;--green-mid:#5a7a4a;--green-light:#8aac7a;--green-pale:#e8f2e0;--green-xpale:#f4f9f0;--ink:#1a1a1a;--ink2:#444;--ink3:#888;--border:#e5e5e2;--bg:#f5f5f3;--white:#fff;--radius:16px;--radius-sm:10px}*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.25rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px}.lmark{width:32px;height:32px;flex-shrink:0}.lc{font-size:14px;font-weight:700;color:var(--green-light);letter-spacing:.05em;line-height:1}.ls{font-size:7px;color:var(--green-mid);letter-spacing:.22em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.hero{position:relative;height:240px;overflow:hidden;background:linear-gradient(135deg,#2d4a28 0%,#4a7a3a 100%)}.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 60%,transparent 100%)}.hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}.hero-dest{font-family:"DM Serif Display",serif;font-size:30px;color:#fff;line-height:1.1;margin-bottom:4px}.hero-names{font-size:15px;font-weight:500;color:rgba(255,255,255,.88);margin-bottom:2px}.hero-dates{font-size:12px;color:rgba(255,255,255,.65)}.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}.stats-row::-webkit-scrollbar{display:none}.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:52px}.stat-num{font-size:18px;font-weight:700;color:var(--green);line-height:1}.stat-lbl{font-size:10px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.04em}.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--white);position:sticky;top:52px;z-index:40}.tab{flex:1;padding:.75rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.tab.active{color:var(--green);border-bottom-color:var(--green)}.tab-panel{display:none}.tab-panel.active{display:block}.itin-body{padding:1rem 1.25rem 2rem}.city-hdr{display:flex;align-items:center;gap:10px;padding:.85rem 1rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--green-light);border-radius:var(--radius);margin-bottom:.6rem}.city-flag{font-size:22px;flex-shrink:0}.city-name{font-family:"DM Serif Display",serif;font-size:18px;color:var(--ink);line-height:1}.city-sub{font-size:11px;color:var(--ink3);margin-top:2px}.city-nights-badge{margin-left:auto;background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}.evt-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden}.evt-card-top{display:flex;align-items:stretch}.evt-time-col{width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .5rem;border-right:1px solid var(--border);gap:3px}.evt-time{font-size:13px;font-weight:700;color:var(--green);line-height:1}.evt-time-lbl{font-size:9px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.05em}.evt-icon-circle{width:28px;height:28px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:4px}.evt-main{flex:1;padding:.85rem .9rem}.evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}.evt-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}.evt-detail{font-size:11px;color:var(--ink3);line-height:1.55}.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.6rem .9rem;background:var(--green-xpale);border-top:1px solid #deefd0}.badge-conf{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:3px 9px;border-radius:20px}.badge-conf::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-light);flex-shrink:0}.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#b06000;background:#fff3e0;padding:3px 9px;border-radius:20px}.badge-pend::before{content:"";width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:"DM Sans";font-weight:700;display:flex;align-items:center;gap:4px}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1.25rem}.conn-line{width:2px;height:20px;background:var(--border)}.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.55rem 1rem;font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}.conn-icon{font-size:16px}.conn-info{flex:1}.conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}.conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}.docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.5rem}.doc-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;display:flex;align-items:center;gap:10px}.doc-icon-wrap{width:36px;height:36px;background:var(--green-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.doc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1}.doc-type{font-size:11px;color:var(--ink3);margin-top:1px}.info-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.75rem}.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}.info-card-title{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem}.info-row{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:12px}.info-row:last-child{border-bottom:none}.info-icon{font-size:16px;flex-shrink:0}.info-key{color:var(--ink3);font-weight:500;min-width:80px}.info-val{color:var(--ink);font-weight:600;flex:1}.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.2}.pf-contacts a{color:var(--green);text-decoration:none;font-weight:600}';
+  body+='<div id="panel-itin" class="tab-panel active">'+itinBody+'</div><div id="panel-docs" class="tab-panel">'+docsBody+'</div><div id="panel-info" class="tab-panel">'+infoBody+'</div>';
+
+  // WhatsApp FAB en el HTML del cliente
+  body+='<a style="position:fixed;bottom:1.25rem;right:1.25rem;z-index:90;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.45);text-decoration:none" href="https://wa.me/5491136358451" target="_blank"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>';
+
+  var css=':root{--green:#3d5c36;--green-mid:#5a7a4a;--green-light:#8aac7a;--green-pale:#e8f2e0;--green-xpale:#f4f9f0;--ink:#1a1a1a;--ink2:#444;--ink3:#888;--border:#e5e5e2;--bg:#f5f5f3;--white:#fff;--radius:16px;--radius-sm:10px}*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.25rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px}.lmark{width:32px;height:32px;flex-shrink:0}.lc{font-size:14px;font-weight:700;color:var(--green-light);letter-spacing:.05em;line-height:1}.ls{font-size:7px;color:var(--green-mid);letter-spacing:.22em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.hero{position:relative;height:240px;overflow:hidden;background:linear-gradient(135deg,#2d4a28 0%,#4a7a3a 100%)}.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65}.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 65%,transparent 100%)}.hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}.hero-dest{font-family:"DM Serif Display",serif;font-size:32px;color:#fff;line-height:1.1;margin-bottom:5px}.hero-names{font-size:14px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px}.hero-dates{font-size:12px;color:rgba(255,255,255,.6)}.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}.stats-row::-webkit-scrollbar{display:none}.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:52px;padding:0 .25rem}.stat+.stat{border-left:1px solid var(--border)}.stat-num{font-size:20px;font-weight:700;color:var(--green);line-height:1}.stat-lbl{font-size:9px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--white);position:sticky;top:0;z-index:40}.tab{flex:1;padding:.8rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.tab.active{color:var(--green);border-bottom-color:var(--green)}.tab-panel{display:none}.tab-panel.active{display:block}.itin-body{padding:.85rem 1.25rem 3rem}.city-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden}.city-card-hdr{display:flex;align-items:center;gap:12px;padding:1rem 1.1rem;cursor:pointer;user-select:none}.city-flag{font-size:24px;flex-shrink:0}.city-card-info{flex:1}.city-name{font-family:"DM Serif Display",serif;font-size:19px;color:var(--ink);line-height:1}.city-dates-small{font-size:12px;color:var(--ink3);margin-top:3px}.city-nights-badge{background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;flex-shrink:0;white-space:nowrap}.city-chev{font-size:14px;color:#ccc;transition:transform .25s;flex-shrink:0;margin-left:6px}.city-card.open .city-chev{transform:rotate(180deg)}.city-body{display:none;padding:.25rem .9rem .9rem}.city-card.open .city-body{display:block}.evt-card{border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;overflow:hidden;background:var(--white)}.evt-hotel-date{padding:.75rem 1rem .5rem;border-bottom:1px solid var(--border)}.evt-hotel-date-big{font-family:"DM Serif Display",serif;font-size:17px;color:var(--ink)}.evt-hotel-date-sub{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}.evt-hotel-body{padding:.65rem 1rem}.evt-hotel-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}.evt-hotel-detail{font-size:11px;color:var(--ink3);line-height:1.55}.evt-card-top{display:flex;align-items:stretch}.evt-time-col{width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .4rem;border-right:1px solid var(--border);gap:4px}.evt-time{font-size:14px;font-weight:700;color:var(--green);line-height:1}.evt-time-lbl{font-size:8px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}.evt-icon-circle{width:26px;height:26px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:4px}.evt-main{flex:1;padding:.85rem .9rem}.evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}.evt-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}.evt-detail{font-size:11px;color:var(--ink3);line-height:1.55}.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.55rem 1rem;background:var(--green-xpale);border-top:1px solid #deefd0}.badge-conf{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:3px 9px;border-radius:20px}.badge-conf::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-light);flex-shrink:0}.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#9a6000;background:#fff3e0;padding:3px 9px;border-radius:20px}.badge-pend::before{content:"";width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:"DM Sans";font-weight:700;display:flex;align-items:center;gap:4px}.connector{display:flex;flex-direction:column;align-items:center;margin:.5rem 0 1rem}.conn-line{width:2px;height:20px;background:var(--border)}.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.5rem 1rem;font-size:11px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}.conn-icon{font-size:16px}.conn-info{flex:1}.conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}.conn-sub{font-size:10px;color:var(--ink3);margin-top:1px}.conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}.info-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.75rem}.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}.info-card-title{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}.info-row{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:12px}.info-row:last-child{border-bottom:none}.info-icon{font-size:15px;flex-shrink:0}.info-key{color:var(--ink3);font-weight:500;min-width:80px}.info-val{color:var(--ink);font-weight:600;flex:1}.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem 2.5rem;text-align:center;margin-top:.5rem}.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.3}.pf-contacts a{color:var(--green);text-decoration:none;font-weight:600}';
   var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}';
   var lmark='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
   var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>';
-  html+='<div class="hdr">'+lmark+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
+  html+='<div class="hdr">'+lmark+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+heroDateStr+'</div></div></div>';
   html+=body;
   html+='<script>'+vscript+'<\/script></body></html>';
   return html;
@@ -664,7 +759,11 @@ async function confirmarPublicar(){
     if(!uploadResp.ok)throw new Error('Error subiendo el archivo a Netlify');
     cerrarModal();
     var url='https://'+siteName+'.netlify.app';
-    document.getElementById('itin-preview').querySelector('.stats-row').insertAdjacentHTML('beforebegin','<div style="background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px">✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a> <button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){alert(\'¡Link copiado!\')})" style="background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:\'DM Sans\'">Copiar</button></div>');
+    var banner='<div id="pub-banner" style="background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a> <button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){alert(\'¡Link copiado!\')})" style="background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:\'DM Sans\'">Copiar</button></div>';
+    var preview=document.getElementById('itin-preview');
+    var existing_banner=document.getElementById('pub-banner');
+    if(existing_banner)existing_banner.remove();
+    preview.insertAdjacentHTML('afterbegin',banner);
   }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
   finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
