@@ -109,8 +109,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- EDITOR -->
 <div class="screen active" id="sc-editor">
   <div class="hdr">
-    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
-    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
     <span class="hdr-title">Generador de itinerarios</span>
   </div>
   <div class="body">
@@ -134,7 +133,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- LOADING -->
 <div class="screen" id="sc-loading">
   <div class="hdr">
-    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
     <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
   </div>
   <div class="lscreen">
@@ -153,8 +152,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- RESULTADO -->
 <div class="screen" id="sc-result">
   <div class="hdr">
-    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
-    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
     <button class="back" onclick="resetAll()">← Nuevo</button>
   </div>
   <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
@@ -382,7 +380,7 @@ function renderResult(){
     }
   });
 
-  html+='<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  html+='<div class="pfooter"><img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:48px;width:auto;margin-bottom:1rem" alt="Chispa Travel Club"/><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
 
   document.getElementById('itin-preview').innerHTML=html;
   show('sc-result');
