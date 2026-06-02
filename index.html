@@ -31,7 +31,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 .fitem-size{color:#bbb;font-size:11px;flex-shrink:0}
 .fitem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
 .fitem-rm:hover{color:#e24b4a}
-.btn-main{width:100%;padding:13px;border-radius:12px;border:none;background:#4a6741;color:#fff;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;transition:background .15s,opacity .15s}
+.btn-main{width:100%;padding:13px;border-radius:12px;border:none;background:#4a6741;color:#fff;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;transition:background .15s}
 .btn-main:hover{background:#3d5c36}
 .btn-main:disabled{opacity:.5;cursor:not-allowed}
 .btn-out{width:calc(100% - 2.5rem);margin:1rem 1.25rem 0;padding:12px;border-radius:12px;border:2px solid #4a6741;background:#fff;color:#4a6741;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
@@ -48,41 +48,60 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 .rbar{padding:.85rem 1.25rem;background:#e8f2e0;border-bottom:1px solid #c5d9a0}
 .rtitle{font-size:13px;font-weight:700;color:#3d5c36}
 .rsub{font-size:12px;color:#5a7a4a;margin-top:2px}
-.itin{padding:1rem 1.25rem 1.5rem}
-.itin-hdr{margin-bottom:1.25rem}
-.itin-client{font-size:18px;font-weight:700}
-.itin-dates{font-size:13px;color:#777;margin-top:2px}
-.chips{display:flex;gap:5px;margin-bottom:1.25rem;overflow-x:auto;scrollbar-width:none}
+.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
+
+/* ── ITINERARIO ── */
+.itin{padding:1rem 1.25rem 2rem}
+.itin-hdr{margin-bottom:1.5rem}
+.itin-client{font-size:20px;font-weight:700}
+.itin-dates{font-size:13px;color:#777;margin-top:3px}
+.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}
-.tl{position:relative}
-.tl-line{position:absolute;left:.9rem;top:0;bottom:0;width:2px;background:#ddd}
-.stop{position:relative;margin-bottom:1rem;padding-left:3rem}
-.dot{position:absolute;left:.525rem;top:.75rem;width:13px;height:13px;border-radius:50%;background:#8aac7a;border:3px solid #f5f5f3;z-index:2;transition:transform .15s}
-.stop.open .dot{transform:scale(1.25);background:#4a6741}
-.shd{background:#fff;border:1px solid #e5e5e2;border-radius:13px;padding:.8rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .15s}
-.stop.open .shd{border-color:#8aac7a}
-.sl{display:flex;align-items:center;gap:9px}
-.sflag{font-size:20px}
-.scity{font-size:14px;font-weight:700}
-.snights{font-size:11px;color:#888;margin-top:1px}
-.chev{transition:transform .25s;font-size:12px;color:#bbb}
-.stop.open .chev{transform:rotate(180deg)}
-.sbody{display:none;flex-direction:column;gap:7px;margin-top:7px}
-.stop.open .sbody{display:flex}
-.res{background:#fff;border:1px solid #e5e5e2;border-radius:11px;padding:.75rem .9rem}
-.res-type{font-size:10px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:4px}
-.res-title{font-size:13px;font-weight:700;margin-bottom:3px}
-.res-detail{font-size:12px;color:#666;line-height:1.5}
+
+/* ── CIUDAD ── */
+.city-block{margin-bottom:.5rem}
+.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}
+.city-flag{font-size:26px;flex-shrink:0}
+.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}
+.city-dates{font-size:11px;color:#888;margin-top:2px}
+.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}
+
+/* ── CATEGORÍA ── */
+.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}
+.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}
+.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}
+.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}
+.cat.open .cat-chev{transform:rotate(180deg)}
+.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}
+.cat.open .cat-body{display:flex}
+
+/* ── RESERVATION CARD ── */
+.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}
+.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}
+.res-detail{font-size:12px;color:#666;line-height:1.55}
 .res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}
-.res-badge{font-size:11px;padding:3px 9px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}
-.btn-voucher{font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
+.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}
+.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
 .btn-voucher:active{background:#d4eac4}
-.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
+
+/* ── CONECTOR ENTRE CIUDADES ── */
+.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}
+.conn-line{width:2px;height:18px;background:#ddd}
+.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.conn-card strong{color:#1a1a1a;font-size:13px}
+.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}
+.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px;-webkit-tap-highlight-color:transparent}
+
+/* ── FOOTER ── */
+.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}
 .pf-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}
 .pf-contacts{font-size:11px;color:#888;line-height:2.1}
 .pf-contacts a{color:#4a6741;text-decoration:none}
-.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
+
+/* ── MODAL ── */
+#modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -107,7 +126,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
       </div>
       <div class="flist" id="flist"></div>
     </div>
-    <div style="font-size:11px;color:#aaa;text-align:center;line-height:1.6">La IA lee todos los documentos, extrae las reservas<br>y vincula cada voucher a su tarjeta.</div>
+    <div style="font-size:11px;color:#aaa;text-align:center;line-height:1.6">La IA lee todos los documentos, extrae las reservas<br>y las organiza cronológicamente por ciudad.</div>
     <button class="btn-main" onclick="generar()">✦ Generar itinerario</button>
   </div>
 </div>
@@ -144,8 +163,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
   <button class="btn-out" style="border-color:#8aac7a;color:#4a6741;margin-top:.5rem" onclick="agregarMas()">➕ Agregar más documentos</button>
   <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
 
-  <!-- Modal publicar -->
-  <div id="modal-pub" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center">
+  <div id="modal-pub">
     <div style="background:#fff;border-radius:16px;padding:1.5rem;margin:1.25rem;width:100%;max-width:380px">
       <div style="font-size:15px;font-weight:700;margin-bottom:.5rem">Publicar itinerario</div>
       <div style="font-size:12px;color:#888;margin-bottom:1rem">El link va a ser: <strong id="link-preview">...</strong>.netlify.app</div>
@@ -162,30 +180,14 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 </div>
 
 <script>
-var IN_IFRAME = (window.self !== window.top);
-var API_ENDPOINT = IN_IFRAME ? 'https://api.anthropic.com/v1/messages' : '/api/generate';
-var files=[], filesB64=[], filesType=[], gData=null, _vData={};
+var IN_IFRAME=(window.self!==window.top);
+var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
+var files=[],filesB64=[],filesType=[],gData=null,_vData={};
 
-function show(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 
-function handleFiles(fl){
-  for(var i=0;i<fl.length;i++){
-    var f=fl[i];
-    if(!files.find(function(x){return x.name===f.name&&x.size===f.size;})) files.push(f);
-  }
-  renderFiles();
-  document.getElementById('finput').value='';
-}
-function renderFiles(){
-  document.getElementById('flist').innerHTML=files.map(function(f,i){
-    var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
-    return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';
-  }).join('');
-}
+function handleFiles(fl){for(var i=0;i<fl.length;i++){var f=fl[i];if(!files.find(function(x){return x.name===f.name&&x.size===f.size;}))files.push(f);}renderFiles();document.getElementById('finput').value='';}
+function renderFiles(){document.getElementById('flist').innerHTML=files.map(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';}).join('');}
 function removeFile(i){files.splice(i,1);renderFiles();}
 
 var dz=document.getElementById('dzone');
@@ -193,73 +195,55 @@ dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderCol
 dz.addEventListener('dragleave',function(){dz.style.borderColor='';});
 dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='';handleFiles(e.dataTransfer.files);});
 
-function toB64(f){
-  return new Promise(function(res,rej){
-    var r=new FileReader();
-    r.onload=function(){res(r.result.split(',')[1]);};
-    r.onerror=function(){rej(new Error('No se pudo leer: '+f.name));};
-    r.readAsDataURL(f);
-  });
-}
-function getMT(f){
-  if(f.type&&f.type!=='application/octet-stream') return f.type;
-  var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};
-  return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';
-}
-function setStep(n){
-  for(var i=1;i<=4;i++){
-    var el=document.getElementById('st'+i);
-    if(el) el.className='step'+(i<n?' done':i===n?' act':'');
-  }
-}
-function resetAll(){
-  files=[];filesB64=[];filesType=[];gData=null;_vData={};
-  document.getElementById('flist').innerHTML='';
-  document.getElementById('inp-client').value='';
-  document.getElementById('inp-dates').value='';
-  show('sc-editor');
-}
+function toB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('No se pudo leer: '+f.name));};r.readAsDataURL(f);});}
+function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
+function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
+function resetAll(){files=[];filesB64=[];filesType=[];gData=null;_vData={};document.getElementById('flist').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
+
 function parseCityDate(dates){
-  if(!dates) return new Date(0);
+  if(!dates)return new Date(0);
   var months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11};
   var m=dates.toLowerCase().match(/(\d+)\s+([a-z]+)/);
-  if(!m) return new Date(0);
+  if(!m)return new Date(0);
   return new Date(2026,months[m[2].substring(0,3)]||0,parseInt(m[1]));
 }
 
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
-  if(IN_IFRAME) headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{
-    method:'POST',headers:headers,
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:content}]})
-  });
+  if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:5000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){var e=await resp.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Error '+resp.status);}
   var data=await resp.json();
-  if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+  if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
 
-var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","reservations":[{"type":"hotel","title":"Nombre completo","detail":"Línea1\\nLínea2","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- ORDEN CRONOLÓGICO ESTRICTO por fecha de llegada\n- Dentro de cada ciudad, reservas también en orden cronológico\n- Emoji de bandera correcto para cada país\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo con ese voucher (omití si no hay)\n- Extraé ABSOLUTAMENTE TODAS las reservas\n- "detail" con \\n para saltos de línea\n- "confirmation" con localizador si existe, sino "—"';
+var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks.\n\nEstructura exacta:\n{"cities":[{\n  "name":"Ciudad",\n  "flag":"🏳️",\n  "dates":"DD mon – DD mon",\n  "nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección completa","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre actividad","detail":"DD mon · HH:MM hs · Lugar de encuentro","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción transfer","detail":"DD mon · HH:MM hs · Origen → Destino","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","confirmation":"# o —","sourceFile":3}\n}]}\n\nREGLAS CRÍTICAS:\n1. ORDEN CRONOLÓGICO ESTRICTO: ciudades ordenadas por fecha de llegada de más antigua a más reciente\n2. "hotel": solo el alojamiento principal de la ciudad. Si no hay, omití el campo\n3. "activities": tours, excursiones, entradas, actividades. Array vacío [] si no hay\n4. "localTransfers": traslados DENTRO de la ciudad (aeropuerto-hotel, hotel-tour, etc). Array vacío [] si no hay\n5. "departure": el transporte que lleva AL SIGUIENTE DESTINO (vuelo, tren, bus entre ciudades). Omití si es la última ciudad o no hay transporte documentado entre ciudades\n6. "type" en departure solo puede ser: vuelo, tren, bus, ferry\n7. "sourceFile": índice del archivo que contiene ese voucher. Omití si no hay voucher específico\n8. "dates" formato "DD mon – DD mon" (ej: "20 may – 23 may")\n9. Extraé ABSOLUTAMENTE TODAS las reservas de TODOS los documentos';
 
-async function procesarBatch(batchFiles, batchB64, batchTypes, offset){
+async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   var content=[];
   content.push({type:'text',text:'Documentos:\n\n'+batchFiles.map(function(f,i){return 'Índice '+(offset+i)+': '+f.name;}).join('\n')});
   for(var j=0;j<batchFiles.length;j++){
     content.push({type:'text',text:'--- Archivo '+(offset+j)+': '+batchFiles[j].name+' ---'});
     var mt=batchTypes[j];
-    if(mt==='application/pdf') content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:batchB64[j]}});
+    if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:batchB64[j]}});
     else content.push({type:'image',source:{type:'base64',media_type:mt,data:batchB64[j]}});
   }
   content.push({type:'text',text:PROMPT});
   return callAI(content);
 }
 
-function mergeCity(allCities, newCity){
+function mergeCity(allCities,newCity){
   var ex=allCities.find(function(c){return c.name.toLowerCase()===newCity.name.toLowerCase();});
-  if(ex) ex.reservations=ex.reservations.concat(newCity.reservations||[]);
-  else allCities.push(newCity);
+  if(ex){
+    if(!ex.hotel&&newCity.hotel)ex.hotel=newCity.hotel;
+    ex.activities=(ex.activities||[]).concat(newCity.activities||[]);
+    ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);
+    if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;
+  } else {
+    allCities.push(newCity);
+  }
 }
 
 async function generar(){
@@ -272,8 +256,7 @@ async function generar(){
     filesB64=[];filesType=[];
     for(var i=0;i<files.length;i++){filesB64.push(await toB64(files[i]));filesType.push(getMT(files[i]));}
     setStep(2);
-    var allCities=[];
-    var BS=3;
+    var allCities=[];var BS=3;
     for(var start=0;start<files.length;start+=BS){
       setStep(start===0?2:3);
       var parsed=await procesarBatch(files.slice(start,start+BS),filesB64.slice(start,start+BS),filesType.slice(start,start+BS),start);
@@ -296,20 +279,13 @@ function agregarMas(){
   var input=document.createElement('input');
   input.type='file';input.multiple=true;input.accept='.pdf,image/*';
   input.onchange=async function(){
-    if(!input.files.length) return;
-    var nuevos=Array.from(input.files);
-    var offset=files.length;
+    if(!input.files.length)return;
+    var nuevos=Array.from(input.files);var offset=files.length;
     show('sc-loading');setStep(1);
     try{
       var newB64=[],newTypes=[];
-      for(var i=0;i<nuevos.length;i++){
-        files.push(nuevos[i]);
-        var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);
-        filesB64.push(b);filesType.push(t);
-        newB64.push(b);newTypes.push(t);
-      }
-      setStep(2);
-      var allNew=[];var BS=3;
+      for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
+      setStep(2);var allNew=[];var BS=3;
       for(var start=0;start<nuevos.length;start+=BS){
         setStep(start===0?2:3);
         var parsed=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);
@@ -320,95 +296,161 @@ function agregarMas(){
       gData.cities.sort(function(a,b){return parseCityDate(a.dates)-parseCityDate(b.dates);});
       await new Promise(function(r){setTimeout(r,300);});
       renderResult();
-    }catch(e){
-      show('sc-result');
-      document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';
-    }
+    }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };
   input.click();
 }
 
-function openVoucherPreview(key){
-  var v=_vData[key];if(!v) return;
+function openVoucher(key){
+  var v=_vData[key];if(!v)return;
   try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}
   catch(e){alert('No se pudo abrir el voucher');}
 }
 
+function vBtn(key,hasV){return hasV?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';}
+function badge(conf){return (conf&&conf!=='—')?'<span class="res-badge">Conf. '+conf+'</span>':'';}
+function resCard(res,key){
+  var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
+  if(hasV)_vData[key]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
+  var det=(res.detail||'').replace(/\n/g,'<br>');
+  var footer=badge(res.confirmation)+vBtn(key,hasV);
+  return '<div class="res"><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(footer?'<div class="res-footer">'+footer+'</div>':'')+'</div>';
+}
+
+function catSection(icon,label,items,id,openByDefault){
+  if(!items||!items.length)return '';
+  var cards=items.map(function(r,i){return resCard(r,id+'_'+i);}).join('');
+  var cnt=items.length>1?'<span class="cat-count">'+items.length+'</span>':'';
+  return '<div class="cat'+(openByDefault?' open':'')+'" onclick="toggleCat(this)"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
+}
+
+function toggleCat(el){el.classList.toggle('open');}
+
+// Iconos de transporte para conector
+var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
+
 function renderResult(){
   var d=gData;_vData={};
   document.getElementById('rtitle').textContent=d.client;
-  var total=d.cities.reduce(function(a,c){return a+c.reservations.length;},0);
+  var total=d.cities.reduce(function(acc,c){
+    return acc+(c.hotel?1:0)+(c.activities?c.activities.length:0)+(c.localTransfers?c.localTransfers.length:0)+(c.departure?1:0);
+  },0);
   document.getElementById('rsub').textContent=d.dates+' · '+d.cities.length+' destinos · '+total+' reservas';
-  var h=0,t=0,tr=0;
-  d.cities.forEach(function(c){c.reservations.forEach(function(r){if(r.type==='hotel')h++;else if(r.type==='tour')t++;else tr++;});});
-  var chips='<div class="chips">'+(h?'<div class="chip">🏨 '+h+' hotel'+(h>1?'es':'')+'</div>':'')+(t?'<div class="chip">🎟 '+t+' tour'+(t>1?'s':'')+'</div>':'')+(tr?'<div class="chip">🚄 '+tr+' traslados</div>':'')+'</div>';
-  var labels={hotel:'🏨 Hotel',tour:'🎟 Tour',vuelo:'✈️ Vuelo',tren:'🚄 Tren',transfer:'🚐 Transfer'};
-  var tl='<div class="tl"><div class="tl-line"></div>';
-  d.cities.forEach(function(city,ci){
-    var sid='p'+ci,inner='';
-    city.reservations.forEach(function(res,ri){
-      var rkey='v'+ci+'_'+ri;
-      var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
-      if(hasV) _vData[rkey]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
-      var det=(res.detail||'').replace(/\n/g,'<br>');
-      var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
-      var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucherPreview(\''+rkey+'\')">📄 Ver voucher</button>':'';
-      inner+='<div class="res"><div class="res-type">'+(labels[res.type]||res.type)+'</div><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
-    });
-    tl+='<div class="stop'+(ci===0?' open':'')+'" id="'+sid+'"><div class="dot"></div><div class="shd" onclick="tog(\''+sid+'\')"><div class="sl"><span class="sflag">'+(city.flag||'📍')+'</span><div><div class="scity">'+city.name+'</div><div class="snights">'+city.dates+' · '+city.nights+'</div></div></div><span class="chev">▼</span></div><div class="sbody">'+inner+'</div></div>';
+
+  // Chips resumen
+  var nh=0,na=0,nt=0,nd=0;
+  d.cities.forEach(function(c){
+    if(c.hotel)nh++;
+    na+=(c.activities||[]).length;
+    nt+=(c.localTransfers||[]).length;
+    if(c.departure)nd++;
   });
-  tl+='</div>';
-  document.getElementById('itin-preview').innerHTML='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div>'+chips+tl+'<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  var chips='<div class="chips">'+(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'')+'</div>';
+
+  var html='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div>'+chips;
+
+  d.cities.forEach(function(city,ci){
+    // Header ciudad
+    html+='<div class="city-block">';
+    html+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
+
+    // Alojamiento (abierto por default)
+    if(city.hotel) html+=catSection('🏨','Alojamiento',[city.hotel],'h'+ci,true);
+
+    // Actividades (abierto si hay pocas)
+    if(city.activities&&city.activities.length)
+      html+=catSection('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
+
+    // Traslados locales
+    if(city.localTransfers&&city.localTransfers.length)
+      html+=catSection('🚐','Traslados',city.localTransfers,'t'+ci,false);
+
+    html+='</div>';
+
+    // Conector entre ciudades (departure)
+    if(city.departure){
+      var dep=city.departure;
+      var dkey='dep'+ci;
+      var hasV=(dep.sourceFile!==undefined&&filesB64[dep.sourceFile]);
+      if(hasV)_vData[dkey]={b64:filesB64[dep.sourceFile],type:filesType[dep.sourceFile]};
+      var icon=depIcons[dep.type]||'🚌';
+      html+='<div class="connector"><div class="conn-line"></div>';
+      html+='<div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+dep.title+'</div><div style="font-size:11px;color:#888;margin-top:1px">'+dep.detail+'</div></div>';
+      if(dep.confirmation&&dep.confirmation!=='—')html+='<span class="conn-badge">'+dep.confirmation+'</span>';
+      if(hasV)html+='<button class="conn-voucher" onclick="openVoucher(\''+dkey+'\')">📄</button>';
+      html+='</div><div class="conn-line"></div></div>';
+    }
+  });
+
+  html+='<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+
+  document.getElementById('itin-preview').innerHTML=html;
   show('sc-result');
 }
 
-function tog(id){
-  var el=document.getElementById(id);
-  var w=el.classList.contains('open');
-  document.querySelectorAll('.stop').forEach(function(s){s.classList.remove('open');});
-  if(!w) el.classList.add('open');
-}
-
-// ── GENERAR HTML STRING (usado por descargar y publicar) ──
+// ── GENERAR HTML PARA CLIENTE ──
 function generarHTMLString(){
-  var d=gData; // FIX: usar gData, no d
+  var d=gData;
   var vouchers={};
+  // Recolectar todos los vouchers
   d.cities.forEach(function(city,ci){
-    city.reservations.forEach(function(res,ri){
-      if(res.sourceFile!==undefined&&filesB64[res.sourceFile])
-        vouchers['v'+ci+'_'+ri]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
-    });
+    var addV=function(r,key){if(r&&r.sourceFile!==undefined&&filesB64[r.sourceFile])vouchers[key]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};};
+    if(city.hotel)addV(city.hotel,'h'+ci+'_0');
+    (city.activities||[]).forEach(function(r,i){addV(r,'a'+ci+'_'+i);});
+    (city.localTransfers||[]).forEach(function(r,i){addV(r,'t'+ci+'_'+i);});
+    if(city.departure)addV(city.departure,'dep'+ci);
   });
-  var h=0,t=0,tr=0;
-  d.cities.forEach(function(c){c.reservations.forEach(function(r){if(r.type==='hotel')h++;else if(r.type==='tour')t++;else tr++;});});
-  var chipsH=(h?'<div class="chip">🏨 '+h+' hotel'+(h>1?'es':'')+'</div>':'')+(t?'<div class="chip">🎟 '+t+' tour'+(t>1?'s':'')+'</div>':'')+(tr?'<div class="chip">🚄 '+tr+' traslados</div>':'');
-  var labels={hotel:'🏨 Hotel',tour:'🎟 Tour',vuelo:'✈️ Vuelo',tren:'🚄 Tren',transfer:'🚐 Transfer'};
-  var stopsH='';
+
+  var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
+
+  function rCard(res,key){
+    var hasV=!!vouchers[key];
+    var det=(res.detail||'').replace(/\n/g,'<br>');
+    var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
+    var vb=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
+    return '<div class="res"><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vb?'<div class="res-footer">'+conf+vb+'</div>':'')+'</div>';
+  }
+  function rCat(icon,label,items,id,open){
+    if(!items||!items.length)return '';
+    var cards=items.map(function(r,i){return rCard(r,id+'_'+i);}).join('');
+    var cnt=items.length>1?'<span class="cat-count">'+items.length+'</span>':'';
+    return '<div class="cat'+(open?' open':'')+'" onclick="this.classList.toggle(\'open\')"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
+  }
+
+  var nh=0,na=0,nt=0,nd=0;
+  d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
+  var chipsH=(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'');
+
+  var body='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div><div class="chips">'+chipsH+'</div>';
   d.cities.forEach(function(city,ci){
-    var sid='s'+ci,inner='';
-    city.reservations.forEach(function(res,ri){
-      var rkey='v'+ci+'_'+ri,hasV=!!vouchers[rkey];
-      var det=(res.detail||'').replace(/\n/g,'<br>');
-      var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
-      var vBtn=hasV?'<button class="btn-voucher" onclick="openV(\''+rkey+'\')">📄 Ver voucher</button>':'';
-      inner+='<div class="res"><div class="res-type">'+(labels[res.type]||res.type)+'</div><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
-    });
-    stopsH+='<div class="stop'+(ci===0?' active':'')+'" id="'+sid+'"><div class="dot"></div><div class="shd" onclick="tog(\''+sid+'\')"><div class="sl"><span class="sflag">'+(city.flag||'📍')+'</span><div><div class="scity">'+city.name+'</div><div class="snights">'+city.dates+' · '+city.nights+'</div></div></div><span class="chev">▼</span></div><div class="sbody">'+inner+'</div></div>';
+    body+='<div class="city-block"><div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
+    if(city.hotel)body+=rCat('🏨','Alojamiento',[city.hotel],'h'+ci,true);
+    if(city.activities&&city.activities.length)body+=rCat('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
+    if(city.localTransfers&&city.localTransfers.length)body+=rCat('🚐','Traslados',city.localTransfers,'t'+ci,false);
+    body+='</div>';
+    if(city.departure){
+      var dep=city.departure,dkey='dep'+ci,hasV=!!vouchers[dkey];
+      var icon=depIcons[dep.type]||'🚌';
+      var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
+      var vb=hasV?'<button class="conn-voucher" onclick="openV(\''+dkey+'\')">📄</button>':'';
+      body+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+dep.title+'</div><div style="font-size:11px;color:#888;margin-top:1px">'+dep.detail+'</div></div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+    }
   });
-  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem .9rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:34px;height:34px;flex-shrink:0}.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.chips{display:flex;gap:5px;margin:1.25rem 1.25rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.tl{padding:0 1.25rem 1.5rem;position:relative}.tl-line{position:absolute;left:2.35rem;top:0;bottom:0;width:2px;background:#ddd}.stop{position:relative;margin-bottom:1.1rem;padding-left:3.5rem}.dot{position:absolute;left:1.6rem;top:.75rem;width:13px;height:13px;border-radius:50%;background:#8aac7a;border:3px solid #f5f5f3;z-index:2;transition:transform .15s}.stop.active .dot{transform:scale(1.25);background:#4a6741}.shd{background:#fff;border:1px solid #e5e5e2;border-radius:13px;padding:.8rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .15s}.stop.active .shd{border-color:#8aac7a;box-shadow:0 0 0 3px rgba(138,172,122,.1)}.sl{display:flex;align-items:center;gap:9px}.sflag{font-size:20px}.scity{font-size:14px;font-weight:700}.snights{font-size:11px;color:#888;margin-top:1px}.chev{transition:transform .25s;font-size:12px;color:#bbb}.stop.active .chev{transform:rotate(180deg)}.sbody{display:none;flex-direction:column;gap:7px;margin-top:7px}.stop.active .sbody{display:flex}.res{background:#fff;border:1px solid #e5e5e2;border-radius:11px;padding:.75rem .9rem}.res-type{font-size:10px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:4px}.res-title{font-size:13px;font-weight:700;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.5}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:3px 9px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.footer{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}.f-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}.f-contacts{font-size:11px;color:#888;line-height:2.1}.f-contacts a{color:#4a6741;text-decoration:none}';
-  var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}function tog(id){var el=document.getElementById(id);var w=el.classList.contains("active");document.querySelectorAll(".stop").forEach(function(s){s.classList.remove("active")});if(!w)el.classList.add("active")}';
+  body+='<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a></div></div>';
+
+  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:32px;height:32px;flex-shrink:0}.lc{font-size:14px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.itin{padding:1rem 1.25rem 2rem}.itin-hdr{margin-bottom:1.5rem}.itin-client{font-size:20px;font-weight:700}.itin-dates{font-size:13px;color:#777;margin-top:3px}.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.city-block{margin-bottom:.5rem}.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}.city-flag{font-size:26px;flex-shrink:0}.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}.city-dates{font-size:11px;color:#888;margin-top:2px}.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}.cat.open .cat-chev{transform:rotate(180deg)}.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}.cat.open .cat-body{display:flex}.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.55}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}.conn-line{width:2px;height:18px;background:#ddd}.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px}.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}.pf-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}.pf-contacts{font-size:11px;color:#888;line-height:2.1}.pf-contacts a{color:#4a6741;text-decoration:none}';
+  var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}';
   var logo='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
+
   var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><style>'+css+'</style></head><body>';
   html+='<div class="hdr">'+logo+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
-  html+='<div class="chips">'+chipsH+'</div>';
-  html+='<div class="tl"><div class="tl-line"></div>'+stopsH+'</div>';
-  html+='<div class="footer"><div class="f-logo">✦ CHISPA TRAVEL CLUB</div><div class="f-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  html+='<div class="itin">'+body+'</div>';
   html+='<script>'+vscript+'<\/script></body></html>';
   return html;
 }
 
 function descargar(){
-  if(!gData) return;
+  if(!gData)return;
   var html=generarHTMLString();
   var blob=new Blob([html],{type:'text/html;charset=utf-8'});
   var a=document.createElement('a');
@@ -417,15 +459,11 @@ function descargar(){
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 
-function updatePreview(){
-  var v=document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-  document.getElementById('link-preview').textContent=v||'...';
-}
+function updatePreview(){var v=document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');document.getElementById('link-preview').textContent=v||'...';}
 function publicar(){
-  if(!gData) return;
+  if(!gData)return;
   var s=(gData.client||'').toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-  document.getElementById('inp-sitename').value=s;
-  updatePreview();
+  document.getElementById('inp-sitename').value=s;updatePreview();
   document.getElementById('pub-error').style.display='none';
   document.getElementById('modal-pub').style.display='flex';
 }
@@ -433,33 +471,19 @@ function cerrarModal(){document.getElementById('modal-pub').style.display='none'
 
 async function confirmarPublicar(){
   var siteName=document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-  if(!siteName||siteName.length<3){
-    document.getElementById('pub-error').textContent='El nombre debe tener al menos 3 caracteres';
-    document.getElementById('pub-error').style.display='block';return;
-  }
-  var btn=document.getElementById('btn-pub-ok');
-  btn.textContent='Publicando...';btn.disabled=true;
-  document.getElementById('pub-error').style.display='none';
+  if(!siteName||siteName.length<3){document.getElementById('pub-error').textContent='El nombre debe tener al menos 3 caracteres';document.getElementById('pub-error').style.display='block';return;}
+  var btn=document.getElementById('btn-pub-ok');btn.textContent='Publicando...';btn.disabled=true;document.getElementById('pub-error').style.display='none';
   try{
     var htmlContent=generarHTMLString();
-    var resp=await fetch('/api/generate',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'publish',siteName:siteName,htmlContent:htmlContent})
-    });
+    var resp=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'publish',siteName:siteName,htmlContent:htmlContent})});
     var data=await resp.json();
-    if(!resp.ok||data.error) throw new Error(data.error||'Error al publicar');
+    if(!resp.ok||data.error)throw new Error(data.error||'Error al publicar');
     cerrarModal();
     document.getElementById('rsub').innerHTML='✅ Publicado: <a href="'+data.url+'" target="_blank" style="color:#4a6741;font-weight:700">'+data.url+'</a> &nbsp;<button onclick="copiarLink(\''+data.url+'\')" style="background:none;border:1px solid #4a6741;border-radius:20px;color:#4a6741;cursor:pointer;font-size:11px;padding:3px 10px">Copiar</button>';
-  }catch(e){
-    document.getElementById('pub-error').textContent=e.message;
-    document.getElementById('pub-error').style.display='block';
-  }finally{
-    btn.textContent='🌐 Publicar';btn.disabled=false;
-  }
+  }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
+  finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
-function copiarLink(url){
-  navigator.clipboard.writeText(url).then(function(){alert('¡Link copiado!');});
-}
+function copiarLink(url){navigator.clipboard.writeText(url).then(function(){alert('¡Link copiado!');});}
 </script>
 </body>
 </html>
