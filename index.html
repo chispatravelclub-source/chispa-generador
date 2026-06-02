@@ -259,8 +259,35 @@ var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={},_summaryData={};
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
-var ORIGIN_KEYWORDS=['argentina','buenos aires','ezeiza','aep','eze'];
+var ORIGIN_KEYWORDS=['argentina','buenos aires','ezeiza','aep','eze','ministro pistarini'];
 function isOriginCity(n){if(!n)return false;n=n.toLowerCase();return ORIGIN_KEYWORDS.some(function(k){return n.includes(k);});}
+// Normalize city name: handle London/Londres, etc.
+var CITY_ALIASES={
+  'london':'Londres','londres':'Londres','london city':'Londres','london heathrow':'Londres',
+  'rome':'Roma','roma':'Roma',
+  'florence':'Florencia','florencia':'Florencia',
+  'venice':'Venecia','venecia':'Venecia',
+  'milan':'Milán','milano':'Milán','milán':'Milán',
+  'naples':'Nápoles','napoli':'Nápoles','nápoles':'Nápoles',
+  'lisbon':'Lisboa','lisboa':'Lisboa',
+  'tokyo':'Tokio','tokio':'Tokio',
+  'kyoto':'Kioto','kioto':'Kioto',
+  'osaka':'Osaka',
+  'new york':'Nueva York','nueva york':'Nueva York',
+  'paris':'París','parís':'París',
+  'barcelona':'Barcelona',
+  'madrid':'Madrid',
+  'edinburgh':'Edimburgo','edimburgo':'Edimburgo',
+  'dubai':'Dubái','dubái':'Dubái',
+  'miami':'Miami',
+  'amsterdam':'Ámsterdam','ámsterdam':'Ámsterdam',
+  'prague':'Praga','praga':'Praga',
+  'budapest':'Budapest',
+  'vienna':'Viena','wien':'Viena','viena':'Viena',
+  'athens':'Atenas','atenas':'Atenas'
+};
+function normalizeCity(n){if(!n)return n;var k=n.toLowerCase().trim();return CITY_ALIASES[k]||n;}
+function cityKey(n){if(!n)return '';var k=n.toLowerCase().trim();var alias=CITY_ALIASES[k];if(alias)return alias.toLowerCase();return k;}
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);var fab=document.getElementById('wa-fab');if(fab)fab.style.display=(id==='sc-result')?'flex':'none';}
 function handleFiles(fl){for(var i=0;i<fl.length;i++){var f=fl[i];if(!files.find(function(x){return x.name===f.name&&x.size===f.size;}))files.push(f);}renderFiles();document.getElementById('finput').value='';}
 function renderFiles(){document.getElementById('flist').innerHTML=files.map(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';}).join('');}
@@ -300,14 +327,24 @@ async function callAI(content){
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
-var PROMPT='Analiza estos documentos y devuelve UNICAMENTE un JSON valido sin texto extra ni backticks:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea Nro – Origen->Destino","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"# o -","sourceFile":0},"return":{"title":"Aerolinea Nro – Destino->Origen","detail":"Salida HH:MM · Llegada HH:MM","date":"DD mon","time":"HH:MM","confirmation":"# o -","sourceFile":1}},"cities":[{"name":"Ciudad","flag":"🏳️","dates":"DD mon - DD mon","nights":"N noche/s","hotel":{"title":"Hotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"# o -","sourceFile":2},"activities":[{"title":"Nombre","detail":"Descripcion","time":"HH:MM","date":"DD mon","confirmation":"# o -","sourceFile":3}],"localTransfers":[{"title":"Descripcion","detail":"Origen->Destino","time":"HH:MM","date":"DD mon","confirmation":"# o -","sourceFile":4}],"intercityTransport":{"type":"tren","title":"Descripcion","detail":"Salida HH:MM · Llegada HH:MM","time":"HH:MM","date":"DD mon","confirmation":"# o -","sourceFile":5}}]}\nREGLAS: 1)internationalFlights=vuelos desde/hacia Argentina. 2)countries=paises destino SIN Argentina. 3)cities=SOLO ciudades con hotel, SIN ciudades argentinas. 4)Orden cronologico por checkinDate. 5)Misma ciudad con varios hoteles: UNA sola entrada con primer hotel. 6)checkinDate/checkoutDate sin horario. 7)activities/localTransfers: incluir time y date. 8)intercityTransport=transporte interno entre ciudades (no vuelos intl). 9)Extraer TODAS las reservas.';
+var PROMPT='Analiza estos documentos de viaje y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA REQUERIDA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRRO – EZE/AEP -> Ciudad Destino","detail":"Salida HH:MM hs · Llegada HH:MM hs · Escala: Ciudad (si aplica)","date":"DD mon","time":"HH:MM","confirmation":"CODIGO o —","sourceFile":0},"return":{"title":"Aerolinea NRRO – Ciudad Destino -> EZE/AEP","detail":"Salida HH:MM hs · Llegada HH:MM hs · Escala: Ciudad (si aplica)","date":"DD mon","time":"HH:MM","confirmation":"CODIGO o —","sourceFile":1}},"cities":[{"name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"Nombre exacto del hotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion completa","confirmation":"CODIGO o —","sourceFile":2},"activities":[{"title":"Nombre del tour/actividad","detail":"Descripcion. Punto de encuentro: Nombre del lugar, Direccion completa. mapsUrl: https://maps.google.com/?q=LAT,LNG (si hay direccion)","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":3}],"localTransfers":[{"title":"Descripcion del traslado","detail":"Origen -> Destino · Info adicional","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":4}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Descripcion – Ciudad A -> Ciudad B","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":5}}]}\n\nREGLAS CRITICAS:\n1. internationalFlights.outbound = vuelo que SALE desde Argentina (EZE/AEP/Ministro Pistarini) hacia el destino. internationalFlights.return = vuelo que llega HACIA Argentina. Identificar por aeropuerto de origen/destino.\n2. countries = lista de paises destino SIN Argentina.\n3. cities = SOLO ciudades destino con hotel. NUNCA incluir Buenos Aires, Ezeiza, ni ciudades argentinas.\n4. Normalizar nombres de ciudades al espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Edinburgh=Edimburgo, etc.\n5. Misma ciudad (incluso en idiomas distintos: London=Londres) = UNA SOLA entrada. Si hay varios hoteles en la misma ciudad, usar el primero cronologicamente.\n6. Orden cronologico estricto por checkinDate del hotel.\n7. checkinDate y checkoutDate: EXACTAMENTE como figura en el voucher, SIN horario. Formato "DD mon" (ej: "10 jun").\n8. activities: si la actividad tiene punto de encuentro (meeting point), incluirlo en detail con la direccion. Si hay coordenadas o direccion clara, construir mapsUrl como https://maps.google.com/?q=DIRECCION+URL+ENCODED. NO crear traslados separados para los puntos de encuentro.\n9. localTransfers = SOLO traslados puerta a puerta (aeropuerto-hotel, hotel-hotel). NO incluir puntos de encuentro de tours aqui.\n10. intercityTransport = transporte interno entre ciudades destino (trenes, buses, ferries, vuelos internos). NO confundir con vuelos internacionales desde/hacia Argentina.\n11. Extraer TODAS las reservas de actividades y traslados. No omitir ninguna.\n12. sourceFile = indice del archivo donde esta el voucher de ese item.';
 async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   var content=[{type:'text',text:'Documentos:\n'+batchFiles.map(function(f,i){return 'Indice '+(offset+i)+': '+f.name;}).join('\n')}];
   for(var j=0;j<batchFiles.length;j++){content.push({type:'text',text:'--- Archivo '+(offset+j)+': '+batchFiles[j].name+' ---'});var mt=batchTypes[j];if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:batchB64[j]}});else content.push({type:'image',source:{type:'base64',media_type:mt,data:batchB64[j]}});}
   content.push({type:'text',text:PROMPT});
   return callAI(content);
 }
-function mergeCity(all,nc){var ex=all.find(function(c){return c.name.toLowerCase().trim()===nc.name.toLowerCase().trim();});if(ex){if(!ex.hotel&&nc.hotel)ex.hotel=nc.hotel;ex.activities=(ex.activities||[]).concat(nc.activities||[]);ex.localTransfers=(ex.localTransfers||[]).concat(nc.localTransfers||[]);if(!ex.intercityTransport&&nc.intercityTransport)ex.intercityTransport=nc.intercityTransport;}else{all.push(nc);}}
+function mergeCity(all,nc){
+  nc.name=normalizeCity(nc.name);
+  var ncKey=cityKey(nc.name);
+  var ex=all.find(function(c){return cityKey(c.name)===ncKey;});
+  if(ex){
+    if(!ex.hotel&&nc.hotel)ex.hotel=nc.hotel;
+    ex.activities=(ex.activities||[]).concat(nc.activities||[]);
+    ex.localTransfers=(ex.localTransfers||[]).concat(nc.localTransfers||[]);
+    if(!ex.intercityTransport&&nc.intercityTransport)ex.intercityTransport=nc.intercityTransport;
+  }else{all.push(nc);}
+}
 function mergeFlights(e,n){if(!n)return e||{};var o=e||{};if(n.outbound&&!o.outbound)o.outbound=n.outbound;if(n.return&&!o.return)o.return=n.return;return o;}
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();var dates=document.getElementById('inp-dates').value.trim();
@@ -348,11 +385,29 @@ function mkHotel(h,key){
   var det=(h.detail||'').replace(/\n/g,'<br>');
   return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+cBadge(h.confirmation)+vBtn(key)+'</div></div>';
 }
+function extractMapsUrl(detail){
+  if(!detail)return null;
+  var m=detail.match(/mapsUrl:\s*(https?:\/\/[^\s"<]+)/i);
+  return m?m[1]:null;
+}
+function cleanDetail(detail){
+  if(!detail)return '';
+  // Format "Punto de encuentro:" visually
+  var d=detail.replace(/mapsUrl:\s*https?:\/\/[^\s"<]+/gi,'').trim();
+  d=d.replace(/\.?\s*$/,'');
+  // Make meetingpoint bold
+  d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');
+  return d;
+}
 function mkEvt(r,key,typeLabel,icon){
   regV(r,key);
-  var det=(r.detail||'').replace(/\n/g,'<br>');if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;
+  var rawDet=r.detail||'';
+  var mapsUrl=extractMapsUrl(rawDet);
+  var det=cleanDetail(rawDet).replace(/\n/g,'<br>');
+  if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;
   var t=r.time||'';
-  return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+'</div></div><div class="evt-footer">'+cBadge(r.confirmation)+vBtn(key)+'</div></div>';
+  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:4px">📍 Ver en mapa</a>':'';
+  return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mapsBtn+'</div></div><div class="evt-footer">'+cBadge(r.confirmation)+vBtn(key)+'</div></div>';
 }
 function mkConn(dep,key){
   regV(dep,key);
@@ -460,7 +515,9 @@ function generarHTMLString(){
   function rvb(key){return vouchers[key]?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';}
   function rFlight(f,key,label){if(!f)return '';var det=(f.detail||'').replace(/\n/g,'<br>');if(f.date)det=f.date+(det?' · '+det:'');return '<div class="intl-flight"><div class="intl-flight-top"><div class="intl-flight-side">'+(f.time?'<div class="intl-flight-time">'+f.time+'</div><div class="intl-flight-lbl">hs</div>':'')+'<div class="intl-flight-icon">✈️</div></div><div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+rc(f.confirmation)+rvb(key)+'</div></div>';}
   function rHotel(h,key){var dr2=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');var det=(h.detail||'').replace(/\n/g,'<br>');return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+rc(h.confirmation)+rvb(key)+'</div></div>';}
-  function rEvt(r,key,tl,icon){var det=(r.detail||'').replace(/\n/g,'<br>');if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;var t=r.time||'';return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
+  function getMapUrl(d){if(!d)return null;var m=d.match(/mapsUrl:\s*(https?:\/\/[^\s"<]+)/i);return m?m[1]:null;}
+  function cleanDet(d){if(!d)return '';d=d.replace(/mapsUrl:\s*https?:\/\/[^\s"<]+/gi,'').trim().replace(/\.?\s*$/,'');d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');return d;}
+  function rEvt(r,key,tl,icon){var rawDet=r.detail||'';var mu=getMapUrl(rawDet);var det=cleanDet(rawDet).replace(/\n/g,'<br>');if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;var t=r.time||'';var mb=mu?'<a href="'+mu+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#3d5c36;text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:4px">📍 Ver en mapa</a>':'';return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mb+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
   function rConn(dep,key){var icons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};var icon=icons[dep.type]||'🚌';var det=dep.detail||'';if(dep.date&&!det.includes(dep.date))det=dep.date+(det?' · '+det:'');var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';var vb=vouchers[key]?'<button class="btn-voucher" style="margin-left:4px" onclick="openV(\''+key+'\')">📄</button>':'';return '<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+(dep.title||'Siguiente destino')+'</div>'+(det?'<div class="conn-sub">'+det+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';}
   var statsItems=[];
   if(nV)statsItems.push({n:nV,l:'vuelos',t:'vuelos'});statsItems.push({n:nU,l:'destinos',t:'destinos'});if(nH)statsItems.push({n:nH,l:'hoteles',t:'hoteles'});if(nT)statsItems.push({n:nT,l:'traslados',t:'traslados'});if(nA)statsItems.push({n:nA,l:'actividades',t:'actividades'});statsItems.push({n:'24/7',l:'soporte',t:null});
