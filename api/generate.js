@@ -11,63 +11,16 @@ export const config = {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
+  // Headers CORS para permitir llamadas directas a Netlify desde el browser
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   const { action } = req.body;
 
-  // ── PUBLICAR EN NETLIFY ──
-  if (action === 'publish') {
-    const netlifyToken = process.env.NETLIFY_TOKEN;
-    if (!netlifyToken) return res.status(500).json({ error: 'NETLIFY_TOKEN no configurado' });
-
-    const { siteName, htmlContent } = req.body;
-
-    try {
-      const fileHash = crypto.createHash('sha1').update(htmlContent).digest('hex');
-
-      // Buscar si el sitio ya existe
-      const listResp = await fetch('https://api.netlify.com/api/v1/sites?per_page=100', {
-        headers: { Authorization: 'Bearer ' + netlifyToken }
-      });
-      const sites = await listResp.json();
-      const existing = Array.isArray(sites) && sites.find(s => s.name === siteName);
-
-      let siteId;
-      if (existing) {
-        siteId = existing.id;
-      } else {
-        const createResp = await fetch('https://api.netlify.com/api/v1/sites', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + netlifyToken },
-          body: JSON.stringify({ name: siteName })
-        });
-        const newSite = await createResp.json();
-        if (!newSite.id) throw new Error(newSite.message || 'No se pudo crear el sitio');
-        siteId = newSite.id;
-      }
-
-      // Crear deploy
-      const deployResp = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/deploys`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + netlifyToken },
-        body: JSON.stringify({ files: { '/index.html': fileHash } })
-      });
-      const deploy = await deployResp.json();
-      if (!deploy.id) throw new Error(deploy.message || 'No se pudo crear el deploy');
-
-      // Subir el archivo
-      await fetch(`https://api.netlify.com/api/v1/deploys/${deploy.id}/files/index.html`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          Authorization: 'Bearer ' + netlifyToken
-        },
-        body: htmlContent
-      });
-
-      return res.status(200).json({ url: `https://${siteName}.netlify.app` });
-
-    } catch (e) {
-      return res.status(500).json({ error: e.message });
-    }
+  // ── DEVOLVER TOKEN DE NETLIFY AL FRONTEND ──
+  if (action === 'getToken') {
+    const token = process.env.NETLIFY_TOKEN;
+    if (!token) return res.status(500).json({ error: 'NETLIFY_TOKEN no configurado' });
+    return res.status(200).json({ token });
   }
 
   // ── LLAMADA A ANTHROPIC ──
