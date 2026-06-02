@@ -49,7 +49,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
 .hero-dest{font-family:'DM Serif Display',serif;font-size:32px;color:#fff;line-height:1.1;margin-bottom:5px}
 .hero-names{font-size:14px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px}
-.hero-dates{font-size:12px;color:rgba(255,255,255,.6)}
+.hero-dates{font-size:14px;color:rgba(255,255,255,.85);font-weight:600;margin-top:3px}
 /* STATS clicables */
 .stats-row{background:var(--white);display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
 .stats-row::-webkit-scrollbar{display:none}
@@ -99,9 +99,9 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .city-card-hdr{display:flex;align-items:center;gap:12px;padding:1rem 1.1rem;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .city-flag{font-size:24px;flex-shrink:0}
 .city-card-info{flex:1}
-.city-name{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink);line-height:1}
-.city-dates-small{font-size:12px;color:var(--ink3);margin-top:3px}
-.city-nights-badge{background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.city-name{font-family:'DM Serif Display',serif;font-size:21px;color:var(--ink);line-height:1}
+.city-dates-small{font-size:13px;color:var(--green-mid);margin-top:4px;font-weight:600}
+.city-nights-badge{background:var(--green-pale);color:var(--green);font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .city-chev{font-size:14px;color:#ccc;transition:transform .25s;flex-shrink:0;margin-left:6px}
 .city-card.open .city-chev{transform:rotate(180deg)}
 .city-body{display:none;padding:.25rem .9rem .9rem}
@@ -109,7 +109,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 /* Hotel */
 .evt-card{border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;overflow:hidden;background:var(--white)}
 .evt-hotel-date{padding:.75rem 1rem .5rem;border-bottom:1px solid var(--border)}
-.evt-hotel-date-big{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink)}
+.evt-hotel-date-big{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink);font-weight:400}
 .evt-hotel-date-sub{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}
 .evt-hotel-body{padding:.65rem 1rem}
 .evt-hotel-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
@@ -117,7 +117,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 /* Actividades/traslados */
 .evt-card-top{display:flex;align-items:stretch}
 .evt-time-col{width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .4rem;border-right:1px solid var(--border);gap:4px}
-.evt-time{font-size:14px;font-weight:700;color:var(--green);line-height:1}
+.evt-time{font-size:15px;font-weight:700;color:var(--green);line-height:1}
 .evt-time-lbl{font-size:8px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .evt-icon-circle{width:26px;height:26px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:4px}
 .evt-main{flex:1;padding:.85rem .9rem}
@@ -327,25 +327,59 @@ async function callAI(content){
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
-var PROMPT='Analiza estos documentos de viaje y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA REQUERIDA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRRO – EZE/AEP -> Ciudad Destino","detail":"Salida HH:MM hs · Llegada HH:MM hs · Escala: Ciudad (si aplica)","date":"DD mon","time":"HH:MM","confirmation":"CODIGO o —","sourceFile":0},"return":{"title":"Aerolinea NRRO – Ciudad Destino -> EZE/AEP","detail":"Salida HH:MM hs · Llegada HH:MM hs · Escala: Ciudad (si aplica)","date":"DD mon","time":"HH:MM","confirmation":"CODIGO o —","sourceFile":1}},"cities":[{"name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"Nombre exacto del hotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion completa","confirmation":"CODIGO o —","sourceFile":2},"activities":[{"title":"Nombre del tour/actividad","detail":"Descripcion. Punto de encuentro: Nombre del lugar, Direccion completa. mapsUrl: https://maps.google.com/?q=LAT,LNG (si hay direccion)","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":3}],"localTransfers":[{"title":"Descripcion del traslado","detail":"Origen -> Destino · Info adicional","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":4}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Descripcion – Ciudad A -> Ciudad B","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"CODIGO o —","sourceFile":5}}]}\n\nREGLAS CRITICAS:\n1. internationalFlights.outbound = vuelo que SALE desde Argentina (EZE/AEP/Ministro Pistarini) hacia el destino. internationalFlights.return = vuelo que llega HACIA Argentina. Identificar por aeropuerto de origen/destino.\n2. countries = lista de paises destino SIN Argentina.\n3. cities = SOLO ciudades destino con hotel. NUNCA incluir Buenos Aires, Ezeiza, ni ciudades argentinas.\n4. Normalizar nombres de ciudades al espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Edinburgh=Edimburgo, etc.\n5. Misma ciudad (incluso en idiomas distintos: London=Londres) = UNA SOLA entrada. Si hay varios hoteles en la misma ciudad, usar el primero cronologicamente.\n6. Orden cronologico estricto por checkinDate del hotel.\n7. checkinDate y checkoutDate: EXACTAMENTE como figura en el voucher, SIN horario. Formato "DD mon" (ej: "10 jun").\n8. activities: si la actividad tiene punto de encuentro (meeting point), incluirlo en detail con la direccion. Si hay coordenadas o direccion clara, construir mapsUrl como https://maps.google.com/?q=DIRECCION+URL+ENCODED. NO crear traslados separados para los puntos de encuentro.\n9. localTransfers = SOLO traslados puerta a puerta (aeropuerto-hotel, hotel-hotel). NO incluir puntos de encuentro de tours aqui.\n10. intercityTransport = transporte interno entre ciudades destino (trenes, buses, ferries, vuelos internos). NO confundir con vuelos internacionales desde/hacia Argentina.\n11. Extraer TODAS las reservas de actividades y traslados. No omitir ninguna.\n12. sourceFile = indice del archivo donde esta el voucher de ese item.';
-async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
-  var content=[{type:'text',text:'Documentos:\n'+batchFiles.map(function(f,i){return 'Indice '+(offset+i)+': '+f.name;}).join('\n')}];
-  for(var j=0;j<batchFiles.length;j++){content.push({type:'text',text:'--- Archivo '+(offset+j)+': '+batchFiles[j].name+' ---'});var mt=batchTypes[j];if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:batchB64[j]}});else content.push({type:'image',source:{type:'base64',media_type:mt,data:batchB64[j]}});}
-  content.push({type:'text',text:PROMPT});
-  return callAI(content);
+var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos adjuntos y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO – EZE->Ciudad","detail":"Salida HH:MM hs · Llegada HH:MM hs · (Escala: Ciudad si aplica)","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0},"return":{"title":"Aerolinea NRO – Ciudad->EZE","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0}},"cities":[{"name":"CiudadEnEspanol","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"NombreHotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"COD o —","sourceFile":0},"activities":[{"title":"NombreTour","detail":"Descripcion completa. Punto de encuentro: Direccion si existe. mapsUrl: https://maps.google.com/?q=URL_ENCODED si hay direccion","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"localTransfers":[{"title":"Traslado","detail":"Origen -> Destino","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Empresa NRO – CiudadA -> CiudadB","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}}]}\n\nREGLAS CRITICAS:\n1. internationalFlights: outbound=vuelo que SALE de Argentina (EZE/AEP/Ministro Pistarini). return=vuelo que LLEGA a Argentina. Identificar por aeropuerto origen/destino.\n2. countries: paises destino SIN Argentina.\n3. cities: SOLO destinos con hotel, SIN ciudades argentinas. NUNCA poner Buenos Aires, Ezeiza.\n4. Normalizar ciudades a espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Milan=Milan, Edinburgh=Edimburgo, Vienna=Viena, Athens=Atenas, Prague=Praga, Budapest=Budapest.\n5. UNA SOLA entrada por ciudad aunque tenga varios hoteles (usar el de menor checkinDate).\n6. ORDEN CRONOLOGICO por checkinDate. Dentro de cada ciudad, activities y localTransfers TAMBIEN en orden cronologico por date+time.\n7. checkinDate/checkoutDate: exactamente como en el voucher, SIN horario, formato "DD mon".\n8. intercityTransport: transporte ENTRE ciudades destino (tren, bus, ferry, vuelo interno). Va en la ciudad de ORIGEN del transporte. Si es Edinburgh->Londres es intercityTransport de Edimburgo.\n9. activities: punto de encuentro va en detail, NO como localTransfer separado.\n10. localTransfers: solo traslados puerta a puerta (aeropuerto-hotel, hotel-hotel, hotel-estacion).\n11. Extraer ABSOLUTAMENTE TODAS las reservas. No omitir nada.\n12. sourceFile: indice del archivo fuente (segun la lista de indices al inicio).\n13. IMPORTANTE: cada item (hotel, actividad, traslado, transporte) debe estar en la ciudad CORRECTA segun la fecha. Revisa las fechas del hotel de cada ciudad para asignar correctamente.';
+
+// Consolidation prompt: used when we already have a partial JSON and add more docs
+var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad.\n\nJSON ACTUAL:\n';
+
+async function buildContent(allFiles, allB64, allTypes){
+  var content=[{type:'text',text:'Lista de archivos:\n'+allFiles.map(function(f,i){return 'Indice '+i+': '+f.name;}).join('\n')+'\n'}];
+  for(var j=0;j<allFiles.length;j++){
+    content.push({type:'text',text:'=== Archivo '+j+': '+allFiles[j].name+' ==='});
+    var mt=allTypes[j];
+    if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:allB64[j]}});
+    else content.push({type:'image',source:{type:'base64',media_type:mt,data:allB64[j]}});
+  }
+  content.push({type:'text',text:PROMPT_SYSTEM});
+  return content;
 }
-function mergeCity(all,nc){
-  nc.name=normalizeCity(nc.name);
-  var ncKey=cityKey(nc.name);
-  var ex=all.find(function(c){return cityKey(c.name)===ncKey;});
-  if(ex){
-    if(!ex.hotel&&nc.hotel)ex.hotel=nc.hotel;
-    ex.activities=(ex.activities||[]).concat(nc.activities||[]);
-    ex.localTransfers=(ex.localTransfers||[]).concat(nc.localTransfers||[]);
-    if(!ex.intercityTransport&&nc.intercityTransport)ex.intercityTransport=nc.intercityTransport;
-  }else{all.push(nc);}
+
+async function buildConsolidateContent(existingJSON, newFiles, newB64, newTypes, offset){
+  var content=[{type:'text',text:PROMPT_CONSOLIDATE+JSON.stringify(existingJSON,null,2)+'\n\nNUEVOS DOCUMENTOS A INCORPORAR:\n'+newFiles.map(function(f,i){return 'Indice '+(offset+i)+': '+f.name;}).join('\n')+'\n'}];
+  for(var j=0;j<newFiles.length;j++){
+    content.push({type:'text',text:'=== Archivo '+(offset+j)+': '+newFiles[j].name+' ==='});
+    var mt=newTypes[j];
+    if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:newB64[j]}});
+    else content.push({type:'image',source:{type:'base64',media_type:mt,data:newB64[j]}});
+  }
+  return content;
 }
-function mergeFlights(e,n){if(!n)return e||{};var o=e||{};if(n.outbound&&!o.outbound)o.outbound=n.outbound;if(n.return&&!o.return)o.return=n.return;return o;}
+
+function postProcess(parsed){
+  // Normalize city names
+  if(parsed.cities) parsed.cities.forEach(function(c){c.name=normalizeCity(c.name);});
+  // Filter origin cities
+  if(parsed.cities) parsed.cities=parsed.cities.filter(function(c){return !isOriginCity(c.name);});
+  // Sort cities chronologically
+  if(parsed.cities) parsed.cities.sort(function(a,b){return sortDate(a)-sortDate(b);});
+  // Sort items within each city by date+time
+  if(parsed.cities) parsed.cities.forEach(function(c){
+    function evtSort(a,b){
+      var da=parseDate(a.date)||new Date(0);var db=parseDate(b.date)||new Date(0);
+      if(da-db!==0)return da-db;
+      // Compare times
+      var ta=(a.time||'00:00').replace(':','');var tb=(b.time||'00:00').replace(':','');
+      return parseInt(ta)-parseInt(tb);
+    }
+    if(c.activities)c.activities.sort(evtSort);
+    if(c.localTransfers)c.localTransfers.sort(evtSort);
+  });
+  return parsed;
+}
+
+// Max files per single AI call (Haiku handles ~6 PDFs well)
+var MAX_SINGLE_CALL=6;
+
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();var dates=document.getElementById('inp-dates').value.trim();
   if(!client){alert('Ingresa el nombre del cliente');return;}if(!files.length){alert('Subi al menos un documento');return;}
@@ -353,19 +387,54 @@ async function generar(){
   try{
     filesB64=[];filesType=[];
     for(var i=0;i<files.length;i++){filesB64.push(await toB64(files[i]));filesType.push(getMT(files[i]));}
-    setStep(2);var allCities=[],allCountries=[],allFlights={};var BS=3;
-    for(var start=0;start<files.length;start+=BS){setStep(start===0?2:3);var p=await procesarBatch(files.slice(start,start+BS),filesB64.slice(start,start+BS),filesType.slice(start,start+BS),start);(p.cities||[]).forEach(function(c){if(!isOriginCity(c.name))mergeCity(allCities,c);});(p.countries||[]).forEach(function(c){if(allCountries.indexOf(c)<0)allCountries.push(c);});allFlights=mergeFlights(allFlights,p.internationalFlights);}
-    setStep(4);allCities.sort(function(a,b){return sortDate(a)-sortDate(b);});
-    gData={client:client,dates:dates,cities:allCities,countries:allCountries,intlFlights:allFlights};
+    setStep(2);
+    var parsed;
+    if(files.length<=MAX_SINGLE_CALL){
+      // All in one call - best quality
+      var content=await buildContent(files,filesB64,filesType);
+      parsed=await callAI(content);
+      setStep(3);
+    } else {
+      // First call: first MAX_SINGLE_CALL files
+      setStep(2);
+      var content=await buildContent(files.slice(0,MAX_SINGLE_CALL),filesB64.slice(0,MAX_SINGLE_CALL),filesType.slice(0,MAX_SINGLE_CALL));
+      parsed=await callAI(content);
+      // Subsequent calls: consolidate with remaining files in batches
+      var BS=4;
+      for(var start=MAX_SINGLE_CALL;start<files.length;start+=BS){
+        setStep(3);
+        var end=Math.min(start+BS,files.length);
+        var cc=await buildConsolidateContent(parsed,files.slice(start,end),filesB64.slice(start,end),filesType.slice(start,end),start);
+        parsed=await callAI(cc);
+      }
+    }
+    setStep(4);
+    parsed=postProcess(parsed);
+    gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{}};
     await new Promise(function(r){setTimeout(r,400);});renderResult();
   }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisa que los archivos sean legibles e intenta de nuevo.</div>';}
 }
+
 function agregarMas(){
   var input=document.createElement('input');input.type='file';input.multiple=true;input.accept='.pdf,image/*';
-  input.onchange=async function(){if(!input.files.length)return;var nuevos=Array.from(input.files);var offset=files.length;show('sc-loading');setStep(1);
-    try{var newB64=[],newTypes=[];for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
-    setStep(2);var BS=3;for(var start=0;start<nuevos.length;start+=BS){setStep(start===0?2:3);var p=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);(p.cities||[]).forEach(function(c){if(!isOriginCity(c.name))mergeCity(gData.cities,c);});(p.countries||[]).forEach(function(c){if((gData.countries||[]).indexOf(c)<0){if(!gData.countries)gData.countries=[];gData.countries.push(c);}});gData.intlFlights=mergeFlights(gData.intlFlights,p.internationalFlights);}
-    setStep(4);gData.cities.sort(function(a,b){return sortDate(a)-sortDate(b);});await new Promise(function(r){setTimeout(r,300);});renderResult();
+  input.onchange=async function(){
+    if(!input.files.length)return;
+    var nuevos=Array.from(input.files);var offset=files.length;
+    show('sc-loading');setStep(1);
+    try{
+      var newB64=[],newTypes=[];
+      for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
+      setStep(2);
+      // Consolidate: pass current data + new files
+      var cc=await buildConsolidateContent(gData,nuevos,newB64,newTypes,offset);
+      setStep(3);
+      var parsed=await callAI(cc);
+      setStep(4);
+      parsed=postProcess(parsed);
+      gData.cities=parsed.cities||[];
+      gData.countries=parsed.countries||[];
+      gData.intlFlights=parsed.internationalFlights||{};
+      await new Promise(function(r){setTimeout(r,300);});renderResult();
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };input.click();
 }
@@ -471,7 +540,11 @@ function renderResult(){
   if(fl.outbound&&d.cities.length)ib+='<div class="connector"><div class="conn-line"></div></div>';
   d.cities.forEach(function(city,ci){
     ib+='<div class="city-card open" onclick="if(event.target.closest(\'.btn-voucher\')||event.target.closest(\'.evt-footer\'))return;if(!event.target.closest(\'.city-card-hdr\'))return;this.classList.toggle(\'open\')">';
-    ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span><span class="city-chev">▼</span></div>';
+    var nightsStr=city.nights||'';
+    var checkin=(city.hotel&&city.hotel.checkinDate)||'';
+    var checkout=(city.hotel&&city.hotel.checkoutDate)||'';
+    var cityDateStr=checkin&&checkout?(checkin+' – '+checkout):(city.dates||'');
+    ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+cityDateStr+'</div></div><span class="city-nights-badge">'+nightsStr+'</span><span class="city-chev">▼</span></div>';
     ib+='<div class="city-body">';
     if(city.hotel)ib+=mkHotel(city.hotel,'h'+ci+'_0');
     (city.activities||[]).forEach(function(a,i){ib+=mkEvt(a,'a'+ci+'_'+i,'Actividad','🎟️');});
@@ -530,7 +603,8 @@ function generarHTMLString(){
   if(fl.outbound&&d.cities.length)ib+='<div class="connector"><div class="conn-line"></div></div>';
   d.cities.forEach(function(city,ci){
     ib+='<div class="city-card open" onclick="if(event.target.closest(\'.btn-voucher\')||event.target.closest(\'.evt-footer\'))return;if(!event.target.closest(\'.city-card-hdr\'))return;this.classList.toggle(\'open\')">';
-    ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span><span class="city-chev">▼</span></div>';
+    var cityDateStr2=(city.hotel&&city.hotel.checkinDate&&city.hotel.checkoutDate)?(city.hotel.checkinDate+' – '+city.hotel.checkoutDate):(city.dates||'');
+    ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+cityDateStr2+'</div></div><span class="city-nights-badge">'+(city.nights||'')+'</span><span class="city-chev">▼</span></div>';
     ib+='<div class="city-body">';
     if(city.hotel)ib+=rHotel(city.hotel,'h'+ci+'_0');
     (city.activities||[]).forEach(function(a,i){ib+=rEvt(a,'a'+ci+'_'+i,'Actividad','🎟️');});
