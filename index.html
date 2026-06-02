@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chispa Travel Club — Generador</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+.screen{display:none}.screen.active{display:block}
+
+.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:.9rem 1.25rem;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px}
+.lmark{width:34px;height:34px;flex-shrink:0}
+.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}
+.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}
+.hdr-title{font-size:12px;color:#999;border-left:1px solid #e5e5e2;padding-left:10px;margin-left:2px}
+.back{margin-left:auto;font-size:13px;color:#4a6741;cursor:pointer;background:none;border:none;font-family:Arial;padding:4px 8px}
+
+.body{padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+label.lbl{font-size:10.5px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;display:block;margin-bottom:5px}
+input.inp{width:100%;padding:10px 12px;border:1px solid #e0e0dc;border-radius:10px;font-size:14px;font-family:Arial;color:#1a1a1a;background:#fff;transition:border-color .15s}
+input.inp:focus{outline:none;border-color:#8aac7a}
+
+.uzone{border:2px dashed #b8d8a0;border-radius:14px;background:#f8fbf5;padding:1.5rem 1rem;text-align:center;cursor:pointer;position:relative;transition:border-color .15s,background .15s}
+.uzone:hover{border-color:#8aac7a;background:#f0f7e6}
+.uzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uzone-icon{font-size:28px;margin-bottom:7px}
+.uzone-t{font-size:13px;font-weight:700;color:#4a6741;margin-bottom:2px}
+.uzone-s{font-size:11px;color:#999}
+.flist{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.fitem{background:#fff;border:1px solid #e0e0dc;border-radius:9px;padding:7px 11px;display:flex;align-items:center;gap:8px;font-size:12px}
+.fitem-icon{font-size:16px;flex-shrink:0}
+.fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#1a1a1a}
+.fitem-size{color:#bbb;font-size:11px;flex-shrink:0}
+.fitem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
+.fitem-rm:hover{color:#e24b4a}
+
+.btn-main{width:100%;padding:13px;border-radius:12px;border:none;background:#4a6741;color:#fff;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;transition:background .15s,opacity .15s}
+.btn-main:hover{background:#3d5c36}
+.btn-main:disabled{opacity:.5;cursor:not-allowed}
+.btn-out{width:calc(100% - 2.5rem);margin:1rem 1.25rem 0;padding:12px;border-radius:12px;border:2px solid #4a6741;background:#fff;color:#4a6741;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-out:hover{background:#f0f7e6}
+.btn-sec{width:calc(100% - 2.5rem);margin:.6rem 1.25rem 1.5rem;padding:12px;border-radius:12px;border:1px solid #e0e0dc;background:#f5f5f3;color:#777;font-size:13px;font-weight:700;font-family:Arial;cursor:pointer}
+
+.lscreen{padding:3rem 1.25rem;text-align:center}
+.spin{width:44px;height:44px;border:4px solid #e0e0dc;border-top-color:#8aac7a;border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 1.25rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ltitle{font-size:16px;font-weight:700;margin-bottom:5px}
+.lsub{font-size:13px;color:#888}
+.steps{margin-top:1.5rem;display:flex;flex-direction:column;gap:7px}
+.step{display:flex;align-items:center;gap:9px;font-size:13px;color:#bbb;padding:8px 12px;border-radius:10px;background:#fff;border:1px solid #f0f0ec}
+.step.done{color:#4a6741}.step.act{color:#1a1a1a;font-weight:700}
+
+.rbar{padding:.85rem 1.25rem;background:#e8f2e0;border-bottom:1px solid #c5d9a0}
+.rtitle{font-size:13px;font-weight:700;color:#3d5c36}
+.rsub{font-size:12px;color:#5a7a4a;margin-top:2px}
+
+.itin{padding:1rem 1.25rem 1.5rem}
+.itin-hdr{margin-bottom:1.25rem}
+.itin-client{font-size:18px;font-weight:700}
+.itin-dates{font-size:13px;color:#777;margin-top:2px}
+.chips{display:flex;gap:5px;margin-bottom:1.25rem;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}
+.tl{position:relative}
+.tl-line{position:absolute;left:.9rem;top:0;bottom:0;width:2px;background:#ddd}
+.stop{position:relative;margin-bottom:1rem;padding-left:3rem}
+.dot{position:absolute;left:.525rem;top:.75rem;width:13px;height:13px;border-radius:50%;background:#8aac7a;border:3px solid #f5f5f3;z-index:2;transition:transform .15s}
+.stop.open .dot{transform:scale(1.25);background:#4a6741}
+.shd{background:#fff;border:1px solid #e5e5e2;border-radius:13px;padding:.8rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .15s}
+.stop.open .shd{border-color:#8aac7a}
+.sl{display:flex;align-items:center;gap:9px}
+.sflag{font-size:20px}
+.scity{font-size:14px;font-weight:700}
+.snights{font-size:11px;color:#888;margin-top:1px}
+.chev{transition:transform .25s;font-size:12px;color:#bbb}
+.stop.open .chev{transform:rotate(180deg)}
+.sbody{display:none;flex-direction:column;gap:7px;margin-top:7px}
+.stop.open .sbody{display:flex}
+.res{background:#fff;border:1px solid #e5e5e2;border-radius:11px;padding:.75rem .9rem}
+.res-type{font-size:10px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:4px}
+.res-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.res-detail{font-size:12px;color:#666;line-height:1.5}
+.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}
+.res-badge{font-size:11px;padding:3px 9px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}
+.btn-voucher{font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
+.btn-voucher:active{background:#d4eac4}
+
+.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
+.pf-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}
+.pf-contacts{font-size:11px;color:#888;line-height:2.1}
+.pf-contacts a{color:#4a6741;text-decoration:none}
+.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- ══ EDITOR ══ -->
+<div class="screen active" id="sc-editor">
+  <div class="hdr">
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <span class="hdr-title">Generador de itinerarios</span>
+  </div>
+  <div class="body">
+    <div><label class="lbl">Nombre del cliente</label><input class="inp" id="inp-client" placeholder="Ej: Martina & Carlos García" /></div>
+    <div><label class="lbl">Fechas del viaje</label><input class="inp" id="inp-dates" placeholder="Ej: 10 jun — 28 jun 2026 · Europa" /></div>
+    <div>
+      <label class="lbl">Documentos del viaje</label>
+      <div class="uzone" id="dzone">
+        <input type="file" id="finput" multiple accept=".pdf,image/*" onchange="handleFiles(this.files)" />
+        <div class="uzone-icon">📎</div>
+        <div class="uzone-t">Subir vouchers e itinerarios</div>
+        <div class="uzone-s">PDF · JPG · PNG · podés subir varios a la vez</div>
+      </div>
+      <div class="flist" id="flist"></div>
+    </div>
+    <div style="font-size:11px;color:#aaa;text-align:center;line-height:1.6">La IA lee todos los documentos, extrae las reservas<br>y vincula cada voucher a su tarjeta.</div>
+    <button class="btn-main" onclick="generar()">✦ Generar itinerario</button>
+  </div>
+</div>
+
+<!-- ══ LOADING ══ -->
+<div class="screen" id="sc-loading">
+  <div class="hdr">
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+  </div>
+  <div class="lscreen">
+    <div class="spin"></div>
+    <div class="ltitle">Analizando documentos...</div>
+    <div class="lsub">Esto puede tardar unos segundos</div>
+    <div class="steps">
+      <div class="step" id="st1">📄 Leyendo documentos</div>
+      <div class="step" id="st2">🔍 Extrayendo reservas</div>
+      <div class="step" id="st3">🔗 Vinculando vouchers</div>
+      <div class="step" id="st4">🗺️ Armando itinerario</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULTADO ══ -->
+<div class="screen" id="sc-result">
+  <div class="hdr">
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <button class="back" onclick="resetAll()">← Nuevo</button>
+  </div>
+  <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
+  <button class="btn-out" onclick="descargar()">⬇ Descargar HTML para el cliente</button>
+  <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
+  <div class="itin" id="itin-preview"></div>
+</div>
+
+<script>
+// Detectar entorno: iframe = Claude.ai (API directa), real page = Vercel (proxy)
+var IN_IFRAME = (window.self !== window.top);
+var API_ENDPOINT = IN_IFRAME
+  ? 'https://api.anthropic.com/v1/messages'
+  : '/api/generate';
+
+var files = [], filesB64 = [], filesType = [], gData = null, _vData = {};
+
+// ── Pantallas ──
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── Archivos ──
+function handleFiles(fl) {
+  for (var i=0;i<fl.length;i++) {
+    var f=fl[i];
+    if (!files.find(function(x){ return x.name===f.name&&x.size===f.size; }))
+      files.push(f);
+  }
+  renderFiles();
+  document.getElementById('finput').value='';
+}
+function renderFiles() {
+  document.getElementById('flist').innerHTML = files.map(function(f,i){
+    var icon = (f.type==='application/pdf'||f.name.endsWith('.pdf')) ? '📄' : '🖼️';
+    return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';
+  }).join('');
+}
+function removeFile(i) { files.splice(i,1); renderFiles(); }
+
+var dz=document.getElementById('dzone');
+dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#8aac7a';});
+dz.addEventListener('dragleave',function(){dz.style.borderColor='';});
+dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='';handleFiles(e.dataTransfer.files);});
+
+function toB64(f) {
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ res(r.result.split(',')[1]); };
+    r.onerror=function(){ rej(new Error('No se pudo leer: '+f.name)); };
+    r.readAsDataURL(f);
+  });
+}
+function getMT(f) {
+  if (f.type&&f.type!=='application/octet-stream') return f.type;
+  var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};
+  return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';
+}
+
+// ── Steps ──
+function setStep(n) {
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById('st'+i);
+    if(el) el.className='step'+(i<n?' done':i===n?' act':'');
+  }
+}
+
+function resetAll() {
+  files=[];filesB64=[];filesType=[];gData=null;_vData={};
+  document.getElementById('flist').innerHTML='';
+  document.getElementById('inp-client').value='';
+  document.getElementById('inp-dates').value='';
+  show('sc-editor');
+}
+
+// ── GENERAR ──
+async function generar() {
+  var client=document.getElementById('inp-client').value.trim();
+  var dates=document.getElementById('inp-dates').value.trim();
+  if (!client){alert('Ingresá el nombre del cliente');return;}
+  if (!files.length){alert('Subí al menos un documento del viaje');return;}
+
+  show('sc-loading'); setStep(1);
+
+  try {
+    filesB64=[]; filesType=[];
+    for(var i=0;i<files.length;i++){
+      filesB64.push(await toB64(files[i]));
+      filesType.push(getMT(files[i]));
+    }
+
+    setStep(2);
+
+    var content=[];
+    var fnames=files.map(function(f,i){return 'Índice '+i+': '+f.name;}).join('\n');
+    content.push({type:'text',text:'Tengo '+files.length+' documento(s) de viaje:\n\n'+fnames});
+
+    for(var j=0;j<files.length;j++){
+      content.push({type:'text',text:'--- Archivo '+j+': '+files[j].name+' ---'});
+      var mt=filesType[j];
+      if(mt==='application/pdf'){
+        content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:filesB64[j]}});
+      } else {
+        content.push({type:'image',source:{type:'base64',media_type:mt,data:filesB64[j]}});
+      }
+    }
+
+    content.push({type:'text',text:'Analizá todos los documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks. Estructura:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre completo del hotel","detail":"Check-in: X jun\\nCheck-out: Y jun\\nDirección completa","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- Agrupá por ciudad destino en orden cronológico\n- Emoji de bandera correcto para cada país\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo con ese voucher. Omití el campo si no hay voucher específico\n- Extraé TODAS las reservas de TODOS los documentos\n- "detail" con \\n para saltos de línea\n- "confirmation" con el número/localizador si existe, sino "—"'});
+
+    setStep(3);
+
+    // Armar el payload para la API
+    var payload = {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 6000,
+      messages: [{ role:'user', content:content }]
+    };
+
+    // Headers según entorno
+    var headers = { 'Content-Type':'application/json' };
+    if (IN_IFRAME) {
+      headers['anthropic-version'] = '2023-06-01';
+    }
+
+    var resp = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      var err=await resp.json().catch(function(){return{};});
+      throw new Error((err.error&&err.error.message)||'Error '+resp.status+': '+resp.statusText);
+    }
+
+    var data=await resp.json();
+    if (data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+
+    var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+    raw=raw.replace(/```json|```/g,'').trim();
+
+    setStep(4);
+    var parsed=JSON.parse(raw);
+    gData={client:client,dates:dates,cities:parsed.cities||[]};
+    await new Promise(function(r){setTimeout(r,400);});
+    renderResult();
+
+  } catch(e) {
+    show('sc-result');
+    document.getElementById('rtitle').textContent='Error al generar';
+    document.getElementById('rsub').textContent='';
+    document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisá que los archivos sean legibles e intentá de nuevo. Si el error persiste, verificá que <code>ANTHROPIC_API_KEY</code> esté configurada en Vercel.</div>';
+  }
+}
+
+// ── Ver voucher (preview) ──
+function openVoucherPreview(key) {
+  var v=_vData[key];
+  if(!v) return;
+  try {
+    var b=atob(v.b64),a=new Uint8Array(b.length);
+    for(var i=0;i<b.length;i++) a[i]=b.charCodeAt(i);
+    window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');
+  } catch(e){alert('No se pudo abrir el voucher');}
+}
+
+// ── RENDER RESULTADO ──
+function renderResult() {
+  var d=gData; _vData={};
+  document.getElementById('rtitle').textContent=d.client;
+  var total=d.cities.reduce(function(a,c){return a+c.reservations.length;},0);
+  document.getElementById('rsub').textContent=d.dates+' · '+d.cities.length+' destinos · '+total+' reservas';
+
+  var h=0,t=0,tr=0;
+  d.cities.forEach(function(c){c.reservations.forEach(function(r){
+    if(r.type==='hotel')h++;else if(r.type==='tour')t++;else tr++;
+  });});
+  var chips='<div class="chips">'+(h?'<div class="chip">🏨 '+h+' hotel'+(h>1?'es':'')+'</div>':'')+(t?'<div class="chip">🎟 '+t+' tour'+(t>1?'s':'')+'</div>':'')+(tr?'<div class="chip">🚄 '+tr+' traslados</div>':'')+'</div>';
+
+  var tl='<div class="tl"><div class="tl-line"></div>';
+  d.cities.forEach(function(city,ci){
+    var sid='p'+ci;
+    var stopsInner='';
+    city.reservations.forEach(function(res,ri){
+      var rkey='v'+ci+'_'+ri;
+      var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
+      if(hasV) _vData[rkey]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
+      var labels={hotel:'🏨 Hotel',tour:'🎟 Tour',vuelo:'✈️ Vuelo',tren:'🚄 Tren',transfer:'🚐 Transfer'};
+      var det=(res.detail||'').replace(/\n/g,'<br>');
+      var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
+      var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucherPreview(\''+rkey+'\')">📄 Ver voucher</button>':'';
+      stopsInner+='<div class="res"><div class="res-type">'+(labels[res.type]||res.type)+'</div><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
+    });
+    tl+='<div class="stop'+(ci===0?' open':'')+'" id="'+sid+'"><div class="dot"></div><div class="shd" onclick="tog(\''+sid+'\')"><div class="sl"><span class="sflag">'+(city.flag||'📍')+'</span><div><div class="scity">'+city.name+'</div><div class="snights">'+city.dates+' · '+city.nights+'</div></div></div><span class="chev">▼</span></div><div class="sbody">'+stopsInner+'</div></div>';
+  });
+  tl+='</div>';
+
+  document.getElementById('itin-preview').innerHTML=
+    '<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div>'+chips+tl+
+    '<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+
+  show('sc-result');
+}
+
+function tog(id){
+  var el=document.getElementById(id);
+  var w=el.classList.contains('open');
+  document.querySelectorAll('.stop').forEach(function(s){s.classList.remove('open');});
+  if(!w) el.classList.add('open');
+}
+
+// ── DESCARGAR HTML CLIENTE ──
+function descargar() {
+  if (!gData) return;
+  var d=gData;
+  var vouchers={};
+  d.cities.forEach(function(city,ci){
+    city.reservations.forEach(function(res,ri){
+      if(res.sourceFile!==undefined&&filesB64[res.sourceFile])
+        vouchers['v'+ci+'_'+ri]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
+    });
+  });
+
+  var h=0,t=0,tr=0;
+  d.cities.forEach(function(c){c.reservations.forEach(function(r){if(r.type==='hotel')h++;else if(r.type==='tour')t++;else tr++;});});
+  var chipsH=(h?'<div class="chip">🏨 '+h+' hotel'+(h>1?'es':'')+'</div>':'')+(t?'<div class="chip">🎟 '+t+' tour'+(t>1?'s':'')+'</div>':'')+(tr?'<div class="chip">🚄 '+tr+' traslados</div>':'');
+
+  var stopsH='';
+  d.cities.forEach(function(city,ci){
+    var sid='s'+ci;
+    var inner='';
+    city.reservations.forEach(function(res,ri){
+      var rkey='v'+ci+'_'+ri;
+      var hasV=!!vouchers[rkey];
+      var labels={hotel:'🏨 Hotel',tour:'🎟 Tour',vuelo:'✈️ Vuelo',tren:'🚄 Tren',transfer:'🚐 Transfer'};
+      var det=(res.detail||'').replace(/\n/g,'<br>');
+      var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
+      var vBtn=hasV?'<button class="btn-voucher" onclick="openV(\''+rkey+'\')">📄 Ver voucher</button>':'';
+      inner+='<div class="res"><div class="res-type">'+(labels[res.type]||res.type)+'</div><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
+    });
+    stopsH+='<div class="stop'+(ci===0?' active':'')+'" id="'+sid+'"><div class="dot"></div><div class="shd" onclick="tog(\''+sid+'\')"><div class="sl"><span class="sflag">'+(city.flag||'📍')+'</span><div><div class="scity">'+city.name+'</div><div class="snights">'+city.dates+' · '+city.nights+'</div></div></div><span class="chev">▼</span></div><div class="sbody">'+inner+'</div></div>';
+  });
+
+  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem .9rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:34px;height:34px;flex-shrink:0}.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.chips{display:flex;gap:5px;margin:1.25rem 1.25rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.tl{padding:0 1.25rem 1.5rem;position:relative}.tl-line{position:absolute;left:2.35rem;top:0;bottom:0;width:2px;background:#ddd}.stop{position:relative;margin-bottom:1.1rem;padding-left:3.5rem}.dot{position:absolute;left:1.6rem;top:.75rem;width:13px;height:13px;border-radius:50%;background:#8aac7a;border:3px solid #f5f5f3;z-index:2;transition:transform .15s}.stop.active .dot{transform:scale(1.25);background:#4a6741}.shd{background:#fff;border:1px solid #e5e5e2;border-radius:13px;padding:.8rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .15s}.stop.active .shd{border-color:#8aac7a;box-shadow:0 0 0 3px rgba(138,172,122,.1)}.sl{display:flex;align-items:center;gap:9px}.sflag{font-size:20px}.scity{font-size:14px;font-weight:700}.snights{font-size:11px;color:#888;margin-top:1px}.chev{transition:transform .25s;font-size:12px;color:#bbb}.stop.active .chev{transform:rotate(180deg)}.sbody{display:none;flex-direction:column;gap:7px;margin-top:7px}.stop.active .sbody{display:flex}.res{background:#fff;border:1px solid #e5e5e2;border-radius:11px;padding:.75rem .9rem}.res-type{font-size:10px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:4px}.res-title{font-size:13px;font-weight:700;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.5}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:3px 9px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.footer{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}.f-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}.f-contacts{font-size:11px;color:#888;line-height:2.1}.f-contacts a{color:#4a6741;text-decoration:none}';
+  var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir el voucher")}}function tog(id){var el=document.getElementById(id);var w=el.classList.contains("active");document.querySelectorAll(".stop").forEach(function(s){s.classList.remove("active")});if(!w)el.classList.add("active")}';
+
+  var logo='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
+  var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><style>'+css+'</style></head><body>';
+  html+='<div class="hdr">'+logo+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
+  html+='<div class="chips">'+chipsH+'</div>';
+  html+='<div class="tl"><div class="tl-line"></div>'+stopsH+'</div>';
+  html+='<div class="footer"><div class="f-logo">✦ CHISPA TRAVEL CLUB</div><div class="f-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  html+='<script>'+vscript+'<\/script></body></html>';
+
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='itinerario-'+d.client.replace(/[^a-zA-Z0-9]/gi,'-').toLowerCase()+'.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
