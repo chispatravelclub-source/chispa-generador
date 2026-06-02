@@ -4,93 +4,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chispa Travel Club — Generador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root{
+  --green:#3d5c36;--green-mid:#5a7a4a;--green-light:#8aac7a;--green-pale:#e8f2e0;--green-xpale:#f4f9f0;
+  --ink:#1a1a1a;--ink2:#444;--ink3:#888;--border:#e5e5e2;--bg:#f5f5f3;--white:#fff;
+  --radius:16px;--radius-sm:10px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
 .screen{display:none}.screen.active{display:block}
-.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:.9rem 1.25rem;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px}
-.lmark{width:34px;height:34px;flex-shrink:0}
-.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}
-.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}
-.hdr-title{font-size:12px;color:#999;border-left:1px solid #e5e5e2;padding-left:10px;margin-left:2px}
-.back{margin-left:auto;font-size:13px;color:#4a6741;cursor:pointer;background:none;border:none;font-family:Arial;padding:4px 8px}
-.body{padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
-label.lbl{font-size:10.5px;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;font-weight:700;display:block;margin-bottom:5px}
-input.inp{width:100%;padding:10px 12px;border:1px solid #e0e0dc;border-radius:10px;font-size:14px;font-family:Arial;color:#1a1a1a;background:#fff;transition:border-color .15s}
-input.inp:focus{outline:none;border-color:#8aac7a}
-.uzone{border:2px dashed #b8d8a0;border-radius:14px;background:#f8fbf5;padding:1.5rem 1rem;text-align:center;cursor:pointer;position:relative;transition:border-color .15s,background .15s}
-.uzone:hover{border-color:#8aac7a;background:#f0f7e6}
+
+/* ── HEADER ── */
+.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.25rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px}
+.lmark{width:32px;height:32px;flex-shrink:0}
+.lc{font-size:14px;font-weight:700;color:var(--green-light);letter-spacing:.05em;line-height:1}
+.ls{font-size:7px;color:var(--green-mid);letter-spacing:.22em;text-transform:uppercase}
+.hdr-title{font-size:12px;color:var(--ink3);border-left:1px solid var(--border);padding-left:10px;margin-left:2px}
+.back{margin-left:auto;font-size:12px;font-weight:600;color:var(--green);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;font-family:'DM Sans';padding:5px 12px;transition:all .15s}
+.back:hover{background:var(--green-pale);border-color:var(--green-light)}
+
+/* ── EDITOR ── */
+.body{padding:1.25rem;display:flex;flex-direction:column;gap:1.1rem}
+label.lbl{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;font-weight:700;display:block;margin-bottom:6px}
+input.inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'DM Sans';color:var(--ink);background:var(--white);transition:border-color .15s}
+input.inp:focus{outline:none;border-color:var(--green-light)}
+.uzone{border:2px dashed #c5ddb0;border-radius:var(--radius);background:var(--green-xpale);padding:1.75rem 1rem;text-align:center;cursor:pointer;position:relative;transition:all .15s}
+.uzone:hover{border-color:var(--green-light);background:#ecf5e4}
 .uzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.uzone-icon{font-size:28px;margin-bottom:7px}
-.uzone-t{font-size:13px;font-weight:700;color:#4a6741;margin-bottom:2px}
-.uzone-s{font-size:11px;color:#999}
+.uzone-icon{font-size:26px;margin-bottom:8px}
+.uzone-t{font-size:13px;font-weight:700;color:var(--green);margin-bottom:3px}
+.uzone-s{font-size:11px;color:var(--ink3)}
 .flist{display:flex;flex-direction:column;gap:5px;margin-top:8px}
-.fitem{background:#fff;border:1px solid #e0e0dc;border-radius:9px;padding:7px 11px;display:flex;align-items:center;gap:8px;font-size:12px}
-.fitem-icon{font-size:16px;flex-shrink:0}
-.fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#1a1a1a}
-.fitem-size{color:#bbb;font-size:11px;flex-shrink:0}
+.fitem{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:7px 11px;display:flex;align-items:center;gap:8px;font-size:12px}
+.fitem-icon{font-size:15px;flex-shrink:0}
+.fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--ink)}
+.fitem-size{color:#ccc;font-size:11px;flex-shrink:0}
 .fitem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
 .fitem-rm:hover{color:#e24b4a}
-.btn-main{width:100%;padding:13px;border-radius:12px;border:none;background:#4a6741;color:#fff;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;transition:background .15s}
-.btn-main:hover{background:#3d5c36}
-.btn-main:disabled{opacity:.5;cursor:not-allowed}
-.btn-out{width:calc(100% - 2.5rem);margin:1rem 1.25rem 0;padding:12px;border-radius:12px;border:2px solid #4a6741;background:#fff;color:#4a6741;font-size:14px;font-weight:700;font-family:Arial;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-out:hover{background:#f0f7e6}
-.btn-sec{width:calc(100% - 2.5rem);margin:.6rem 1.25rem 1.5rem;padding:12px;border-radius:12px;border:1px solid #e0e0dc;background:#f5f5f3;color:#777;font-size:13px;font-weight:700;font-family:Arial;cursor:pointer}
-.lscreen{padding:3rem 1.25rem;text-align:center}
-.spin{width:44px;height:44px;border:4px solid #e0e0dc;border-top-color:#8aac7a;border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 1.25rem}
+.btn-main{width:100%;padding:14px;border-radius:14px;border:none;background:var(--green);color:var(--white);font-size:14px;font-weight:700;font-family:'DM Sans';cursor:pointer;letter-spacing:.02em;transition:background .15s}
+.btn-main:hover{background:#2e4828}
+.btn-main:disabled{opacity:.45;cursor:not-allowed}
+
+/* ── LOADING ── */
+.lscreen{padding:3.5rem 1.25rem;text-align:center}
+.spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--green-light);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 1.25rem}
 @keyframes sp{to{transform:rotate(360deg)}}
 .ltitle{font-size:16px;font-weight:700;margin-bottom:5px}
-.lsub{font-size:13px;color:#888}
-.steps{margin-top:1.5rem;display:flex;flex-direction:column;gap:7px}
-.step{display:flex;align-items:center;gap:9px;font-size:13px;color:#bbb;padding:8px 12px;border-radius:10px;background:#fff;border:1px solid #f0f0ec}
-.step.done{color:#4a6741}.step.act{color:#1a1a1a;font-weight:700}
-.rbar{padding:.85rem 1.25rem;background:#e8f2e0;border-bottom:1px solid #c5d9a0}
-.rtitle{font-size:13px;font-weight:700;color:#3d5c36}
-.rsub{font-size:12px;color:#5a7a4a;margin-top:2px}
-.itin{padding:1rem 1.25rem 1.5rem}
-.itin-hdr{margin-bottom:1.25rem}
-.itin-client{font-size:18px;font-weight:700}
-.itin-dates{font-size:13px;color:#777;margin-top:2px}
-.chips{display:flex;gap:5px;margin-bottom:1.25rem;overflow-x:auto;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}
-.city-block{margin-bottom:.5rem}
-.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}
-.city-flag{font-size:26px;flex-shrink:0}
-.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}
-.city-dates{font-size:11px;color:#888;margin-top:2px}
-.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}
-.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}
-.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
-.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}
-.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}
-.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}
-.cat.open .cat-chev{transform:rotate(180deg)}
-.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}
-.cat.open .cat-body{display:flex}
-.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}
-.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}
-.res-detail{font-size:12px;color:#666;line-height:1.55}
-.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}
-.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}
-.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
-.btn-voucher:active{background:#d4eac4}
-.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}
-.conn-line{width:2px;height:18px;background:#ddd}
-.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}
-.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px;-webkit-tap-highlight-color:transparent}
-.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
-.pf-contacts{font-size:11px;color:#888;line-height:2.1}
-.pf-contacts a{color:#4a6741;text-decoration:none}
-.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
-#modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
+.lsub{font-size:13px;color:var(--ink3)}
+.steps{margin-top:1.5rem;display:flex;flex-direction:column;gap:6px}
+.step{display:flex;align-items:center;gap:9px;font-size:12px;color:#ccc;padding:9px 13px;border-radius:10px;background:var(--white);border:1px solid var(--border);font-weight:500}
+.step.done{color:var(--green-mid)}.step.act{color:var(--ink);font-weight:700}
+
+/* ── RESULT ACTIONS ── */
+.actions-bar{padding:.85rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:1px solid var(--border);background:var(--white)}
+.btn-pub{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:14px;border:none;background:var(--green);color:var(--white);font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer;transition:background .15s}
+.btn-pub:hover{background:#2e4828}
+.btn-sec-row{display:flex;gap:.5rem}
+.btn-sec-row .btn-o{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer;transition:all .15s}
+.btn-sec-row .btn-o:hover{border-color:var(--green-light);background:var(--green-xpale);color:var(--green)}
+
+/* ── MODAL ── */
+#modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
+.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;padding:1.5rem 1.25rem 2rem;width:100%;max-width:480px}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.25rem}
+
+/* ══════════════════════════════════
+   OUTPUT — HERO
+══════════════════════════════════ */
+.hero{position:relative;height:240px;overflow:hidden;background:linear-gradient(135deg,#2d4a28 0%,#4a7a3a 100%)}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 60%,transparent 100%)}
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
+.hero-dest{font-family:'DM Serif Display',serif;font-size:30px;color:#fff;line-height:1.1;margin-bottom:4px}
+.hero-names{font-size:15px;font-weight:500;color:rgba(255,255,255,.88);margin-bottom:2px}
+.hero-dates{font-size:12px;color:rgba(255,255,255,.65);font-weight:400}
+.hero-wa{position:absolute;top:1rem;right:1rem;width:40px;height:40px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+
+/* ── STATS PILLS ── */
+.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.stats-row::-webkit-scrollbar{display:none}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:52px}
+.stat-num{font-size:18px;font-weight:700;color:var(--green);line-height:1}
+.stat-lbl{font-size:10px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+
+/* ── PROXIMO EVENTO ── */
+.next-evt{margin:1rem 1.25rem 0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;display:flex;align-items:center;gap:12px}
+.next-icon{width:38px;height:38px;background:var(--green-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.next-label{font-size:10px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.next-text{font-size:13px;font-weight:600;color:var(--ink)}
+.next-arrow{margin-left:auto;font-size:18px;color:var(--ink3)}
+
+/* ── TABS ── */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--white);margin-top:1rem;position:sticky;top:52px;z-index:40}
+.tab{flex:1;padding:.75rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* ── ITINERARIO (timeline) ── */
+.itin-body{padding:1rem 1.25rem 2rem}
+
+.day-group{margin-bottom:1.5rem}
+.day-label{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;padding-left:2px}
+
+/* city header */
+.city-hdr{display:flex;align-items:center;gap:10px;padding:.85rem 1rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--green-light);border-radius:var(--radius);margin-bottom:.6rem}
+.city-flag{font-size:22px;flex-shrink:0}
+.city-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);line-height:1}
+.city-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+.city-nights-badge{margin-left:auto;background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}
+
+/* event card — NEW STYLE */
+.evt-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden}
+.evt-card-top{display:flex;align-items:stretch}
+.evt-time-col{width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .5rem;border-right:1px solid var(--border);gap:3px}
+.evt-time{font-size:13px;font-weight:700;color:var(--green);line-height:1}
+.evt-time-lbl{font-size:9px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.evt-icon-circle{width:28px;height:28px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:4px}
+.evt-main{flex:1;padding:.85rem .9rem}
+.evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.evt-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.evt-detail{font-size:11px;color:var(--ink3);line-height:1.55}
+.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.6rem .9rem;background:var(--green-xpale);border-top:1px solid #deefd0}
+.badge-conf{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:3px 9px;border-radius:20px}
+.badge-conf::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-light);flex-shrink:0}
+.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#b06000;background:#fff3e0;padding:3px 9px;border-radius:20px}
+.badge-pend::before{content:'';width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}
+.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:'DM Sans';font-weight:700;display:flex;align-items:center;gap:4px}
+
+/* connector between cities */
+.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1.25rem;gap:0}
+.conn-line{width:2px;height:20px;background:var(--border)}
+.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.55rem 1rem;font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}
+.conn-icon{font-size:16px}
+.conn-info{flex:1}
+.conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}
+.conn-sub{font-size:10px;color:var(--ink3);margin-top:1px}
+.conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}
+
+/* ── DOCUMENTOS TAB ── */
+.docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.5rem}
+.doc-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.85rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.doc-item:active{background:var(--green-xpale)}
+.doc-icon-wrap{width:36px;height:36px;background:var(--green-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.doc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1}
+.doc-type{font-size:11px;color:var(--ink3);margin-top:1px}
+.doc-arrow{color:var(--ink3);font-size:16px}
+
+/* ── INFO UTIL TAB ── */
+.info-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.75rem}
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
+.info-card-title{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.info-row{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:12px}
+.info-row:last-child{border-bottom:none}
+.info-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.info-key{color:var(--ink3);font-weight:500;min-width:80px}
+.info-val{color:var(--ink);font-weight:600;flex:1}
+
+/* ── FOOTER ── */
+.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
+.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.2}
+.pf-contacts a{color:var(--green);text-decoration:none;font-weight:600}
+
+.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:var(--radius);font-size:13px;color:#791F1F;line-height:1.5}
+
+/* ── BOTONES RESULTADO ── */
+.btn-out{width:calc(100% - 2.5rem);margin:.85rem 1.25rem 0;padding:13px;border-radius:14px;border:1.5px solid var(--border);background:var(--white);color:var(--ink2);font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.btn-out:hover{border-color:var(--green-light);background:var(--green-xpale);color:var(--green)}
+.btn-out.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn-out.primary:hover{background:#2e4828}
+.btn-sec{width:calc(100% - 2.5rem);margin:.5rem 1.25rem 1.5rem;padding:12px;border-radius:14px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);font-size:12px;font-weight:700;font-family:'DM Sans';cursor:pointer}
 </style>
 </head>
 <body>
 
-<!-- EDITOR -->
+<!-- ══ SCREEN: EDITOR ══ -->
 <div class="screen active" id="sc-editor">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
@@ -99,7 +191,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
   </div>
   <div class="body">
     <div><label class="lbl">Nombre del cliente</label><input class="inp" id="inp-client" placeholder="Ej: Daniela y Diego" /></div>
-    <div><label class="lbl">Fechas del viaje</label><input class="inp" id="inp-dates" placeholder="Ej: 18 may — 14 jun 2026 · Japón" /></div>
+    <div><label class="lbl">Destino y fechas</label><input class="inp" id="inp-dates" placeholder="Ej: Japón · 18 may — 14 jun 2026" /></div>
     <div>
       <label class="lbl">Documentos del viaje</label>
       <div class="uzone" id="dzone">
@@ -110,12 +202,12 @@ input.inp:focus{outline:none;border-color:#8aac7a}
       </div>
       <div class="flist" id="flist"></div>
     </div>
-    <div style="font-size:11px;color:#aaa;text-align:center;line-height:1.6">La IA lee todos los documentos, extrae las reservas<br>y las organiza cronológicamente por ciudad.</div>
+    <div style="font-size:11px;color:#bbb;text-align:center;line-height:1.7">La IA lee todos los documentos, extrae las reservas<br>y las organiza cronológicamente por ciudad.</div>
     <button class="btn-main" onclick="generar()">✦ Generar itinerario</button>
   </div>
 </div>
 
-<!-- LOADING -->
+<!-- ══ SCREEN: LOADING ══ -->
 <div class="screen" id="sc-loading">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
@@ -134,59 +226,63 @@ input.inp:focus{outline:none;border-color:#8aac7a}
   </div>
 </div>
 
-<!-- RESULTADO -->
+<!-- ══ SCREEN: RESULTADO ══ -->
 <div class="screen" id="sc-result">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
     <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
     <button class="back" onclick="resetAll()">← Nuevo</button>
   </div>
-  <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
-  <button class="btn-out" onclick="publicar()">🌐 Publicar y obtener link</button>
-  <button class="btn-out" style="margin-top:.5rem" onclick="descargar()">⬇ Descargar HTML</button>
-  <button class="btn-out" style="border-color:#8aac7a;color:#4a6741;margin-top:.5rem" onclick="agregarMas()">➕ Agregar más documentos</button>
-  <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
-  <div id="modal-pub">
-    <div style="background:#fff;border-radius:16px;padding:1.5rem;margin:1.25rem;width:100%;max-width:380px">
-      <div style="font-size:15px;font-weight:700;margin-bottom:.5rem">Publicar itinerario</div>
-      <div style="font-size:12px;color:#888;margin-bottom:1rem">El link va a ser: <strong id="link-preview">...</strong>.netlify.app</div>
+
+  <!-- Acciones -->
+  <div style="padding:.85rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:1px solid var(--border);background:var(--white)">
+    <button class="btn-out primary" onclick="publicar()">🌐 Publicar y obtener link</button>
+    <div style="display:flex;gap:.5rem">
+      <button class="btn-out" style="margin:0;width:auto;flex:1" onclick="descargar()">⬇ Descargar HTML</button>
+      <button class="btn-out" style="margin:0;width:auto;flex:1" onclick="agregarMas()">➕ Más docs</button>
+    </div>
+    <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-family:'DM Sans';cursor:pointer;padding:.25rem;font-weight:500" onclick="resetAll()">Generar otro itinerario</button>
+  </div>
+
+  <!-- Modal publicar -->
+  <div id="modal-pub" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center">
+    <div style="background:#fff;border-radius:20px 20px 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:480px">
+      <div style="width:36px;height:4px;background:#e5e5e2;border-radius:2px;margin:0 auto 1.25rem"></div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:.4rem;font-family:'DM Serif Display',serif">Publicar itinerario</div>
+      <div style="font-size:12px;color:#888;margin-bottom:1.1rem">El link será: <strong id="link-preview">...</strong>.netlify.app</div>
       <label class="lbl">Nombre del link</label>
-      <input class="inp" id="inp-sitename" placeholder="ej: daniela-diego-japon" oninput="updatePreview()" style="margin-bottom:1rem"/>
-      <div style="font-size:11px;color:#aaa;margin-bottom:1rem">Solo letras, números y guiones. Sin espacios.</div>
+      <input class="inp" id="inp-sitename" placeholder="ej: daniela-diego-japon" oninput="updatePreview()" style="margin-bottom:.75rem"/>
+      <div style="font-size:11px;color:#bbb;margin-bottom:1rem">Solo letras, números y guiones.</div>
       <button class="btn-main" id="btn-pub-ok" onclick="confirmarPublicar()">🌐 Publicar</button>
-      <button class="btn-sec" style="width:100%;margin:.5rem 0 0" onclick="cerrarModal()">Cancelar</button>
+      <button style="width:100%;margin:.6rem 0 0;padding:12px;border-radius:14px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer" onclick="cerrarModal()">Cancelar</button>
       <div id="pub-error" style="display:none;margin-top:.75rem;font-size:12px;color:#e24b4a"></div>
     </div>
   </div>
-  <div class="itin" id="itin-preview"></div>
+
+  <!-- Output del itinerario -->
+  <div id="itin-preview"></div>
 </div>
 
 <script>
 var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={};
-
-// Logo SVG inline para uso en HTML dinámico
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
-
 var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
+var catIcons={hotel:'🏨',actividad:'🎟️',traslado:'🚐',vuelo:'✈️',tren:'🚄',bus:'🚌'};
 
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
 function handleFiles(fl){for(var i=0;i<fl.length;i++){var f=fl[i];if(!files.find(function(x){return x.name===f.name&&x.size===f.size;}))files.push(f);}renderFiles();document.getElementById('finput').value='';}
 function renderFiles(){document.getElementById('flist').innerHTML=files.map(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';}).join('');}
 function removeFile(i){files.splice(i,1);renderFiles();}
-
 var dz=document.getElementById('dzone');
 dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#8aac7a';});
 dz.addEventListener('dragleave',function(){dz.style.borderColor='';});
 dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='';handleFiles(e.dataTransfer.files);});
-
 function toB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('No se pudo leer: '+f.name));};r.readAsDataURL(f);});}
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
 function resetAll(){files=[];filesB64=[];filesType=[];gData=null;_vData={};document.getElementById('flist').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
-
 function parseCityDate(dates){
   if(!dates)return new Date(0);
   var months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11};
@@ -194,7 +290,12 @@ function parseCityDate(dates){
   if(!m)return new Date(0);
   return new Date(2026,months[m[2].substring(0,3)]||0,parseInt(m[1]));
 }
-
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelector('.tab[data-tab="'+name+'"]').classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
@@ -205,8 +306,7 @@ async function callAI(content){
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
-
-var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks:\n{"cities":[{\n  "name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre","detail":"DD mon · HH:MM hs · Lugar","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción","detail":"DD mon · HH:MM hs · Origen → Destino","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","confirmation":"# o —","sourceFile":3}\n}]}\nREGLAS: ORDEN CRONOLÓGICO ESTRICTO por fecha de llegada. "hotel" solo alojamiento principal. "activities" tours y excursiones. "localTransfers" traslados dentro de la ciudad. "departure" transporte AL SIGUIENTE DESTINO (omití en la última ciudad). "type" en departure: vuelo/tren/bus/ferry. "sourceFile": índice del archivo con el voucher (omití si no hay). Extraé TODAS las reservas.';
+var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks:\n{"cities":[{\n  "name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección","checkinTime":"15:00","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre","detail":"DD mon · Lugar","time":"HH:MM","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción","detail":"DD mon · Origen → Destino","time":"HH:MM","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","time":"HH:MM","confirmation":"# o —","sourceFile":3}\n}]}\nREGLAS: ORDEN CRONOLÓGICO. Extraé siempre el campo "time" con formato HH:MM si existe en el documento. "hotel" solo alojamiento principal. "activities" tours y excursiones. "localTransfers" traslados dentro de la ciudad. "departure" transporte AL SIGUIENTE DESTINO. "type" en departure: vuelo/tren/bus/ferry. "sourceFile": índice del archivo. Extraé TODAS las reservas.';
 
 async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   var content=[];
@@ -220,17 +320,11 @@ async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   content.push({type:'text',text:PROMPT});
   return callAI(content);
 }
-
 function mergeCity(allCities,newCity){
   var ex=allCities.find(function(c){return c.name.toLowerCase()===newCity.name.toLowerCase();});
-  if(ex){
-    if(!ex.hotel&&newCity.hotel)ex.hotel=newCity.hotel;
-    ex.activities=(ex.activities||[]).concat(newCity.activities||[]);
-    ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);
-    if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;
-  } else {allCities.push(newCity);}
+  if(ex){if(!ex.hotel&&newCity.hotel)ex.hotel=newCity.hotel;ex.activities=(ex.activities||[]).concat(newCity.activities||[]);ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;}
+  else{allCities.push(newCity);}
 }
-
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();
   var dates=document.getElementById('inp-dates').value.trim();
@@ -254,15 +348,11 @@ async function generar(){
     renderResult();
   }catch(e){
     show('sc-result');
-    document.getElementById('rtitle').textContent='Error al generar';
-    document.getElementById('rsub').textContent='';
     document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisá que los archivos sean legibles e intentá de nuevo.</div>';
   }
 }
-
 function agregarMas(){
-  var input=document.createElement('input');
-  input.type='file';input.multiple=true;input.accept='.pdf,image/*';
+  var input=document.createElement('input');input.type='file';input.multiple=true;input.accept='.pdf,image/*';
   input.onchange=async function(){
     if(!input.files.length)return;
     var nuevos=Array.from(input.files);var offset=files.length;
@@ -271,88 +361,179 @@ function agregarMas(){
       var newB64=[],newTypes=[];
       for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
       setStep(2);var allNew=[];var BS=3;
-      for(var start=0;start<nuevos.length;start+=BS){
-        setStep(start===0?2:3);
-        var parsed=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);
-        (parsed.cities||[]).forEach(function(c){allNew.push(c);});
-      }
-      setStep(4);
-      allNew.forEach(function(c){mergeCity(gData.cities,c);});
+      for(var start=0;start<nuevos.length;start+=BS){setStep(start===0?2:3);var p=await procesarBatch(nuevos.slice(start,start+BS),newB64.slice(start,start+BS),newTypes.slice(start,start+BS),offset+start);(p.cities||[]).forEach(function(c){allNew.push(c);});}
+      setStep(4);allNew.forEach(function(c){mergeCity(gData.cities,c);});
       gData.cities.sort(function(a,b){return parseCityDate(a.dates)-parseCityDate(b.dates);});
-      await new Promise(function(r){setTimeout(r,300);});
-      renderResult();
+      await new Promise(function(r){setTimeout(r,300);});renderResult();
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
-  };
-  input.click();
+  };input.click();
 }
-
 function openVoucher(key){
   var v=_vData[key];if(!v)return;
   try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}
   catch(e){alert('No se pudo abrir el voucher');}
 }
 
-function catSection(icon,label,items,id,openDef){
-  if(!items||!items.length)return '';
-  var cards=items.map(function(r,i){
-    var rkey=id+'_'+i;
-    var hasV=(r.sourceFile!==undefined&&filesB64[r.sourceFile]);
-    if(hasV)_vData[rkey]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};
-    var det=(r.detail||'').replace(/\n/g,'<br>');
-    var conf=(r.confirmation&&r.confirmation!=='—')?'<span class="res-badge">Conf. '+r.confirmation+'</span>':'';
-    var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucher(\''+rkey+'\')">📄 Ver voucher</button>':'';
-    return '<div class="res"><div class="res-title">'+(r.title||'')+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
-  }).join('');
-  var cnt=items.length>1?'<span class="cat-count">'+items.length+'</span>':'';
-  return '<div class="cat'+(openDef?' open':'')+'" onclick="toggleCat(this)"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
+// ── Buscar foto del destino via Unsplash ──
+async function fetchHeroImage(destination){
+  var query=destination.replace(/·.*$/,'').trim();
+  try{
+    var url='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(query+',travel,landscape');
+    return url;
+  }catch(e){return null;}
 }
 
-function toggleCat(el){el.classList.toggle('open');}
+// ── Detectar próximo evento ──
+function getNextEvent(cities){
+  var now=new Date();
+  var events=[];
+  cities.forEach(function(city){
+    if(city.hotel&&city.hotel.checkinTime){
+      var d=parseCityDate(city.dates);d.setHours(parseInt((city.hotel.checkinTime||'15:00').split(':')[0])||15);
+      events.push({label:'Check-in '+city.name,time:d,icon:'🏨'});
+    }
+    (city.activities||[]).forEach(function(a){
+      if(a.time){var d=parseCityDate(a.detail||'');d.setHours(parseInt((a.time||'').split(':')[0])||10);events.push({label:a.title,time:d,icon:'🎟️'});}
+    });
+  });
+  events.sort(function(a,b){return a.time-b.time;});
+  var next=events.find(function(e){return e.time>now;});
+  return next;
+}
+
+function makeEvtCard(res,key,typeLabel,icon){
+  var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
+  if(hasV)_vData[key]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
+  var det=(res.detail||'').replace(/\n/g,'<br>');
+  var hasConf=(res.confirmation&&res.confirmation!=='—');
+  var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+res.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
+  var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';
+  var timeStr=res.time||(res.checkinTime?res.checkinTime:'');
+  return '<div class="evt-card">'+
+    '<div class="evt-card-top">'+
+      '<div class="evt-time-col">'+
+        (timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'')+
+        '<div class="evt-icon-circle">'+icon+'</div>'+
+      '</div>'+
+      '<div class="evt-main">'+
+        '<div class="evt-type">'+typeLabel+'</div>'+
+        '<div class="evt-title">'+(res.title||'')+'</div>'+
+        '<div class="evt-detail">'+det+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="evt-footer">'+confBadge+vBtn+'</div>'+
+  '</div>';
+}
 
 function renderResult(){
   var d=gData;_vData={};
-  document.getElementById('rtitle').textContent=d.client;
-  var total=d.cities.reduce(function(acc,c){
-    return acc+(c.hotel?1:0)+(c.activities?c.activities.length:0)+(c.localTransfers?c.localTransfers.length:0)+(c.departure?1:0);
-  },0);
-  document.getElementById('rsub').textContent=d.dates+' · '+d.cities.length+' destinos · '+total+' reservas';
-
   var nh=0,na=0,nt=0,nd=0;
   d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
-  var chips='<div class="chips">'+(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'')+'</div>';
 
-  var html='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div>'+chips;
+  // Hero image via Unsplash (source URL directo, no necesita API key)
+  var destino=(d.dates||d.cities[0]&&d.cities[0].name||'travel').replace(/·.*$/,'').trim();
+  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(destino+' travel landscape');
 
+  // Próximo evento
+  var next=getNextEvent(d.cities);
+  var nextHtml=next?'<div class="next-evt"><div class="next-icon">'+next.icon+'</div><div><div class="next-label">Próximo evento</div><div class="next-text">'+next.label+'</div></div><div class="next-arrow">›</div></div>':'';
+
+  // Stats
+  var statsHtml='<div class="stats-row">'+
+    (nd+nt?'<div class="stat"><div class="stat-num">'+(nd)+'</div><div class="stat-lbl">vuelos</div></div>':'')+
+    (nh?'<div class="stat"><div class="stat-num">'+nh+'</div><div class="stat-lbl">hoteles</div></div>':'')+
+    (nt?'<div class="stat"><div class="stat-num">'+nt+'</div><div class="stat-lbl">traslados</div></div>':'')+
+    (na?'<div class="stat"><div class="stat-num">'+na+'</div><div class="stat-lbl">actividades</div></div>':'')+
+    '<div class="stat"><div class="stat-num" style="font-size:14px">24/7</div><div class="stat-lbl">soporte</div></div>'+
+  '</div>';
+
+  // ── TAB: ITINERARIO ──
+  var itinHtml='<div class="itin-body">';
   d.cities.forEach(function(city,ci){
-    html+='<div class="city-block"><div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
-    if(city.hotel)html+=catSection('🏨','Alojamiento',[city.hotel],'h'+ci,true);
-    if(city.activities&&city.activities.length)html+=catSection('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
-    if(city.localTransfers&&city.localTransfers.length)html+=catSection('🚐','Traslados',city.localTransfers,'t'+ci,false);
-    html+='</div>';
+    itinHtml+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-sub">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span></div>';
+    if(city.hotel)itinHtml+=makeEvtCard(city.hotel,'h'+ci+'_0','Alojamiento','🏨');
+    (city.activities||[]).forEach(function(a,i){itinHtml+=makeEvtCard(a,'a'+ci+'_'+i,'Actividad','🎟️');});
+    (city.localTransfers||[]).forEach(function(t,i){itinHtml+=makeEvtCard(t,'t'+ci+'_'+i,'Traslado','🚐');});
 
     if(city.departure){
-      var dep=city.departure;
-      var dkey='dep'+ci;
+      var dep=city.departure,dkey='dep'+ci;
       var hasV=(dep.sourceFile!==undefined&&filesB64[dep.sourceFile]);
       if(hasV)_vData[dkey]={b64:filesB64[dep.sourceFile],type:filesType[dep.sourceFile]};
       var icon=depIcons[dep.type]||'🚌';
-      // Seguridad: usar fallbacks por si la IA devuelve propiedades con nombres distintos
-      var depTitle=dep.title||dep.name||dep.transport||'Traslado al siguiente destino';
-      var depDetail=dep.detail||dep.info||dep.description||'';
-      var depConf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
-      var depV=hasV?'<button class="conn-voucher" onclick="openVoucher(\''+dkey+'\')">📄</button>':'';
-      html+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+depTitle+'</div>'+(depDetail?'<div style="font-size:11px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+' </div>'+depConf+depV+'</div><div class="conn-line"></div></div>';
+      var depTitle=dep.title||dep.name||dep.transport||'Siguiente destino';
+      var depDetail=dep.detail||dep.info||'';
+      var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
+      var vb=hasV?'<button class="btn-voucher" style="margin-left:4px" onclick="openVoucher(\''+dkey+'\')">📄</button>':'';
+      itinHtml+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div style="font-size:10px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
     }
   });
+  var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
+  itinHtml+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  itinHtml+='</div>';
 
-  // Footer con logo inline
-  html+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+LOGO_SVG.replace('<svg ','<svg style="height:56px;width:auto" ')+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  // ── TAB: DOCUMENTOS ──
+  var docsHtml='<div class="docs-body">';
+  if(files.length){
+    files.forEach(function(f,i){
+      var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
+      var ext=f.name.split('.').pop().toUpperCase();
+      docsHtml+='<div class="doc-item" onclick="openFileByIndex('+i+')"><div class="doc-icon-wrap">'+icon+'</div><div><div class="doc-name">'+f.name+'</div><div class="doc-type">'+ext+' · '+(f.size/1024).toFixed(0)+' KB</div></div><span class="doc-arrow">›</span></div>';
+    });
+  } else {
+    docsHtml+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">No hay documentos cargados</div>';
+  }
+  docsHtml+='</div>';
 
-  document.getElementById('itin-preview').innerHTML=html;
+  // ── TAB: INFO ÚTIL ──
+  var infoHtml='<div class="info-body">'+
+    '<div class="info-card">'+
+      '<div class="info-card-title">📞 Contacto Chispa</div>'+
+      '<div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div>'+
+      '<div class="info-row"><span class="info-icon">📱</span><span class="info-key">WhatsApp</span><span class="info-val">+54 9 11 2329-4562</span></div>'+
+      '<div class="info-row"><span class="info-icon">📸</span><span class="info-key">Instagram</span><span class="info-val">@chispa.travelclub</span></div>'+
+    '</div>'+
+    '<div class="info-card">'+
+      '<div class="info-card-title">✈️ Tu viaje</div>'+
+      '<div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div>'+
+      '<div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+d.dates+'</span></div>'+
+      '<div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+d.cities.length+' ciudades</span></div>'+
+    '</div>'+
+  '</div>';
+
+  // ── ARMAR HTML COMPLETO ──
+  var fullHtml=
+    '<div class="hero">'+
+      '<img class="hero-img" src="'+heroUrl+'" alt="'+destino+'" onerror="this.style.display=\'none\'">'+
+      '<div class="hero-grad"></div>'+
+      '<div class="wa-btn hero-wa">💬</div>'+
+      '<div class="hero-content">'+
+        '<div class="hero-dest" style="font-family:\'DM Serif Display\',serif">'+destino+' '+(d.cities[0]&&d.cities[0].flag||'')+'</div>'+
+        '<div class="hero-names">'+d.client+'</div>'+
+        '<div class="hero-dates">'+d.dates+'</div>'+
+      '</div>'+
+    '</div>'+
+    statsHtml+
+    nextHtml+
+    '<div class="tabs">'+
+      '<div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div>'+
+      '<div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div>'+
+      '<div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info útil</div>'+
+    '</div>'+
+    '<div id="panel-itin" class="tab-panel active">'+itinHtml+'</div>'+
+    '<div id="panel-docs" class="tab-panel">'+docsHtml+'</div>'+
+    '<div id="panel-info" class="tab-panel">'+infoHtml+'</div>';
+
+  document.getElementById('itin-preview').innerHTML=fullHtml;
   show('sc-result');
 }
 
-// ── GENERAR HTML PARA CLIENTE ──
+function openFileByIndex(i){
+  if(!filesB64[i])return;
+  try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}
+  catch(e){alert('No se pudo abrir');}
+}
+
+// ── GENERAR HTML PARA CLIENTE (publicar / descargar) ──
 function generarHTMLString(){
   var d=gData;
   var vouchers={};
@@ -364,53 +545,73 @@ function generarHTMLString(){
     if(city.departure)addV(city.departure,'dep'+ci);
   });
 
-  function rCard(res,key){
+  function rCard(res,key,typeLabel,icon){
     var hasV=!!vouchers[key];
     var det=(res.detail||'').replace(/\n/g,'<br>');
-    var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
-    var vb=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
-    return '<div class="res"><div class="res-title">'+(res.title||'')+'</div><div class="res-detail">'+det+'</div>'+(conf||vb?'<div class="res-footer">'+conf+vb+'</div>':'')+'</div>';
-  }
-  function rCat(icon,label,items,id,open){
-    if(!items||!items.length)return '';
-    var cards=items.map(function(r,i){return rCard(r,id+'_'+i);}).join('');
-    var cnt=items.length>1?'<span class="cat-count">'+items.length+'</span>':'';
-    return '<div class="cat'+(open?' open':'')+'" onclick="this.classList.toggle(\'open\')"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
+    var hasConf=(res.confirmation&&res.confirmation!=='—');
+    var confBadge=hasConf?'<span class="badge-conf">Confirmado · '+res.confirmation+'</span>':'<span class="badge-pend">Pendiente</span>';
+    var vBtn=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
+    var timeStr=res.time||(res.checkinTime?res.checkinTime:'');
+    return '<div class="evt-card">'+
+      '<div class="evt-card-top">'+
+        '<div class="evt-time-col">'+
+          (timeStr?'<div class="evt-time">'+timeStr+'</div><div class="evt-time-lbl">hs</div>':'')+
+          '<div class="evt-icon-circle">'+icon+'</div>'+
+        '</div>'+
+        '<div class="evt-main">'+
+          '<div class="evt-type">'+typeLabel+'</div>'+
+          '<div class="evt-title">'+(res.title||'')+'</div>'+
+          '<div class="evt-detail">'+det+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="evt-footer">'+confBadge+vBtn+'</div>'+
+    '</div>';
   }
 
   var nh=0,na=0,nt=0,nd=0;
   d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
-  var chipsH=(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'');
+  var destino=(d.dates||d.cities[0]&&d.cities[0].name||'travel').replace(/·.*$/,'').trim();
+  var heroUrl='https://source.unsplash.com/featured/800x400/?'+encodeURIComponent(destino+' travel landscape');
 
-  var body='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div><div class="chips">'+chipsH+'</div>';
+  var statsH=(nd?'<div class="stat"><div class="stat-num">'+nd+'</div><div class="stat-lbl">vuelos</div></div>':'')+
+    (nh?'<div class="stat"><div class="stat-num">'+nh+'</div><div class="stat-lbl">hoteles</div></div>':'')+
+    (nt?'<div class="stat"><div class="stat-num">'+nt+'</div><div class="stat-lbl">traslados</div></div>':'')+
+    (na?'<div class="stat"><div class="stat-num">'+na+'</div><div class="stat-lbl">actividades</div></div>':'')+
+    '<div class="stat"><div class="stat-num" style="font-size:14px">24/7</div><div class="stat-lbl">soporte</div></div>';
 
+  var body='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+destino+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+destino+' '+(d.cities[0]&&d.cities[0].flag||'')+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+d.dates+'</div></div></div>';
+  body+='<div class="stats-row">'+statsH+'</div>';
+  body+='<div class="tabs"><div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div><div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div><div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info útil</div></div>';
+
+  var itinBody='<div class="itin-body">';
   d.cities.forEach(function(city,ci){
-    body+='<div class="city-block"><div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
-    if(city.hotel)body+=rCat('🏨','Alojamiento',[city.hotel],'h'+ci,true);
-    if(city.activities&&city.activities.length)body+=rCat('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
-    if(city.localTransfers&&city.localTransfers.length)body+=rCat('🚐','Traslados',city.localTransfers,'t'+ci,false);
-    body+='</div>';
+    itinBody+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-sub">'+city.dates+'</div></div><span class="city-nights-badge">'+city.nights+'</span></div>';
+    if(city.hotel)itinBody+=rCard(city.hotel,'h'+ci+'_0','Alojamiento','🏨');
+    (city.activities||[]).forEach(function(a,i){itinBody+=rCard(a,'a'+ci+'_'+i,'Actividad','🎟️');});
+    (city.localTransfers||[]).forEach(function(t,i){itinBody+=rCard(t,'t'+ci+'_'+i,'Traslado','🚐');});
     if(city.departure){
       var dep=city.departure,dkey='dep'+ci,hasV=!!vouchers[dkey];
-      var icon=depIcons[dep.type]||'🚌';
-      var depTitle=dep.title||dep.name||dep.transport||'Traslado al siguiente destino';
-      var depDetail=dep.detail||dep.info||dep.description||'';
+      var icon={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'}[dep.type]||'🚌';
+      var depTitle=dep.title||dep.name||dep.transport||'Siguiente destino';
+      var depDetail=dep.detail||dep.info||'';
       var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
-      var vb=hasV?'<button class="conn-voucher" onclick="openV(\''+dkey+'\')">📄</button>':'';
-      body+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+depTitle+'</div>'+(depDetail?'<div style="font-size:11px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+      var vb=hasV?'<button class="btn-voucher" style="margin-left:4px" onclick="openV(\''+dkey+'\')">📄</button>':'';
+      itinBody+='<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+depTitle+'</div>'+(depDetail?'<div style="font-size:10px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
     }
   });
+  var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
+  itinBody+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
 
-  var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:56px;width:auto" ');
-  body+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  var infoBody='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">📱</span><span class="info-key">WhatsApp</span><span class="info-val">+54 9 11 2329-4562</span></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+d.dates+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+d.cities.length+' ciudades</span></div></div></div>';
 
-  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem .9rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:34px;height:34px;flex-shrink:0}.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.itin{padding:1rem 1.25rem 2rem}.itin-hdr{margin-bottom:1.5rem}.itin-client{font-size:20px;font-weight:700}.itin-dates{font-size:13px;color:#777;margin-top:3px}.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.city-block{margin-bottom:.5rem}.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}.city-flag{font-size:26px;flex-shrink:0}.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}.city-dates{font-size:11px;color:#888;margin-top:2px}.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}.cat.open .cat-chev{transform:rotate(180deg)}.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}.cat.open .cat-body{display:flex}.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.55}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}.conn-line{width:2px;height:18px;background:#ddd}.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px}.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}.pf-contacts{font-size:11px;color:#888;line-height:2.1}.pf-contacts a{color:#4a6741;text-decoration:none}';
-  var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}';
+  body+='<div id="panel-itin" class="tab-panel active">'+itinBody+'</div><div id="panel-docs" class="tab-panel"><div class="docs-body"><div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers están disponibles en cada reserva ↑</div></div></div><div id="panel-info" class="tab-panel">'+infoBody+'</div>';
+
+  var css=':root{--green:#3d5c36;--green-mid:#5a7a4a;--green-light:#8aac7a;--green-pale:#e8f2e0;--green-xpale:#f4f9f0;--ink:#1a1a1a;--ink2:#444;--ink3:#888;--border:#e5e5e2;--bg:#f5f5f3;--white:#fff;--radius:16px;--radius-sm:10px}*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.25rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px}.lmark{width:32px;height:32px;flex-shrink:0}.lc{font-size:14px;font-weight:700;color:var(--green-light);letter-spacing:.05em;line-height:1}.ls{font-size:7px;color:var(--green-mid);letter-spacing:.22em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.hero{position:relative;height:240px;overflow:hidden;background:linear-gradient(135deg,#2d4a28 0%,#4a7a3a 100%)}.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 60%,transparent 100%)}.hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}.hero-dest{font-family:"DM Serif Display",serif;font-size:30px;color:#fff;line-height:1.1;margin-bottom:4px}.hero-names{font-size:15px;font-weight:500;color:rgba(255,255,255,.88);margin-bottom:2px}.hero-dates{font-size:12px;color:rgba(255,255,255,.65)}.stats-row{background:var(--white);padding:.85rem 1.25rem;display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}.stats-row::-webkit-scrollbar{display:none}.stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:52px}.stat-num{font-size:18px;font-weight:700;color:var(--green);line-height:1}.stat-lbl{font-size:10px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.04em}.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--white);position:sticky;top:52px;z-index:40}.tab{flex:1;padding:.75rem .5rem;font-size:12px;font-weight:600;text-align:center;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.tab.active{color:var(--green);border-bottom-color:var(--green)}.tab-panel{display:none}.tab-panel.active{display:block}.itin-body{padding:1rem 1.25rem 2rem}.city-hdr{display:flex;align-items:center;gap:10px;padding:.85rem 1rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--green-light);border-radius:var(--radius);margin-bottom:.6rem}.city-flag{font-size:22px;flex-shrink:0}.city-name{font-family:"DM Serif Display",serif;font-size:18px;color:var(--ink);line-height:1}.city-sub{font-size:11px;color:var(--ink3);margin-top:2px}.city-nights-badge{margin-left:auto;background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}.evt-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden}.evt-card-top{display:flex;align-items:stretch}.evt-time-col{width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .5rem;border-right:1px solid var(--border);gap:3px}.evt-time{font-size:13px;font-weight:700;color:var(--green);line-height:1}.evt-time-lbl{font-size:9px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.05em}.evt-icon-circle{width:28px;height:28px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:4px}.evt-main{flex:1;padding:.85rem .9rem}.evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}.evt-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}.evt-detail{font-size:11px;color:var(--ink3);line-height:1.55}.evt-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.6rem .9rem;background:var(--green-xpale);border-top:1px solid #deefd0}.badge-conf{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:3px 9px;border-radius:20px}.badge-conf::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-light);flex-shrink:0}.badge-pend{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#b06000;background:#fff3e0;padding:3px 9px;border-radius:20px}.badge-pend::before{content:"";width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:"DM Sans";font-weight:700;display:flex;align-items:center;gap:4px}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1.25rem}.conn-line{width:2px;height:20px;background:var(--border)}.conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.55rem 1rem;font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}.conn-icon{font-size:16px}.conn-info{flex:1}.conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}.conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}.docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.5rem}.doc-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;display:flex;align-items:center;gap:10px}.doc-icon-wrap{width:36px;height:36px;background:var(--green-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.doc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1}.doc-type{font-size:11px;color:var(--ink3);margin-top:1px}.info-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.75rem}.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}.info-card-title{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem}.info-row{display:flex;align-items:flex-start;gap:10px;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:12px}.info-row:last-child{border-bottom:none}.info-icon{font-size:16px;flex-shrink:0}.info-key{color:var(--ink3);font-weight:500;min-width:80px}.info-val{color:var(--ink);font-weight:600;flex:1}.pfooter{background:var(--white);border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}.pf-contacts{font-size:11px;color:var(--ink3);line-height:2.2}.pf-contacts a{color:var(--green);text-decoration:none;font-weight:600}';
+  var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}';
   var lmark='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
-
-  var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><style>'+css+'</style></head><body>';
+  var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>';
   html+='<div class="hdr">'+lmark+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
-  html+='<div class="itin">'+body+'</div>';
+  html+=body;
   html+='<script>'+vscript+'<\/script></body></html>';
   return html;
 }
@@ -419,12 +620,9 @@ function descargar(){
   if(!gData)return;
   var html=generarHTMLString();
   var blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='itinerario-'+gData.client.replace(/[^a-zA-Z0-9]/gi,'-').toLowerCase()+'.html';
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='itinerario-'+gData.client.replace(/[^a-zA-Z0-9]/gi,'-').toLowerCase()+'.html';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
-
 function updatePreview(){var v=document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');document.getElementById('link-preview').textContent=v||'...';}
 function publicar(){
   if(!gData)return;
@@ -434,7 +632,6 @@ function publicar(){
   document.getElementById('modal-pub').style.display='flex';
 }
 function cerrarModal(){document.getElementById('modal-pub').style.display='none';}
-
 async function confirmarPublicar(){
   var siteName=document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
   if(!siteName||siteName.length<3){document.getElementById('pub-error').textContent='El nombre debe tener al menos 3 caracteres';document.getElementById('pub-error').style.display='block';return;}
@@ -467,11 +664,10 @@ async function confirmarPublicar(){
     if(!uploadResp.ok)throw new Error('Error subiendo el archivo a Netlify');
     cerrarModal();
     var url='https://'+siteName+'.netlify.app';
-    document.getElementById('rsub').innerHTML='✅ Publicado: <a href="'+url+'" target="_blank" style="color:#4a6741;font-weight:700">'+url+'</a> &nbsp;<button onclick="copiarLink(\''+url+'\')" style="background:none;border:1px solid #4a6741;border-radius:20px;color:#4a6741;cursor:pointer;font-size:11px;padding:3px 10px">Copiar</button>';
+    document.getElementById('itin-preview').querySelector('.stats-row').insertAdjacentHTML('beforebegin','<div style="background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px">✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a> <button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){alert(\'¡Link copiado!\')})" style="background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:\'DM Sans\'">Copiar</button></div>');
   }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
   finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
-function copiarLink(url){navigator.clipboard.writeText(url).then(function(){alert('¡Link copiado!');});}
 </script>
 </body>
 </html>
