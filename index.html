@@ -116,9 +116,13 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .evt-hotel-detail{font-size:11px;color:var(--ink3);line-height:1.55}
 /* Actividades/traslados */
 .evt-card-top{display:flex;align-items:stretch}
-.evt-time-col{width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .4rem;border-right:1px solid var(--border);gap:4px}
-.evt-time{font-size:15px;font-weight:700;color:var(--green);line-height:1}
+.evt-time-col{width:68px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .35rem;border-right:1px solid var(--border);gap:2px;background:var(--green-xpale)}
+.evt-date-num{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--green);line-height:1;text-align:center}
+.evt-date-mon{font-size:9px;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-align:center;margin-bottom:4px}
+.evt-time-wrap{border-top:1px solid #d4e8c8;padding-top:5px;width:100%;text-align:center;margin-top:2px}
+.evt-time{font-size:14px;font-weight:700;color:var(--ink);line-height:1}
 .evt-time-lbl{font-size:8px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.evt-icon-only{font-size:22px;text-align:center}
 .evt-icon-circle{width:26px;height:26px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:4px}
 .evt-main{flex:1;padding:.85rem .9rem}
 .evt-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
@@ -468,15 +472,38 @@ function cleanDetail(detail){
   d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');
   return d;
 }
+function parseDateParts(dateStr){
+  if(!dateStr)return null;
+  var m=dateStr.toLowerCase().match(/(\d{1,2})\s+([a-z]+)/);
+  if(!m)return null;
+  return{day:m[1],mon:m[2].substring(0,3)};
+}
+function mkDateTimeCol(date,time,icon){
+  var dp=parseDateParts(date);
+  var html='<div class="evt-time-col">';
+  if(dp){
+    html+='<div class="evt-date-num">'+dp.day+'</div>';
+    html+='<div class="evt-date-mon">'+dp.mon+'</div>';
+  }
+  if(time){
+    html+='<div class="evt-time-wrap"><div class="evt-time">'+time+'</div><div class="evt-time-lbl">hs</div></div>';
+    if(dp)html+='<div class="evt-icon-circle" style="margin-top:5px">'+icon+'</div>';
+  } else if(!dp){
+    html+='<div class="evt-icon-only">'+icon+'</div>';
+  } else {
+    html+='<div class="evt-icon-circle" style="margin-top:6px">'+icon+'</div>';
+  }
+  html+='</div>';
+  return html;
+}
 function mkEvt(r,key,typeLabel,icon){
   regV(r,key);
   var rawDet=r.detail||'';
   var mapsUrl=extractMapsUrl(rawDet);
   var det=cleanDetail(rawDet).replace(/\n/g,'<br>');
-  if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;
-  var t=r.time||'';
-  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:4px">📍 Ver en mapa</a>':'';
-  return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mapsBtn+'</div></div><div class="evt-footer">'+cBadge(r.confirmation)+vBtn(key)+'</div></div>';
+  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:6px">📍 Ver en mapa</a>':'';
+  var col=mkDateTimeCol(r.date,r.time,icon);
+  return '<div class="evt-card"><div class="evt-card-top">'+col+'<div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mapsBtn+'</div></div><div class="evt-footer">'+cBadge(r.confirmation)+vBtn(key)+'</div></div>';
 }
 function mkConn(dep,key){
   regV(dep,key);
@@ -590,7 +617,9 @@ function generarHTMLString(){
   function rHotel(h,key){var dr2=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');var det=(h.detail||'').replace(/\n/g,'<br>');return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+rc(h.confirmation)+rvb(key)+'</div></div>';}
   function getMapUrl(d){if(!d)return null;var m=d.match(/mapsUrl:\s*(https?:\/\/[^\s"<]+)/i);return m?m[1]:null;}
   function cleanDet(d){if(!d)return '';d=d.replace(/mapsUrl:\s*https?:\/\/[^\s"<]+/gi,'').trim().replace(/\.?\s*$/,'');d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');return d;}
-  function rEvt(r,key,tl,icon){var rawDet=r.detail||'';var mu=getMapUrl(rawDet);var det=cleanDet(rawDet).replace(/\n/g,'<br>');if(r.date&&det&&!det.includes(r.date))det=r.date+' · '+det;else if(r.date&&!det)det=r.date;var t=r.time||'';var mb=mu?'<a href="'+mu+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#3d5c36;text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:4px">📍 Ver en mapa</a>':'';return '<div class="evt-card"><div class="evt-card-top"><div class="evt-time-col">'+(t?'<div class="evt-time">'+t+'</div><div class="evt-time-lbl">hs</div>':'<div style="font-size:20px;color:#ddd">'+icon+'</div>')+(t?'<div class="evt-icon-circle">'+icon+'</div>':'')+'</div><div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mb+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
+  function pDP(dateStr){if(!dateStr)return null;var m=dateStr.toLowerCase().match(/(\d{1,2})\s+([a-z]+)/);if(!m)return null;return{day:m[1],mon:m[2].substring(0,3)};}
+  function mkDTCol(date,time,icon){var dp=pDP(date);var h='<div class="evt-time-col">';if(dp){h+='<div class="evt-date-num">'+dp.day+'</div><div class="evt-date-mon">'+dp.mon+'</div>';}if(time){h+='<div class="evt-time-wrap"><div class="evt-time">'+time+'</div><div class="evt-time-lbl">hs</div></div>';if(dp)h+='<div class="evt-icon-circle" style="margin-top:5px">'+icon+'</div>';}else if(!dp){h+='<div class="evt-icon-only">'+icon+'</div>';}else{h+='<div class="evt-icon-circle" style="margin-top:6px">'+icon+'</div>';}h+='</div>';return h;}
+  function rEvt(r,key,tl,icon){var rawDet=r.detail||'';var mu=getMapUrl(rawDet);var det=cleanDet(rawDet).replace(/\n/g,'<br>');var mb=mu?'<a href="'+mu+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#3d5c36;text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:6px">📍 Ver en mapa</a>':'';var col=mkDTCol(r.date,r.time,icon);return '<div class="evt-card"><div class="evt-card-top">'+col+'<div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mb+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
   function rConn(dep,key){var icons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};var icon=icons[dep.type]||'🚌';var det=dep.detail||'';if(dep.date&&!det.includes(dep.date))det=dep.date+(det?' · '+det:'');var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';var vb=vouchers[key]?'<button class="btn-voucher" style="margin-left:4px" onclick="openV(\''+key+'\')">📄</button>':'';return '<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+(dep.title||'Siguiente destino')+'</div>'+(det?'<div class="conn-sub">'+det+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';}
   var statsItems=[];
   if(nV)statsItems.push({n:nV,l:'vuelos',t:'vuelos'});statsItems.push({n:nU,l:'destinos',t:'destinos'});if(nH)statsItems.push({n:nH,l:'hoteles',t:'hoteles'});if(nT)statsItems.push({n:nT,l:'traslados',t:'traslados'});if(nA)statsItems.push({n:nA,l:'actividades',t:'actividades'});statsItems.push({n:'24/7',l:'soporte',t:null});
