@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         'x-api-key': key,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify({ ...req.body, model: 'claude-opus-4-5' }),
     })
     const data = await upstream.json()
     res.status(upstream.status).json(data)
