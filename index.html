@@ -48,26 +48,19 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 .rbar{padding:.85rem 1.25rem;background:#e8f2e0;border-bottom:1px solid #c5d9a0}
 .rtitle{font-size:13px;font-weight:700;color:#3d5c36}
 .rsub{font-size:12px;color:#5a7a4a;margin-top:2px}
-.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
-
-/* ── ITINERARIO ── */
-.itin{padding:1rem 1.25rem 2rem}
-.itin-hdr{margin-bottom:1.5rem}
-.itin-client{font-size:20px;font-weight:700}
-.itin-dates{font-size:13px;color:#777;margin-top:3px}
-.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
+.itin{padding:1rem 1.25rem 1.5rem}
+.itin-hdr{margin-bottom:1.25rem}
+.itin-client{font-size:18px;font-weight:700}
+.itin-dates{font-size:13px;color:#777;margin-top:2px}
+.chips{display:flex;gap:5px;margin-bottom:1.25rem;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}
-
-/* ── CIUDAD ── */
 .city-block{margin-bottom:.5rem}
 .city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}
 .city-flag{font-size:26px;flex-shrink:0}
 .city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}
 .city-dates{font-size:11px;color:#888;margin-top:2px}
 .city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}
-
-/* ── CATEGORÍA ── */
 .cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}
 .cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}
@@ -76,8 +69,6 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 .cat.open .cat-chev{transform:rotate(180deg)}
 .cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}
 .cat.open .cat-body{display:flex}
-
-/* ── RESERVATION CARD ── */
 .res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}
 .res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}
 .res-detail{font-size:12px;color:#666;line-height:1.55}
@@ -85,22 +76,15 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 .res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}
 .btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
 .btn-voucher:active{background:#d4eac4}
-
-/* ── CONECTOR ENTRE CIUDADES ── */
 .connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}
 .conn-line{width:2px;height:18px;background:#ddd}
 .conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.conn-card strong{color:#1a1a1a;font-size:13px}
 .conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}
 .conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px;-webkit-tap-highlight-color:transparent}
-
-/* ── FOOTER ── */
-.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}
-.pf-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}
+.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:.5rem}
 .pf-contacts{font-size:11px;color:#888;line-height:2.1}
 .pf-contacts a{color:#4a6741;text-decoration:none}
-
-/* ── MODAL ── */
+.err{margin:1.25rem;padding:1rem;background:#FCEBEB;border:1px solid #f09595;border-radius:12px;font-size:13px;color:#791F1F;line-height:1.5}
 #modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
 </style>
 </head>
@@ -109,7 +93,8 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- EDITOR -->
 <div class="screen active" id="sc-editor">
   <div class="hdr">
-    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
     <span class="hdr-title">Generador de itinerarios</span>
   </div>
   <div class="body">
@@ -133,7 +118,7 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- LOADING -->
 <div class="screen" id="sc-loading">
   <div class="hdr">
-    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
     <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
   </div>
   <div class="lscreen">
@@ -152,7 +137,8 @@ input.inp:focus{outline:none;border-color:#8aac7a}
 <!-- RESULTADO -->
 <div class="screen" id="sc-result">
   <div class="hdr">
-    <img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:36px;width:auto" alt="Chispa Travel Club" />
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
     <button class="back" onclick="resetAll()">← Nuevo</button>
   </div>
   <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
@@ -160,7 +146,6 @@ input.inp:focus{outline:none;border-color:#8aac7a}
   <button class="btn-out" style="margin-top:.5rem" onclick="descargar()">⬇ Descargar HTML</button>
   <button class="btn-out" style="border-color:#8aac7a;color:#4a6741;margin-top:.5rem" onclick="agregarMas()">➕ Agregar más documentos</button>
   <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
-
   <div id="modal-pub">
     <div style="background:#fff;border-radius:16px;padding:1.5rem;margin:1.25rem;width:100%;max-width:380px">
       <div style="font-size:15px;font-weight:700;margin-bottom:.5rem">Publicar itinerario</div>
@@ -173,15 +158,18 @@ input.inp:focus{outline:none;border-color:#8aac7a}
       <div id="pub-error" style="display:none;margin-top:.75rem;font-size:12px;color:#e24b4a"></div>
     </div>
   </div>
-
   <div class="itin" id="itin-preview"></div>
 </div>
 
 <script>
-var LOGO_SRC="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 80'%3E%3Cpath d='M62,4 C30,4 6,19 6,38 C6,57 30,72 62,72 C76,72 89,68 98,60 L84,52 C77,58 70,62 62,62 C34,62 18,52 18,38 C18,24 34,14 62,14 C70,14 77,18 84,24 L98,16 C89,8 76,4 62,4Z' fill='%23c8e0b8'/%3E%3Ccircle cx='62' cy='38' r='14' fill='white'/%3E%3Cg transform='translate(53,32) rotate(-15,9,6)'%3E%3Cellipse cx='9' cy='6' rx='9' ry='5' fill='%234a6741'/%3E%3Crect x='4' y='0' width='3' height='12' fill='%234a6741'/%3E%3Cpolygon points='0,6 -5,10 -5,2' fill='%234a6741' opacity='0.6'/%3E%3C/g%3E%3Cpath d='M18,52 Q38,42 58,50' stroke='%234a6741' stroke-width='1.5' stroke-dasharray='3,3' fill='none'/%3E%3Ctext x='112' y='44' font-family='Arial Black,Arial,sans-serif' font-size='30' font-weight='900' fill='%238aac7a' letter-spacing='1'%3ECHISPA%3C/text%3E%3Ctext x='115' y='62' font-family='Arial,sans-serif' font-size='11' font-weight='700' fill='%234a6741' letter-spacing='4'%3ETRAVEL CLUB%3C/text%3E%3C/svg%3E";
 var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={};
+
+// Logo SVG inline para uso en HTML dinámico
+var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
+
+var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
 
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 
@@ -218,7 +206,7 @@ async function callAI(content){
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
 
-var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks.\n\nEstructura exacta:\n{"cities":[{\n  "name":"Ciudad",\n  "flag":"🏳️",\n  "dates":"DD mon – DD mon",\n  "nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección completa","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre actividad","detail":"DD mon · HH:MM hs · Lugar de encuentro","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción transfer","detail":"DD mon · HH:MM hs · Origen → Destino","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","confirmation":"# o —","sourceFile":3}\n}]}\n\nREGLAS CRÍTICAS:\n1. ORDEN CRONOLÓGICO ESTRICTO: ciudades ordenadas por fecha de llegada de más antigua a más reciente\n2. "hotel": solo el alojamiento principal de la ciudad. Si no hay, omití el campo\n3. "activities": tours, excursiones, entradas, actividades. Array vacío [] si no hay\n4. "localTransfers": traslados DENTRO de la ciudad (aeropuerto-hotel, hotel-tour, etc). Array vacío [] si no hay\n5. "departure": el transporte que lleva AL SIGUIENTE DESTINO (vuelo, tren, bus entre ciudades). Omití si es la última ciudad o no hay transporte documentado entre ciudades\n6. "type" en departure solo puede ser: vuelo, tren, bus, ferry\n7. "sourceFile": índice del archivo que contiene ese voucher. Omití si no hay voucher específico\n8. "dates" formato "DD mon – DD mon" (ej: "20 may – 23 may")\n9. Extraé ABSOLUTAMENTE TODAS las reservas de TODOS los documentos';
+var PROMPT='Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido, sin texto adicional ni backticks:\n{"cities":[{\n  "name":"Ciudad","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s",\n  "hotel":{"title":"Nombre hotel","detail":"Check-in: DD mon\\nCheck-out: DD mon\\nDirección","confirmation":"# o —","sourceFile":0},\n  "activities":[{"title":"Nombre","detail":"DD mon · HH:MM hs · Lugar","confirmation":"# o —","sourceFile":1}],\n  "localTransfers":[{"title":"Descripción","detail":"DD mon · HH:MM hs · Origen → Destino","confirmation":"# o —","sourceFile":2}],\n  "departure":{"type":"vuelo","title":"Aerolínea Nro – Ciudad A → Ciudad B","detail":"DD mon · salida HH:MM hs · llegada HH:MM hs","confirmation":"# o —","sourceFile":3}\n}]}\nREGLAS: ORDEN CRONOLÓGICO ESTRICTO por fecha de llegada. "hotel" solo alojamiento principal. "activities" tours y excursiones. "localTransfers" traslados dentro de la ciudad. "departure" transporte AL SIGUIENTE DESTINO (omití en la última ciudad). "type" en departure: vuelo/tren/bus/ferry. "sourceFile": índice del archivo con el voucher (omití si no hay). Extraé TODAS las reservas.';
 
 async function procesarBatch(batchFiles,batchB64,batchTypes,offset){
   var content=[];
@@ -240,9 +228,7 @@ function mergeCity(allCities,newCity){
     ex.activities=(ex.activities||[]).concat(newCity.activities||[]);
     ex.localTransfers=(ex.localTransfers||[]).concat(newCity.localTransfers||[]);
     if(!ex.departure&&newCity.departure)ex.departure=newCity.departure;
-  } else {
-    allCities.push(newCity);
-  }
+  } else {allCities.push(newCity);}
 }
 
 async function generar(){
@@ -306,27 +292,22 @@ function openVoucher(key){
   catch(e){alert('No se pudo abrir el voucher');}
 }
 
-function vBtn(key,hasV){return hasV?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';}
-function badge(conf){return (conf&&conf!=='—')?'<span class="res-badge">Conf. '+conf+'</span>':'';}
-function resCard(res,key){
-  var hasV=(res.sourceFile!==undefined&&filesB64[res.sourceFile]);
-  if(hasV)_vData[key]={b64:filesB64[res.sourceFile],type:filesType[res.sourceFile]};
-  var det=(res.detail||'').replace(/\n/g,'<br>');
-  var footer=badge(res.confirmation)+vBtn(key,hasV);
-  return '<div class="res"><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(footer?'<div class="res-footer">'+footer+'</div>':'')+'</div>';
-}
-
-function catSection(icon,label,items,id,openByDefault){
+function catSection(icon,label,items,id,openDef){
   if(!items||!items.length)return '';
-  var cards=items.map(function(r,i){return resCard(r,id+'_'+i);}).join('');
+  var cards=items.map(function(r,i){
+    var rkey=id+'_'+i;
+    var hasV=(r.sourceFile!==undefined&&filesB64[r.sourceFile]);
+    if(hasV)_vData[rkey]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};
+    var det=(r.detail||'').replace(/\n/g,'<br>');
+    var conf=(r.confirmation&&r.confirmation!=='—')?'<span class="res-badge">Conf. '+r.confirmation+'</span>':'';
+    var vBtn=hasV?'<button class="btn-voucher" onclick="openVoucher(\''+rkey+'\')">📄 Ver voucher</button>':'';
+    return '<div class="res"><div class="res-title">'+(r.title||'')+'</div><div class="res-detail">'+det+'</div>'+(conf||vBtn?'<div class="res-footer">'+conf+vBtn+'</div>':'')+'</div>';
+  }).join('');
   var cnt=items.length>1?'<span class="cat-count">'+items.length+'</span>':'';
-  return '<div class="cat'+(openByDefault?' open':'')+'" onclick="toggleCat(this)"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
+  return '<div class="cat'+(openDef?' open':'')+'" onclick="toggleCat(this)"><div class="cat-hdr"><span class="cat-label">'+icon+' '+label+cnt+'</span><span class="cat-chev">▼</span></div><div class="cat-body">'+cards+'</div></div>';
 }
 
 function toggleCat(el){el.classList.toggle('open');}
-
-// Iconos de transporte para conector
-var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
 
 function renderResult(){
   var d=gData;_vData={};
@@ -336,52 +317,36 @@ function renderResult(){
   },0);
   document.getElementById('rsub').textContent=d.dates+' · '+d.cities.length+' destinos · '+total+' reservas';
 
-  // Chips resumen
   var nh=0,na=0,nt=0,nd=0;
-  d.cities.forEach(function(c){
-    if(c.hotel)nh++;
-    na+=(c.activities||[]).length;
-    nt+=(c.localTransfers||[]).length;
-    if(c.departure)nd++;
-  });
+  d.cities.forEach(function(c){if(c.hotel)nh++;na+=(c.activities||[]).length;nt+=(c.localTransfers||[]).length;if(c.departure)nd++;});
   var chips='<div class="chips">'+(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'')+'</div>';
 
   var html='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div>'+chips;
 
   d.cities.forEach(function(city,ci){
-    // Header ciudad
-    html+='<div class="city-block">';
-    html+='<div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
-
-    // Alojamiento (abierto por default)
-    if(city.hotel) html+=catSection('🏨','Alojamiento',[city.hotel],'h'+ci,true);
-
-    // Actividades (abierto si hay pocas)
-    if(city.activities&&city.activities.length)
-      html+=catSection('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
-
-    // Traslados locales
-    if(city.localTransfers&&city.localTransfers.length)
-      html+=catSection('🚐','Traslados',city.localTransfers,'t'+ci,false);
-
+    html+='<div class="city-block"><div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
+    if(city.hotel)html+=catSection('🏨','Alojamiento',[city.hotel],'h'+ci,true);
+    if(city.activities&&city.activities.length)html+=catSection('🎟','Actividades',city.activities,'a'+ci,(city.activities.length<=3));
+    if(city.localTransfers&&city.localTransfers.length)html+=catSection('🚐','Traslados',city.localTransfers,'t'+ci,false);
     html+='</div>';
 
-    // Conector entre ciudades (departure)
     if(city.departure){
       var dep=city.departure;
       var dkey='dep'+ci;
       var hasV=(dep.sourceFile!==undefined&&filesB64[dep.sourceFile]);
       if(hasV)_vData[dkey]={b64:filesB64[dep.sourceFile],type:filesType[dep.sourceFile]};
       var icon=depIcons[dep.type]||'🚌';
-      html+='<div class="connector"><div class="conn-line"></div>';
-      html+='<div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+dep.title+'</div><div style="font-size:11px;color:#888;margin-top:1px">'+dep.detail+'</div></div>';
-      if(dep.confirmation&&dep.confirmation!=='—')html+='<span class="conn-badge">'+dep.confirmation+'</span>';
-      if(hasV)html+='<button class="conn-voucher" onclick="openVoucher(\''+dkey+'\')">📄</button>';
-      html+='</div><div class="conn-line"></div></div>';
+      // Seguridad: usar fallbacks por si la IA devuelve propiedades con nombres distintos
+      var depTitle=dep.title||dep.name||dep.transport||'Traslado al siguiente destino';
+      var depDetail=dep.detail||dep.info||dep.description||'';
+      var depConf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
+      var depV=hasV?'<button class="conn-voucher" onclick="openVoucher(\''+dkey+'\')">📄</button>':'';
+      html+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+depTitle+'</div>'+(depDetail?'<div style="font-size:11px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+' </div>'+depConf+depV+'</div><div class="conn-line"></div></div>';
     }
   });
 
-  html+='<div class="pfooter"><img src="https://raw.githubusercontent.com/chispatravelclub-source/chispa-generador/main/logo.png" style="height:48px;width:auto;margin-bottom:1rem" alt="Chispa Travel Club"/><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+  // Footer con logo inline
+  html+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+LOGO_SVG.replace('<svg ','<svg style="height:56px;width:auto" ')+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
 
   document.getElementById('itin-preview').innerHTML=html;
   show('sc-result');
@@ -391,7 +356,6 @@ function renderResult(){
 function generarHTMLString(){
   var d=gData;
   var vouchers={};
-  // Recolectar todos los vouchers
   d.cities.forEach(function(city,ci){
     var addV=function(r,key){if(r&&r.sourceFile!==undefined&&filesB64[r.sourceFile])vouchers[key]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};};
     if(city.hotel)addV(city.hotel,'h'+ci+'_0');
@@ -400,14 +364,12 @@ function generarHTMLString(){
     if(city.departure)addV(city.departure,'dep'+ci);
   });
 
-  var depIcons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
-
   function rCard(res,key){
     var hasV=!!vouchers[key];
     var det=(res.detail||'').replace(/\n/g,'<br>');
     var conf=(res.confirmation&&res.confirmation!=='—')?'<span class="res-badge">Conf. '+res.confirmation+'</span>':'';
     var vb=hasV?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';
-    return '<div class="res"><div class="res-title">'+res.title+'</div><div class="res-detail">'+det+'</div>'+(conf||vb?'<div class="res-footer">'+conf+vb+'</div>':'')+'</div>';
+    return '<div class="res"><div class="res-title">'+(res.title||'')+'</div><div class="res-detail">'+det+'</div>'+(conf||vb?'<div class="res-footer">'+conf+vb+'</div>':'')+'</div>';
   }
   function rCat(icon,label,items,id,open){
     if(!items||!items.length)return '';
@@ -421,6 +383,7 @@ function generarHTMLString(){
   var chipsH=(nh?'<div class="chip">🏨 '+nh+' hotel'+(nh>1?'es':'')+'</div>':'')+(na?'<div class="chip">🎟 '+na+' actividad'+(na>1?'es':'')+'</div>':'')+(nt+nd?'<div class="chip">🚄 '+(nt+nd)+' traslados</div>':'');
 
   var body='<div class="itin-hdr"><div class="itin-client">'+d.client+'</div><div class="itin-dates">'+d.dates+'</div></div><div class="chips">'+chipsH+'</div>';
+
   d.cities.forEach(function(city,ci){
     body+='<div class="city-block"><div class="city-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div><div class="city-name">'+city.name+'</div><div class="city-dates">'+city.dates+'</div><div class="city-nights">'+city.nights+'</div></div></div>';
     if(city.hotel)body+=rCat('🏨','Alojamiento',[city.hotel],'h'+ci,true);
@@ -430,19 +393,23 @@ function generarHTMLString(){
     if(city.departure){
       var dep=city.departure,dkey='dep'+ci,hasV=!!vouchers[dkey];
       var icon=depIcons[dep.type]||'🚌';
+      var depTitle=dep.title||dep.name||dep.transport||'Traslado al siguiente destino';
+      var depDetail=dep.detail||dep.info||dep.description||'';
       var conf=(dep.confirmation&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
       var vb=hasV?'<button class="conn-voucher" onclick="openV(\''+dkey+'\')">📄</button>':'';
-      body+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+dep.title+'</div><div style="font-size:11px;color:#888;margin-top:1px">'+dep.detail+'</div></div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+      body+='<div class="connector"><div class="conn-line"></div><div class="conn-card"><span style="font-size:18px">'+icon+'</span><div><div style="font-size:12px;font-weight:700;color:#1a1a1a">'+depTitle+'</div>'+(depDetail?'<div style="font-size:11px;color:#888;margin-top:1px">'+depDetail+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
     }
   });
-  body+='<div class="pfooter"><div class="pf-logo">✦ CHISPA TRAVEL CLUB</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a></div></div>';
 
-  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:32px;height:32px;flex-shrink:0}.lc{font-size:14px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.itin{padding:1rem 1.25rem 2rem}.itin-hdr{margin-bottom:1.5rem}.itin-client{font-size:20px;font-weight:700}.itin-dates{font-size:13px;color:#777;margin-top:3px}.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.city-block{margin-bottom:.5rem}.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}.city-flag{font-size:26px;flex-shrink:0}.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}.city-dates{font-size:11px;color:#888;margin-top:2px}.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}.cat.open .cat-chev{transform:rotate(180deg)}.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}.cat.open .cat-body{display:flex}.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.55}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}.conn-line{width:2px;height:18px;background:#ddd}.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px}.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}.pf-logo{font-size:13px;font-weight:900;color:#8aac7a;letter-spacing:.03em;margin-bottom:.75rem}.pf-contacts{font-size:11px;color:#888;line-height:2.1}.pf-contacts a{color:#4a6741;text-decoration:none}';
+  var logoSVG=LOGO_SVG.replace('<svg ','<svg style="height:56px;width:auto" ');
+  body+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logoSVG+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
+
+  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}.hdr{background:#fff;border-bottom:1px solid #e5e5e2;padding:1rem 1.25rem .9rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:11px}.lmark{width:34px;height:34px;flex-shrink:0}.lc{font-size:15px;font-weight:900;color:#8aac7a;letter-spacing:.03em;line-height:1}.ls{font-size:7.5px;color:#6a8a5a;letter-spacing:.18em;text-transform:uppercase}.hr{margin-left:auto;text-align:right}.hclient{font-size:13px;font-weight:700}.hdates{font-size:11px;color:#888;margin-top:1px}.itin{padding:1rem 1.25rem 2rem}.itin-hdr{margin-bottom:1.5rem}.itin-client{font-size:20px;font-weight:700}.itin-dates{font-size:13px;color:#777;margin-top:3px}.chips{display:flex;gap:5px;margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}.chip{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #e0e0dc;background:#fff;color:#555}.city-block{margin-bottom:.5rem}.city-hdr{background:#fff;border:1px solid #e5e5e2;border-left:4px solid #8aac7a;border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:.6rem}.city-flag{font-size:26px;flex-shrink:0}.city-name{font-size:17px;font-weight:900;color:#1a1a1a;line-height:1.1}.city-dates{font-size:11px;color:#888;margin-top:2px}.city-nights{font-size:11px;font-weight:700;color:#4a6741;margin-top:1px}.cat{background:#fff;border:1px solid #e5e5e2;border-radius:12px;margin-bottom:.5rem;overflow:hidden}.cat-hdr{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.cat-label{font-size:11px;font-weight:700;color:#4a6741;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:6px}.cat-count{font-size:10px;background:#e8f2e0;color:#3d5c36;padding:1px 7px;border-radius:20px;font-weight:700}.cat-chev{font-size:12px;color:#bbb;transition:transform .2s}.cat.open .cat-chev{transform:rotate(180deg)}.cat-body{display:none;flex-direction:column;gap:6px;padding:0 .75rem .75rem}.cat.open .cat-body{display:flex}.res{background:#f8fbf5;border:1px solid #e5edd8;border-radius:10px;padding:.75rem .9rem}.res-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px}.res-detail{font-size:12px;color:#666;line-height:1.55}.res-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:7px}.res-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600}.btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #b8d8a0;background:#fff;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}.btn-voucher:active{background:#d4eac4}.connector{display:flex;flex-direction:column;align-items:center;margin:.75rem 0 1rem;gap:0}.conn-line{width:2px;height:18px;background:#ddd}.conn-card{background:#fff;border:1px solid #e0e0dc;border-radius:20px;padding:.55rem 1.1rem;font-size:12px;color:#444;display:flex;align-items:center;gap:7px;max-width:95%;box-shadow:0 1px 4px rgba(0,0,0,.05)}.conn-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#e8f2e0;color:#3d5c36;font-weight:600;margin-left:4px}.conn-voucher{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid #b8d8a0;background:#f8fbf5;color:#4a6741;cursor:pointer;font-family:Arial;font-weight:700;margin-left:4px}.pfooter{background:#fff;border-top:1px solid #e5e5e2;padding:1.5rem 1.25rem;text-align:center;margin-top:1rem}.pf-contacts{font-size:11px;color:#888;line-height:2.1}.pf-contacts a{color:#4a6741;text-decoration:none}';
   var vscript='var V='+JSON.stringify(vouchers)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}';
-  var logo='<img src="'+LOGO_SRC+'" style="height:40px;width:auto">';
+  var lmark='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
 
   var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><style>'+css+'</style></head><body>';
-  html+='<div class="hdr">'+logo+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
+  html+='<div class="hdr">'+lmark+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div class="hr"><div class="hclient">'+d.client+'</div><div class="hdates">'+d.dates+'</div></div></div>';
   html+='<div class="itin">'+body+'</div>';
   html+='<script>'+vscript+'<\/script></body></html>';
   return html;
@@ -473,44 +440,31 @@ async function confirmarPublicar(){
   if(!siteName||siteName.length<3){document.getElementById('pub-error').textContent='El nombre debe tener al menos 3 caracteres';document.getElementById('pub-error').style.display='block';return;}
   var btn=document.getElementById('btn-pub-ok');btn.textContent='Publicando...';btn.disabled=true;document.getElementById('pub-error').style.display='none';
   try{
-    // 1. Obtener el token de Netlify desde el backend
     var tokenResp=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'getToken'})});
     var tokenData=await tokenResp.json();
     if(!tokenResp.ok||tokenData.error)throw new Error(tokenData.error||'No se pudo obtener el token');
     var netlifyToken=tokenData.token;
-
     var htmlContent=generarHTMLString();
-
-    // 2. Buscar si el sitio ya existe
     var listResp=await fetch('https://api.netlify.com/api/v1/sites?per_page=100',{headers:{Authorization:'Bearer '+netlifyToken}});
     var sites=await listResp.json();
     var existing=Array.isArray(sites)&&sites.find(function(s){return s.name===siteName;});
     var siteId;
-
-    if(existing){
-      siteId=existing.id;
-    } else {
+    if(existing){siteId=existing.id;}
+    else{
       var createResp=await fetch('https://api.netlify.com/api/v1/sites',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+netlifyToken},body:JSON.stringify({name:siteName})});
       var newSite=await createResp.json();
       if(!newSite.id)throw new Error(newSite.message||'No se pudo crear el sitio en Netlify');
       siteId=newSite.id;
     }
-
-    // 3. Calcular hash SHA1 del contenido
     var msgBuffer=new TextEncoder().encode(htmlContent);
     var hashBuffer=await crypto.subtle.digest('SHA-1',msgBuffer);
     var hashArray=Array.from(new Uint8Array(hashBuffer));
     var fileHash=hashArray.map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-
-    // 4. Crear deploy
     var deployResp=await fetch('https://api.netlify.com/api/v1/sites/'+siteId+'/deploys',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+netlifyToken},body:JSON.stringify({files:{'/index.html':fileHash}})});
     var deploy=await deployResp.json();
     if(!deploy.id)throw new Error(deploy.message||'No se pudo crear el deploy');
-
-    // 5. Subir el archivo directamente desde el browser
     var uploadResp=await fetch('https://api.netlify.com/api/v1/deploys/'+deploy.id+'/files/index.html',{method:'PUT',headers:{'Content-Type':'application/octet-stream',Authorization:'Bearer '+netlifyToken},body:htmlContent});
     if(!uploadResp.ok)throw new Error('Error subiendo el archivo a Netlify');
-
     cerrarModal();
     var url='https://'+siteName+'.netlify.app';
     document.getElementById('rsub').innerHTML='✅ Publicado: <a href="'+url+'" target="_blank" style="color:#4a6741;font-weight:700">'+url+'</a> &nbsp;<button onclick="copiarLink(\''+url+'\')" style="background:none;border:1px solid #4a6741;border-radius:20px;color:#4a6741;cursor:pointer;font-size:11px;padding:3px 10px">Copiar</button>';
