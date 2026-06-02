@@ -1,11 +1,7 @@
-
 {
   "functions": {
     "api/generate.js": {
       "maxDuration": 60
     }
-  },
-  "api": {
-    "bodySizeLimit": "25mb"
   }
 }
