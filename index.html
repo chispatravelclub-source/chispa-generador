@@ -239,56 +239,68 @@ async function generar() {
 
     setStep(2);
 
-    var content=[];
-    var fnames=files.map(function(f,i){return 'Índice '+i+': '+f.name;}).join('\n');
-    content.push({type:'text',text:'Tengo '+files.length+' documento(s) de viaje:\n\n'+fnames});
+    // Procesar archivos de a uno y combinar resultados
+    var allCities = [];
+    var BATCH_SIZE = 3; // máximo 3 archivos por llamada
 
-    for(var j=0;j<files.length;j++){
-      content.push({type:'text',text:'--- Archivo '+j+': '+files[j].name+' ---'});
-      var mt=filesType[j];
-      if(mt==='application/pdf'){
-        content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:filesB64[j]}});
-      } else {
-        content.push({type:'image',source:{type:'base64',media_type:mt,data:filesB64[j]}});
+    for (var start=0; start<files.length; start+=BATCH_SIZE) {
+      var batch = files.slice(start, start+BATCH_SIZE);
+      var batchB64 = filesB64.slice(start, start+BATCH_SIZE);
+      var batchType = filesType.slice(start, start+BATCH_SIZE);
+      var batchOffset = start;
+
+      var content=[];
+      var fnames=batch.map(function(f,i){return 'Índice '+(batchOffset+i)+': '+f.name;}).join('\n');
+      content.push({type:'text',text:'Documentos de viaje:\n\n'+fnames});
+
+      for(var j=0;j<batch.length;j++){
+        content.push({type:'text',text:'--- Archivo '+(batchOffset+j)+': '+batch[j].name+' ---'});
+        var mt=batchType[j];
+        if(mt==='application/pdf'){
+          content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:batchB64[j]}});
+        } else {
+          content.push({type:'image',source:{type:'base64',media_type:mt,data:batchB64[j]}});
+        }
       }
+
+      content.push({type:'text',text:'Analizá estos documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks. Estructura:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre completo","detail":"Check-in: X jun\\nCheck-out: Y jun\\nDirección","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- Agrupá por ciudad en orden cronológico\n- Emoji de bandera correcto\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo con ese voucher\n- Extraé TODAS las reservas\n- "detail" con \\n para saltos de línea\n- "confirmation" con número/localizador o "—"'});
+
+      setStep(start===0?2:3);
+
+      var headers = { 'Content-Type':'application/json' };
+      if (IN_IFRAME) headers['anthropic-version'] = '2023-06-01';
+
+      var resp = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:4000, messages:[{role:'user',content:content}] })
+      });
+
+      if (!resp.ok) {
+        var err=await resp.json().catch(function(){return{};});
+        throw new Error((err.error&&err.error.message)||'Error '+resp.status+': '+resp.statusText);
+      }
+
+      var data=await resp.json();
+      if (data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+
+      var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+      raw=raw.replace(/```json|```/g,'').trim();
+      var batchParsed=JSON.parse(raw);
+
+      // Mergear ciudades: si la ciudad ya existe, agregar reservas; si no, agregar ciudad
+      (batchParsed.cities||[]).forEach(function(newCity){
+        var existing = allCities.find(function(c){ return c.name.toLowerCase()===newCity.name.toLowerCase(); });
+        if (existing) {
+          existing.reservations = existing.reservations.concat(newCity.reservations||[]);
+        } else {
+          allCities.push(newCity);
+        }
+      });
     }
-
-    content.push({type:'text',text:'Analizá todos los documentos y devolvé ÚNICAMENTE un JSON válido sin texto adicional ni backticks. Estructura:\n\n{"cities":[{"name":"Ciudad","flag":"🏳️","dates":"X – Y jun","nights":"N noches","reservations":[{"type":"hotel","title":"Nombre completo del hotel","detail":"Check-in: X jun\\nCheck-out: Y jun\\nDirección completa","confirmation":"# o —","sourceFile":0}]}]}\n\nReglas:\n- Agrupá por ciudad destino en orden cronológico\n- Emoji de bandera correcto para cada país\n- "type" solo puede ser: hotel, tour, vuelo, tren, transfer\n- "sourceFile": índice del archivo con ese voucher. Omití el campo si no hay voucher específico\n- Extraé TODAS las reservas de TODOS los documentos\n- "detail" con \\n para saltos de línea\n- "confirmation" con el número/localizador si existe, sino "—"'});
-
-    setStep(3);
-
-    // Armar el payload para la API
-    var payload = {
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 6000,
-      messages: [{ role:'user', content:content }]
-    };
-
-    // Headers según entorno
-    var headers = { 'Content-Type':'application/json' };
-    if (IN_IFRAME) {
-      headers['anthropic-version'] = '2023-06-01';
-    }
-
-    var resp = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(payload)
-    });
-
-    if (!resp.ok) {
-      var err=await resp.json().catch(function(){return{};});
-      throw new Error((err.error&&err.error.message)||'Error '+resp.status+': '+resp.statusText);
-    }
-
-    var data=await resp.json();
-    if (data.error) throw new Error(data.error.message||JSON.stringify(data.error));
-
-    var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-    raw=raw.replace(/```json|```/g,'').trim();
 
     setStep(4);
-    var parsed=JSON.parse(raw);
+    var parsed = { cities: allCities };
     gData={client:client,dates:dates,cities:parsed.cities||[]};
     await new Promise(function(r){setTimeout(r,400);});
     renderResult();
