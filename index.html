@@ -474,12 +474,47 @@ async function confirmarPublicar(){
   if(!siteName||siteName.length<3){document.getElementById('pub-error').textContent='El nombre debe tener al menos 3 caracteres';document.getElementById('pub-error').style.display='block';return;}
   var btn=document.getElementById('btn-pub-ok');btn.textContent='Publicando...';btn.disabled=true;document.getElementById('pub-error').style.display='none';
   try{
+    // 1. Obtener el token de Netlify desde el backend
+    var tokenResp=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'getToken'})});
+    var tokenData=await tokenResp.json();
+    if(!tokenResp.ok||tokenData.error)throw new Error(tokenData.error||'No se pudo obtener el token');
+    var netlifyToken=tokenData.token;
+
     var htmlContent=generarHTMLString();
-    var resp=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'publish',siteName:siteName,htmlContent:htmlContent})});
-    var data=await resp.json();
-    if(!resp.ok||data.error)throw new Error(data.error||'Error al publicar');
+
+    // 2. Buscar si el sitio ya existe
+    var listResp=await fetch('https://api.netlify.com/api/v1/sites?per_page=100',{headers:{Authorization:'Bearer '+netlifyToken}});
+    var sites=await listResp.json();
+    var existing=Array.isArray(sites)&&sites.find(function(s){return s.name===siteName;});
+    var siteId;
+
+    if(existing){
+      siteId=existing.id;
+    } else {
+      var createResp=await fetch('https://api.netlify.com/api/v1/sites',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+netlifyToken},body:JSON.stringify({name:siteName})});
+      var newSite=await createResp.json();
+      if(!newSite.id)throw new Error(newSite.message||'No se pudo crear el sitio en Netlify');
+      siteId=newSite.id;
+    }
+
+    // 3. Calcular hash SHA1 del contenido
+    var msgBuffer=new TextEncoder().encode(htmlContent);
+    var hashBuffer=await crypto.subtle.digest('SHA-1',msgBuffer);
+    var hashArray=Array.from(new Uint8Array(hashBuffer));
+    var fileHash=hashArray.map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+
+    // 4. Crear deploy
+    var deployResp=await fetch('https://api.netlify.com/api/v1/sites/'+siteId+'/deploys',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+netlifyToken},body:JSON.stringify({files:{'/index.html':fileHash}})});
+    var deploy=await deployResp.json();
+    if(!deploy.id)throw new Error(deploy.message||'No se pudo crear el deploy');
+
+    // 5. Subir el archivo directamente desde el browser
+    var uploadResp=await fetch('https://api.netlify.com/api/v1/deploys/'+deploy.id+'/files/index.html',{method:'PUT',headers:{'Content-Type':'application/octet-stream',Authorization:'Bearer '+netlifyToken},body:htmlContent});
+    if(!uploadResp.ok)throw new Error('Error subiendo el archivo a Netlify');
+
     cerrarModal();
-    document.getElementById('rsub').innerHTML='✅ Publicado: <a href="'+data.url+'" target="_blank" style="color:#4a6741;font-weight:700">'+data.url+'</a> &nbsp;<button onclick="copiarLink(\''+data.url+'\')" style="background:none;border:1px solid #4a6741;border-radius:20px;color:#4a6741;cursor:pointer;font-size:11px;padding:3px 10px">Copiar</button>';
+    var url='https://'+siteName+'.netlify.app';
+    document.getElementById('rsub').innerHTML='✅ Publicado: <a href="'+url+'" target="_blank" style="color:#4a6741;font-weight:700">'+url+'</a> &nbsp;<button onclick="copiarLink(\''+url+'\')" style="background:none;border:1px solid #4a6741;border-radius:20px;color:#4a6741;cursor:pointer;font-size:11px;padding:3px 10px">Copiar</button>';
   }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
   finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
