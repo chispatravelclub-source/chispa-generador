@@ -147,9 +147,24 @@ input.inp:focus{outline:none;border-color:#8aac7a}
     <button class="back" onclick="resetAll()">← Nuevo</button>
   </div>
   <div class="rbar"><div class="rtitle" id="rtitle"></div><div class="rsub" id="rsub"></div></div>
-  <button class="btn-out" onclick="descargar()">⬇ Descargar HTML para el cliente</button>
+  <button class="btn-out" onclick="publicar()">🌐 Publicar y obtener link</button>
+  <button class="btn-out" style="margin-top:.5rem" onclick="descargar()">⬇ Descargar HTML</button>
   <button class="btn-out" style="border-color:#8aac7a;color:#4a6741;margin-top:.5rem" onclick="agregarMas()">➕ Agregar más documentos</button>
   <button class="btn-sec" onclick="resetAll()">Generar otro itinerario</button>
+
+  <!-- Modal publicar -->
+  <div id="modal-pub" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center">
+    <div style="background:#fff;border-radius:16px;padding:1.5rem;margin:1.25rem;width:100%;max-width:380px">
+      <div style="font-size:15px;font-weight:700;margin-bottom:.5rem">Publicar itinerario</div>
+      <div style="font-size:12px;color:#888;margin-bottom:1rem">El link va a ser: <strong id="link-preview">...</strong>.netlify.app</div>
+      <label class="lbl">Nombre del link</label>
+      <input class="inp" id="inp-sitename" placeholder="ej: daniela-diego-japon" oninput="updatePreview()" style="margin-bottom:1rem"/>
+      <div style="font-size:11px;color:#aaa;margin-bottom:1rem">Solo letras, números y guiones. Sin espacios.</div>
+      <button class="btn-main" id="btn-pub-ok" onclick="confirmarPublicar()">🌐 Publicar</button>
+      <button class="btn-sec" style="width:100%;margin:.5rem 0 0" onclick="cerrarModal()">Cancelar</button>
+      <div id="pub-error" style="display:none;margin-top:.75rem;font-size:12px;color:#e24b4a"></div>
+    </div>
+  </div>
   <div class="itin" id="itin-preview"></div>
 </div>
 
@@ -450,10 +465,72 @@ function tog(id){
   if(!w) el.classList.add('open');
 }
 
-// ── DESCARGAR HTML CLIENTE ──
-function descargar() {
+function updatePreview() {
+  var v = document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('link-preview').textContent = v || '...';
+}
+
+function publicar() {
   if (!gData) return;
-  var d=gData;
+  var suggested = (gData.client||'').toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('inp-sitename').value = suggested;
+  updatePreview();
+  document.getElementById('pub-error').style.display = 'none';
+  var m = document.getElementById('modal-pub');
+  m.style.display = 'flex';
+}
+
+function cerrarModal() {
+  document.getElementById('modal-pub').style.display = 'none';
+}
+
+async function confirmarPublicar() {
+  var siteName = document.getElementById('inp-sitename').value.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  if (!siteName || siteName.length < 3) {
+    document.getElementById('pub-error').textContent = 'El nombre debe tener al menos 3 caracteres';
+    document.getElementById('pub-error').style.display = 'block';
+    return;
+  }
+
+  var btn = document.getElementById('btn-pub-ok');
+  btn.textContent = 'Publicando...';
+  btn.disabled = true;
+  document.getElementById('pub-error').style.display = 'none';
+
+  try {
+    var htmlContent = generarHTMLString();
+
+    var resp = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'publish', siteName: siteName, htmlContent: htmlContent })
+    });
+
+    var data = await resp.json();
+    if (!resp.ok || data.error) throw new Error(data.error || 'Error al publicar');
+
+    cerrarModal();
+
+    // Mostrar el link
+    document.getElementById('rsub').innerHTML = '✅ Publicado: <a href="'+data.url+'" target="_blank" style="color:#4a6741;font-weight:700">'+data.url+'</a> — <button onclick="copiarLink(\''+data.url+'\')" style="background:none;border:none;color:#4a6741;cursor:pointer;font-size:12px;text-decoration:underline">Copiar link</button>';
+
+  } catch(e) {
+    document.getElementById('pub-error').textContent = e.message;
+    document.getElementById('pub-error').style.display = 'block';
+  } finally {
+    btn.textContent = '🌐 Publicar';
+    btn.disabled = false;
+  }
+}
+
+function copiarLink(url) {
+  navigator.clipboard.writeText(url).then(function(){
+    alert('¡Link copiado!');
+  });
+}
+
+// ── Generar HTML string (para descarga y publicación) ──
+function generarHTMLString() {
   var vouchers={};
   d.cities.forEach(function(city,ci){
     city.reservations.forEach(function(res,ri){
@@ -493,11 +570,7 @@ function descargar() {
   html+='<div class="footer"><div class="f-logo">✦ CHISPA TRAVEL CLUB</div><div class="f-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="tel:+5491123294562">+54 9 11 2329-4562</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div>';
   html+='<script>'+vscript+'<\/script></body></html>';
 
-  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='itinerario-'+d.client.replace(/[^a-zA-Z0-9]/gi,'-').toLowerCase()+'.html';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  return html;
 }
 </script>
 </body>
