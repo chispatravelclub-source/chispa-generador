@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export const config = {
   api: {
     bodyParser: {
@@ -19,48 +21,40 @@ export default async function handler(req, res) {
     const { siteName, htmlContent } = req.body;
 
     try {
+      const fileHash = crypto.createHash('sha1').update(htmlContent).digest('hex');
+
       // Buscar si el sitio ya existe
       const listResp = await fetch('https://api.netlify.com/api/v1/sites?per_page=100', {
         headers: { Authorization: 'Bearer ' + netlifyToken }
       });
       const sites = await listResp.json();
-      const existing = Array.isArray(sites) && sites.find(function(s) {
-        return s.name === siteName;
-      });
-
-      const htmlB64 = Buffer.from(htmlContent).toString('base64');
-      const fileHash = require('crypto').createHash('sha1').update(htmlContent).digest('hex');
-
-      const deployBody = {
-        files: { '/index.html': fileHash },
-        async: false
-      };
+      const existing = Array.isArray(sites) && sites.find(s => s.name === siteName);
 
       let siteId;
-
       if (existing) {
         siteId = existing.id;
       } else {
-        // Crear sitio nuevo
         const createResp = await fetch('https://api.netlify.com/api/v1/sites', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + netlifyToken },
           body: JSON.stringify({ name: siteName })
         });
         const newSite = await createResp.json();
+        if (!newSite.id) throw new Error(newSite.message || 'No se pudo crear el sitio');
         siteId = newSite.id;
       }
 
       // Crear deploy
-      const deployResp = await fetch('https://api.netlify.com/api/v1/sites/' + siteId + '/deploys', {
+      const deployResp = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/deploys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + netlifyToken },
-        body: JSON.stringify(deployBody)
+        body: JSON.stringify({ files: { '/index.html': fileHash } })
       });
       const deploy = await deployResp.json();
+      if (!deploy.id) throw new Error(deploy.message || 'No se pudo crear el deploy');
 
       // Subir el archivo
-      await fetch('https://api.netlify.com/api/v1/deploys/' + deploy.id + '/files/index.html', {
+      await fetch(`https://api.netlify.com/api/v1/deploys/${deploy.id}/files/index.html`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/octet-stream',
@@ -69,7 +63,7 @@ export default async function handler(req, res) {
         body: htmlContent
       });
 
-      return res.status(200).json({ url: 'https://' + siteName + '.netlify.app' });
+      return res.status(200).json({ url: `https://${siteName}.netlify.app` });
 
     } catch (e) {
       return res.status(500).json({ error: e.message });
