@@ -338,17 +338,48 @@ function getTripRange(cities,fl){
   all.sort(function(a,b){return a-b;});
   return{first:all[0],last:all[all.length-1]};
 }
+function cleanAIJson(raw){
+  // Remove markdown fences
+  raw=raw.replace(/```json|```/g,'').trim();
+  // Fix sourceFile: — or sourceFile: null -> sourceFile: 0
+  raw=raw.replace(/"sourceFile"\s*:\s*[—–-]{1,3}/g,'"sourceFile": 0');
+  // Fix any bare — or – as JSON values (e.g. "confirmation": —)
+  raw=raw.replace(/:\s*[—–]\s*([,\}\]])/g,': "—"$1');
+  // Fix trailing commas before } or ]
+  raw=raw.replace(/,\s*([}\]])/g,'$1');
+  // Remove any non-JSON text before first {
+  var start=raw.indexOf('{');
+  if(start>0)raw=raw.slice(start);
+  // Remove any text after last }
+  var end=raw.lastIndexOf('}');
+  if(end>=0&&end<raw.length-1)raw=raw.slice(0,end+1);
+  return raw;
+}
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
   var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:7000,messages:[{role:'user',content:content}]})});
-  if(!resp.ok){var e=await resp.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Error '+resp.status);}
+  if(!resp.ok){
+    var e=await resp.json().catch(function(){return{};});
+    var msg=(e.error&&e.error.message)||'Error '+resp.status;
+    // Better 413 message
+    if(resp.status===413||msg.includes('too large')||msg.includes('413'))msg='Los archivos son demasiado pesados. Probá subiendo menos archivos a la vez o comprimiendo los PDFs.';
+    throw new Error(msg);
+  }
   var data=await resp.json();
   if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-  return JSON.parse(raw.replace(/```json|```/g,'').trim());
+  raw=cleanAIJson(raw);
+  try{
+    return JSON.parse(raw);
+  }catch(e){
+    // Try to extract valid JSON if there's extra text
+    var m=raw.match(/\{[\s\S]*\}/);
+    if(m){try{return JSON.parse(m[0]);}catch(e2){}}
+    throw new Error('La IA devolvió un formato inesperado. Intentá de nuevo.');
+  }
 }
-var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos adjuntos y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO – EZE->Ciudad","detail":"Salida HH:MM hs · Llegada HH:MM hs · (Escala: Ciudad si aplica)","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0},"return":{"title":"Aerolinea NRO – Ciudad->EZE","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0}},"cities":[{"name":"CiudadEnEspanol","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"NombreHotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"COD o —","sourceFile":0},"activities":[{"title":"NombreTour","detail":"Descripcion completa. Punto de encuentro: Direccion si existe. mapsUrl: https://maps.google.com/?q=URL_ENCODED si hay direccion","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"localTransfers":[{"title":"Traslado","detail":"Origen -> Destino","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Empresa NRO – CiudadA -> CiudadB","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}}],"personalDocuments":[{"type":"pasaporte|visa|seguro|permiso|otro","name":"Descripcion del documento","holder":"Nombre del titular","expiry":"DD mon AAAA o vacio","sourceFile":0}]}\n\nREGLAS CRITICAS:\n1. internationalFlights: outbound=vuelo que SALE de Argentina (EZE/AEP/Ministro Pistarini). return=vuelo que LLEGA a Argentina. Identificar por aeropuerto origen/destino.\n2. countries: paises destino SIN Argentina.\n3. cities: SOLO destinos con hotel, SIN ciudades argentinas. NUNCA poner Buenos Aires, Ezeiza.\n4. Normalizar ciudades a espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Milan=Milan, Edinburgh=Edimburgo, Vienna=Viena, Athens=Atenas, Prague=Praga, Budapest=Budapest.\n5. UNA SOLA entrada por ciudad aunque tenga varios hoteles (usar el de menor checkinDate).\n6. ORDEN CRONOLOGICO por checkinDate. Dentro de cada ciudad, activities y localTransfers TAMBIEN en orden cronologico por date+time.\n7. checkinDate/checkoutDate: exactamente como en el voucher, SIN horario, formato "DD mon".\n8. intercityTransport: transporte ENTRE ciudades destino (tren, bus, ferry, vuelo interno). Va en la ciudad de ORIGEN del transporte. Si es Edinburgh->Londres es intercityTransport de Edimburgo.\n9. activities: punto de encuentro va en detail, NO como localTransfer separado.\n10. localTransfers: solo traslados puerta a puerta (aeropuerto-hotel, hotel-hotel, hotel-estacion).\n11. Extraer ABSOLUTAMENTE TODAS las reservas. No omitir nada.\n12. sourceFile: indice del archivo fuente (segun la lista de indices al inicio).\n13. IMPORTANTE: cada item (hotel, actividad, traslado, transporte) debe estar en la ciudad CORRECTA segun la fecha. Revisa las fechas del hotel de cada ciudad para asignar correctamente.\n14. personalDocuments: si hay pasaportes, visas, permisos de conducir, seguros de viaje u otros documentos personales (NO vouchers de reservas), incluirlos en el array personalDocuments con type, name, holder (titular), expiry (vencimiento si figura), sourceFile. Types posibles: pasaporte, visa, seguro, permiso, otro.';
+var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos adjuntos y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO – EZE->Ciudad","detail":"Salida HH:MM hs · Llegada HH:MM hs · (Escala: Ciudad si aplica)","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0},"return":{"title":"Aerolinea NRO – Ciudad->EZE","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0}},"cities":[{"name":"CiudadEnEspanol","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"NombreHotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"COD o —","sourceFile":0},"activities":[{"title":"NombreTour","detail":"Descripcion completa. Punto de encuentro: Direccion si existe. mapsUrl: https://maps.google.com/?q=URL_ENCODED si hay direccion","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"localTransfers":[{"title":"Traslado","detail":"Origen -> Destino","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Empresa NRO – CiudadA -> CiudadB","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}}],"personalDocuments":[{"type":"pasaporte|visa|seguro|permiso|otro","name":"Descripcion del documento","holder":"Nombre del titular","expiry":"DD mon AAAA o vacio","sourceFile":0}]}\n\nREGLAS CRITICAS:\n1. internationalFlights: outbound=vuelo que SALE de Argentina (EZE/AEP/Ministro Pistarini). return=vuelo que LLEGA a Argentina. Identificar por aeropuerto origen/destino.\n2. countries: paises destino SIN Argentina.\n3. cities: SOLO destinos con hotel, SIN ciudades argentinas. NUNCA poner Buenos Aires, Ezeiza.\n4. Normalizar ciudades a espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Milan=Milan, Edinburgh=Edimburgo, Vienna=Viena, Athens=Atenas, Prague=Praga, Budapest=Budapest.\n5. UNA SOLA entrada por ciudad aunque tenga varios hoteles (usar el de menor checkinDate).\n6. ORDEN CRONOLOGICO por checkinDate. Dentro de cada ciudad, activities y localTransfers TAMBIEN en orden cronologico por date+time.\n7. checkinDate/checkoutDate: exactamente como en el voucher, SIN horario, formato "DD mon".\n8. intercityTransport: transporte ENTRE ciudades destino (tren, bus, ferry, vuelo interno). Va en la ciudad de ORIGEN del transporte. Si es Edinburgh->Londres es intercityTransport de Edimburgo.\n9. activities: punto de encuentro va en detail, NO como localTransfer separado.\n10. localTransfers: solo traslados puerta a puerta (aeropuerto-hotel, hotel-hotel, hotel-estacion).\n11. Extraer ABSOLUTAMENTE TODAS las reservas. No omitir nada.\n12. sourceFile: SIEMPRE debe ser un numero entero (el indice del archivo). NUNCA usar — ni null. Si no sabes el archivo, usar 0.\n13. IMPORTANTE: cada item (hotel, actividad, traslado, transporte) debe estar en la ciudad CORRECTA segun la fecha. Revisa las fechas del hotel de cada ciudad para asignar correctamente.\n14. personalDocuments: si hay pasaportes, visas, permisos de conducir, seguros de viaje u otros documentos personales (NO vouchers de reservas), incluirlos en el array personalDocuments con type, name, holder (titular), expiry (vencimiento si figura), sourceFile. Types posibles: pasaporte, visa, seguro, permiso, otro.';
 
 // Consolidation prompt: used when we already have a partial JSON and add more docs
 var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad. Agrega personalDocuments nuevos sin duplicar.\n\nJSON ACTUAL:\n';
