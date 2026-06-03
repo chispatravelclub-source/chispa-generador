@@ -675,7 +675,6 @@ function renderResult(){
   ib+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logo+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="https://wa.me/5491136358451">+54 9 11 3635-8451</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
   // Docs
   // ── Docs panel ──
-  var d=gData;
   var pdocs=d.personalDocs||[];
   var db='<div class="docs-body">';
 
@@ -706,6 +705,7 @@ function renderResult(){
     db+='<div style="padding:3rem 1rem;text-align:center;color:#bbb;font-size:13px">No hay documentos cargados</div>';
   }
   db+='</div>';
+  var inb='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:var(--green);text-decoration:none">+54 9 11 3635-8451</a></div><div class="info-row"><span class="info-icon">📸</span><span class="info-key">Instagram</span><span class="info-val">@chispa.travelclub</span></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDate+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nU+' ciudad'+(nU!==1?'es':'')+'</span></div></div></div>';
   var full='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+paises+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+paises+' '+flags+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+heroDate+'</div></div></div>'+statsH+'<div class="tabs"><div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div><div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div><div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info util</div></div><div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+db+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
   document.getElementById('itin-preview').innerHTML=full;
   show('sc-result');
