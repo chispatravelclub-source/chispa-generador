@@ -6,7 +6,7 @@
 <title>Chispa Travel Club — Generador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--green:#3d5c36;--green-mid:#5a7a4a;--green-light:#8aac7a;--green-pale:#e8f2e0;--green-xpale:#f4f9f0;--ink:#1a1a1a;--ink2:#444;--ink3:#888;--border:#e5e5e2;--bg:#f5f5f3;--white:#fff;--radius:16px;--radius-sm:10px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -33,17 +33,22 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .fitem-size{color:#ccc;font-size:11px;flex-shrink:0}
 .fitem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
-/* Doc items with label */
-.ditem{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:0;overflow:hidden;margin-bottom:0}
-.ditem-top{display:flex;align-items:center;gap:8px;padding:8px 11px}
+/* Doc items with structured fields */
+.ditem{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.ditem-top{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border)}
 .ditem-icon{font-size:15px;flex-shrink:0}
-.ditem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:12px;color:var(--ink)}
+.ditem-fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--ink3)}
 .ditem-size{color:#ccc;font-size:11px;flex-shrink:0}
 .ditem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
-.ditem-label{display:flex;align-items:center;gap:7px;padding:0 11px 9px;border-top:1px solid var(--border);background:var(--green-xpale);padding:7px 11px}
-.ditem-label-icon{font-size:13px;flex-shrink:0;color:var(--green-mid)}
-.ditem-label input{flex:1;border:none;background:transparent;font-size:12px;font-family:'DM Sans';color:var(--ink);outline:none;font-weight:500}
-.ditem-label input::placeholder{color:#bbb}
+.ditem-fields{display:flex;flex-direction:column;gap:0;background:var(--green-xpale)}
+.ditem-field{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #deefd0}
+.ditem-field:last-child{border-bottom:none}
+.ditem-field-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center}
+.ditem-field label{font-size:9px;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;min-width:58px}
+.ditem-field input,.ditem-field select{flex:1;border:none;background:transparent;font-size:12px;font-family:'DM Sans';color:var(--ink);outline:none;font-weight:500;min-width:0}
+.ditem-field input::placeholder{color:#bbb}
+.ditem-field select{color:var(--ink);cursor:pointer;-webkit-appearance:none;appearance:none}
+.ditem-field select option{color:var(--ink)}
 .btn-main{width:100%;padding:14px;border-radius:14px;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:700;font-family:'DM Sans';cursor:pointer}
 .lscreen{padding:3.5rem 1.25rem;text-align:center}
 .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--green-light);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 1.25rem}
@@ -58,7 +63,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65}
 .hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 65%,transparent 100%)}
 .hero-content{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
-.hero-dest{font-family:'Montserrat',sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:5px;letter-spacing:-.02em}
+.hero-dest{font-family:'DM Sans',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:5px;letter-spacing:-.01em}
 .hero-names{font-size:14px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px}
 .hero-dates{font-size:14px;color:rgba(255,255,255,.85);font-weight:600;margin-top:3px}
 /* STATS clicables */
@@ -305,7 +310,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={},_summaryData={};
-var personalFiles=[],personalLabels=[]; // separate personal docs with custom labels
+var personalFiles=[],personalDocs_meta=[]; // {tipo, pasajero, paises, nombre} per doc
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
 var ORIGIN_KEYWORDS=['argentina','buenos aires','ezeiza','aep','eze','ministro pistarini'];
 function isOriginCity(n){if(!n)return false;n=n.toLowerCase();return ORIGIN_KEYWORDS.some(function(k){return n.includes(k);});}
@@ -347,35 +352,63 @@ function handleDocs(fl){
     var f=fl[i];
     if(!personalFiles.find(function(x){return x.name===f.name&&x.size===f.size;})){
       personalFiles.push(f);
-      personalLabels.push(''); // empty label by default
+      personalDocs_meta.push({tipo:'pasaporte',pasajero:'',paises:'',nombre:''});
     }
   }
   renderDocs();
   document.getElementById('finput-docs').value='';
 }
-function removeDoc(i){personalFiles.splice(i,1);personalLabels.splice(i,1);renderDocs();}
-function updateDocLabel(i,val){personalLabels[i]=val;}
+function removeDoc(i){personalFiles.splice(i,1);personalDocs_meta.splice(i,1);renderDocs();}
+function updateDocMeta(i,field,val){if(personalDocs_meta[i])personalDocs_meta[i][field]=val;}
 function renderDocs(){
-  var DOC_SUGGEST=['Pasaporte','Visa','Seguro de viaje','Permiso de conducir','DNI','Vacunas','Tarjeta sanitaria'];
+  var TIPOS=[
+    {val:'pasaporte',label:'Pasaporte',icon:'🛂'},
+    {val:'visa',label:'Visa',icon:'🔖'},
+    {val:'seguro',label:'Seguro de viaje',icon:'🏥'},
+    {val:'permiso',label:'Permiso de conducir',icon:'🚗'},
+    {val:'dni',label:'DNI / Documento',icon:'🪪'},
+    {val:'vacunas',label:'Certificado de vacunas',icon:'💉'},
+    {val:'otro',label:'Otro documento',icon:'📄'},
+  ];
   var html=personalFiles.map(function(f,i){
-    var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
-    var label=personalLabels[i]||'';
+    var meta=personalDocs_meta[i]||{};
+    var isPdf=(f.type==='application/pdf'||f.name.endsWith('.pdf'));
+    var fileIcon=isPdf?'📄':'🖼️';
+    // Type options
+    var typeOpts=TIPOS.map(function(t){
+      return '<option value="'+t.val+'"'+(meta.tipo===t.val?' selected':'')+'>'+t.icon+' '+t.label+'</option>';
+    }).join('');
     return '<div class="ditem">'+
       '<div class="ditem-top">'+
-        '<span class="ditem-icon">'+icon+'</span>'+
-        '<span class="ditem-name">'+f.name+'</span>'+
-        '<span class="ditem-size">'+(f.size/1024).toFixed(0)+' KB</span>'+
+        '<span class="ditem-icon">'+fileIcon+'</span>'+
+        '<span class="ditem-fname">'+f.name+' · '+(f.size/1024).toFixed(0)+' KB</span>'+
         '<button class="ditem-rm" onclick="removeDoc('+i+')">×</button>'+
       '</div>'+
-      '<div class="ditem-label">'+
-        '<span class="ditem-label-icon">🏷</span>'+
-        '<input type="text" placeholder="Nombre del documento (ej: Pasaporte de Ana)" value="'+label+'" '+
-          'oninput="updateDocLabel('+i+',this.value)" list="doc-suggest-'+i+'"/>'+
-        '<datalist id="doc-suggest-'+i+'">'+DOC_SUGGEST.map(function(s){return '<option value="'+s+'"/>';}).join('')+'</datalist>'+
+      '<div class="ditem-fields">'+
+        '<div class="ditem-field">'+
+          '<span class="ditem-field-icon">📋</span>'+
+          '<label>Tipo</label>'+
+          '<select onchange="updateDocMeta('+i+','tipo',this.value)">'+typeOpts+'</select>'+
+        '</div>'+
+        '<div class="ditem-field">'+
+          '<span class="ditem-field-icon">👤</span>'+
+          '<label>Pasajero</label>'+
+          '<input type="text" placeholder="Nombre del titular" value="'+(meta.pasajero||'')+'" oninput="updateDocMeta('+i+','pasajero',this.value)"/>'+
+        '</div>'+
+        '<div class="ditem-field">'+
+          '<span class="ditem-field-icon">🌍</span>'+
+          '<label>País/es</label>'+
+          '<input type="text" placeholder="Ej: Kenya, Tanzania (o todos)" value="'+(meta.paises||'')+'" oninput="updateDocMeta('+i+','paises',this.value)"/>'+
+        '</div>'+
+        '<div class="ditem-field">'+
+          '<span class="ditem-field-icon">📝</span>'+
+          '<label>Detalle</label>'+
+          '<input type="text" placeholder="Ej: vence 2028, múltiple entrada" value="'+(meta.nombre||'')+'" oninput="updateDocMeta('+i+','nombre',this.value)"/>'+
+        '</div>'+
       '</div>'+
     '</div>';
   }).join('');
-  document.getElementById('flist-docs').innerHTML=html;
+  document.getElementById('flist-docs').innerHTML=html||'';
 }
 var dz=document.getElementById('dzone');
 dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#8aac7a';});
@@ -413,7 +446,7 @@ function compressImage(f){
 }
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
-function resetAll(){files=[];filesB64=[];filesType=[];personalFiles=[];personalLabels=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';document.getElementById('flist-docs').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
+function resetAll(){files=[];filesB64=[];filesType=[];personalFiles=[];personalDocs_meta=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';document.getElementById('flist-docs').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
 function switchTab(name){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelector('.tab[data-tab="'+name+'"]').classList.add('active');document.getElementById('panel-'+name).classList.add('active');}
 function openSummary(type){var d=_summaryData[type];if(!d)return;document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});var el=document.querySelector('.stat[data-type="'+type+'"]');if(el)el.classList.add('active');document.getElementById('summary-title').textContent=d.title;document.getElementById('summary-content').innerHTML=d.html;document.getElementById('summary-panel').classList.add('open');}
 function closeSummary(){document.getElementById('summary-panel').classList.remove('open');document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});}
@@ -564,7 +597,7 @@ function splitIntoBatches(files, b64arr){
 
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();var dates=document.getElementById('inp-dates').value.trim();
-  if(!client){alert('Ingresa el nombre del cliente');return;}if(!files.length){alert('Subi al menos un documento');return;}
+  if(!client){showToast('Ingresá el nombre del cliente','error');return;}if(!files.length){showToast('Subí al menos un documento','error');return;}
   show('sc-loading');setStep(1);
   try{
     filesB64=[];filesType=[];
@@ -596,18 +629,25 @@ async function generar(){
     }
     setStep(4);
     parsed=postProcess(parsed||{});
-    // Build personalDocuments directly from user-labeled files (no AI guessing needed)
-    // Store personal files AFTER voucher files in the combined array
+    // Build personalDocuments from user-filled metadata
     var voucherCount=filesB64.length;
+    var DOC_LABELS={pasaporte:'Pasaporte',visa:'Visa',seguro:'Seguro de viaje',permiso:'Permiso de conducir',dni:'DNI / Documento',vacunas:'Certificado de vacunas',otro:'Documento'};
     var builtPersonalDocs=personalFiles.map(function(f,i){
-      var label=personalLabels[i]||f.name;
-      var lowerLabel=label.toLowerCase();
-      var type='otro';
-      if(lowerLabel.includes('pasaport'))type='pasaporte';
-      else if(lowerLabel.includes('visa'))type='visa';
-      else if(lowerLabel.includes('seguro'))type='seguro';
-      else if(lowerLabel.includes('permiso')||lowerLabel.includes('licencia'))type='permiso';
-      return{type:type,name:label,holder:'',expiry:'',sourceFile:voucherCount+i};
+      var meta=personalDocs_meta[i]||{};
+      var tipo=meta.tipo||'otro';
+      var pasajero=meta.pasajero||'';
+      var paises=meta.paises||'';
+      var detalle=meta.nombre||'';
+      // Build a descriptive name: "Pasaporte — Ana García" or "Visa Kenya — Diego"
+      var parts=[];
+      parts.push(DOC_LABELS[tipo]||tipo);
+      if(paises)parts.push(paises);
+      var displayName=parts.join(' — ');
+      // Build detail string
+      var detailParts=[];
+      if(pasajero)detailParts.push(pasajero);
+      if(detalle)detailParts.push(detalle);
+      return{type:tipo,name:displayName,holder:pasajero,expiry:detalle,paises:paises,sourceFile:voucherCount+i};
     });
     // Append personal file b64 to the combined arrays so openFileByIndex works
     for(var i=0;i<personalB64.length;i++){filesB64.push(personalB64[i]);filesType.push(personalTypes[i]);}
@@ -651,8 +691,8 @@ function agregarMas(){
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };input.click();
 }
-function openVoucher(key){var v=_vData[key];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}catch(e){alert('No se pudo abrir');}}
-function openFileByIndex(i){if(!filesB64[i])return;try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}catch(e){alert('No se pudo abrir');}}
+function openVoucher(key){var v=_vData[key];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}catch(e){showToast('No se pudo abrir el archivo','error');}}
+function openFileByIndex(i){if(!filesB64[i])return;try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}catch(e){showToast('No se pudo abrir el archivo','error');}}
 function regV(r,key){if(r&&r.sourceFile!==undefined&&filesB64[r.sourceFile])_vData[key]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};}
 function cBadge(conf){return (conf&&conf!=='-'&&conf!=='—')?'<span class="badge-conf">Confirmado · '+conf+'</span>':'<span class="badge-pend">Pendiente</span>';}
 function vBtn(key){return _vData[key]?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';}
@@ -816,7 +856,9 @@ function renderResult(){
       var icon=DOC_ICONS[doc.type]||'📄';
       var typeLabel=(doc.type||'documento').charAt(0).toUpperCase()+(doc.type||'documento').slice(1);
       var openBtn=hasFile?'<button class="doc-open-btn" onclick="openFileByIndex('+doc.sourceFile+')">🔍 Ver documento</button>':'<span style="font-size:11px;color:#ccc">Sin archivo</span>';
-      db+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+typeLabel+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||typeLabel)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+(doc.expiry?'<div class="doc-card-expiry">Vence: '+doc.expiry+'</div>':'')+'</div></div><div class="doc-card-footer">'+openBtn+'</div></div>';
+      var paisesTag=doc.paises?'<div class="doc-card-expiry">🌍 '+doc.paises+'</div>':'';
+      var detalleTag=doc.expiry?'<div class="doc-card-expiry" style="color:#888">'+doc.expiry+'</div>':'';
+      db+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+typeLabel+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||typeLabel)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+paisesTag+detalleTag+'</div></div><div class="doc-card-footer">'+openBtn+'</div></div>';
     });
   }
 
@@ -913,7 +955,9 @@ function generarHTMLString(){
       var icon=DOC_ICONS_C[doc.type]||'📄';
       var tl=(doc.type||'documento').charAt(0).toUpperCase()+(doc.type||'documento').slice(1);
       var ob=hasFile?'<button class="doc-open-btn" onclick="openV(\'doc_'+doc.sourceFile+'\')">🔍 Ver documento</button>':'<span style="font-size:11px;color:#ccc">Sin archivo</span>';
-      clientDB+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+tl+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||tl)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+(doc.expiry?'<div class="doc-card-expiry">Vence: '+doc.expiry+'</div>':'')+'</div></div><div class="doc-card-footer">'+ob+'</div></div>';
+      var cp2=doc.paises?'<div class="doc-card-expiry">🌍 '+doc.paises+'</div>':'';
+      var cd2=doc.expiry?'<div class="doc-card-expiry" style="color:#888">'+doc.expiry+'</div>':'';
+      clientDB+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+tl+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||tl)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+cp2+cd2+'</div></div><div class="doc-card-footer">'+ob+'</div></div>';
     });
   }
   if(!pdocs.length){
@@ -922,9 +966,9 @@ function generarHTMLString(){
   clientDB+='</div>';
   body+='<div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+clientDB+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
   body+='<a style="position:fixed;bottom:1.25rem;right:1.25rem;z-index:90;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.45);text-decoration:none" href="https://wa.me/5491136358451" target="_blank"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>';
-  var vscript='var V='+repr(vouchers)+';var SD='+repr(sd)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}function openSummary(type){var d=SD[type];if(!d)return;document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")});var el=document.querySelector(".stat[data-type=\'"+type+"\']");if(el)el.classList.add("active");document.getElementById("summary-title").textContent=d.title;document.getElementById("summary-content").innerHTML=d.html;document.getElementById("summary-panel").classList.add("open")}function closeSummary(){document.getElementById("summary-panel").classList.remove("open");document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")})}';
+  var vscript='var V='+repr(vouchers)+';var SD='+repr(sd)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){showToast('No se pudo abrir el archivo','error')}}function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}function openSummary(type){var d=SD[type];if(!d)return;document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")});var el=document.querySelector(".stat[data-type=\'"+type+"\']");if(el)el.classList.add("active");document.getElementById("summary-title").textContent=d.title;document.getElementById("summary-content").innerHTML=d.html;document.getElementById("summary-panel").classList.add("open")}function closeSummary(){document.getElementById("summary-panel").classList.remove("open");document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")})}';
   var lmark='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
-  var out='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet"><style>'+CSS_STRING+'</style></head><body>';
+  var out='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Itinerario — '+d.client+'</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>'+CSS_STRING+'</style></head><body>';
   out+='<div class="hdr">'+lmark+'<div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div><div style="margin-left:auto;text-align:right"><div style="font-size:13px;font-weight:700">'+d.client+'</div><div style="font-size:11px;color:#888;margin-top:1px">'+heroDate+'</div></div></div>';
   out+=body;
   out+='<script>'+vscript+'<\/script></body></html>';
@@ -954,7 +998,7 @@ async function confirmarPublicar(){
     var deploy=await deployResp.json();if(!deploy.id)throw new Error(deploy.message||'No se pudo crear el deploy');
     var uploadResp=await fetch('https://api.netlify.com/api/v1/deploys/'+deploy.id+'/files/index.html',{method:'PUT',headers:{'Content-Type':'application/octet-stream',Authorization:'Bearer '+netlifyToken},body:htmlContent});if(!uploadResp.ok)throw new Error('Error subiendo el archivo');
     cerrarModal();var url='https://'+siteName+'.netlify.app';var eb=document.getElementById('pub-banner');if(eb)eb.remove();
-    document.getElementById('itin-preview').insertAdjacentHTML('afterbegin','<div id="pub-banner" style="background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a> <button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){alert(\'Link copiado!\')})" style="background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:\'DM Sans\'">Copiar</button></div>');
+    document.getElementById('itin-preview').insertAdjacentHTML('afterbegin','<div id="pub-banner" style="background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a> <button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){showToast('¡Link copiado!','success')})" style="background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:\'DM Sans\'">Copiar</button></div>');
   }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
   finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
