@@ -85,10 +85,13 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 /* Vuelo internacional */
 .intl-flight{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.85rem;overflow:hidden}
 .intl-flight-top{display:flex;align-items:stretch}
-.intl-flight-side{width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.9rem .4rem;border-right:1px solid var(--border);gap:4px;background:var(--green-xpale)}
-.intl-flight-time{font-size:14px;font-weight:700;color:var(--green);line-height:1}
-.intl-flight-lbl{font-size:8px;color:var(--green-mid);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.intl-flight-icon{font-size:20px;margin-top:4px}
+.intl-flight-side{width:68px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.85rem .35rem;border-right:1px solid var(--border);gap:2px;background:var(--green-xpale)}
+.intl-flight-date-num{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--green);line-height:1;text-align:center}
+.intl-flight-date-mon{font-size:9px;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-align:center;margin-bottom:4px}
+.intl-flight-time-wrap{border-top:1px solid #d4e8c8;padding-top:5px;width:100%;text-align:center;margin-top:2px}
+.intl-flight-time{font-size:14px;font-weight:700;color:var(--ink);line-height:1}
+.intl-flight-lbl{font-size:8px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.intl-flight-icon{font-size:18px;margin-top:5px;text-align:center}
 .intl-flight-main{flex:1;padding:.9rem 1rem}
 .intl-flight-type{font-size:9px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
 .intl-flight-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;line-height:1.3}
@@ -144,8 +147,22 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .conn-sub{font-size:10px;color:var(--ink3);margin-top:1px}
 .conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}
 /* Docs / Info */
-.docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.5rem}
+.docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:1rem}
+.docs-section-title{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;padding:0 .1rem;margin-bottom:.25rem}
+.doc-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.doc-card:active{opacity:.85}
+.doc-card-top{display:flex;align-items:stretch}
+.doc-card-side{width:68px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.9rem .4rem;border-right:1px solid var(--border);gap:4px;background:var(--green-xpale)}
+.doc-card-icon{font-size:28px;text-align:center}
+.doc-card-typelbl{font-size:8px;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:center;margin-top:3px}
+.doc-card-main{flex:1;padding:.85rem 1rem}
+.doc-card-name{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.doc-card-holder{font-size:12px;color:var(--ink2);font-weight:500;margin-bottom:2px;display:flex;align-items:center;gap:5px}
+.doc-card-expiry{font-size:11px;color:var(--ink3)}
+.doc-card-footer{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--green-xpale);border-top:1px solid #deefd0}
+.doc-open-btn{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:'DM Sans';font-weight:700;display:flex;align-items:center;gap:5px}
 .doc-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.85rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.doc-item:active{background:var(--green-xpale)}
 .doc-icon-wrap{width:36px;height:36px;background:var(--green-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .doc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1}
 .doc-type{font-size:11px;color:var(--ink3);margin-top:1px}
@@ -331,10 +348,10 @@ async function callAI(content){
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
-var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos adjuntos y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO – EZE->Ciudad","detail":"Salida HH:MM hs · Llegada HH:MM hs · (Escala: Ciudad si aplica)","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0},"return":{"title":"Aerolinea NRO – Ciudad->EZE","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0}},"cities":[{"name":"CiudadEnEspanol","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"NombreHotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"COD o —","sourceFile":0},"activities":[{"title":"NombreTour","detail":"Descripcion completa. Punto de encuentro: Direccion si existe. mapsUrl: https://maps.google.com/?q=URL_ENCODED si hay direccion","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"localTransfers":[{"title":"Traslado","detail":"Origen -> Destino","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Empresa NRO – CiudadA -> CiudadB","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}}]}\n\nREGLAS CRITICAS:\n1. internationalFlights: outbound=vuelo que SALE de Argentina (EZE/AEP/Ministro Pistarini). return=vuelo que LLEGA a Argentina. Identificar por aeropuerto origen/destino.\n2. countries: paises destino SIN Argentina.\n3. cities: SOLO destinos con hotel, SIN ciudades argentinas. NUNCA poner Buenos Aires, Ezeiza.\n4. Normalizar ciudades a espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Milan=Milan, Edinburgh=Edimburgo, Vienna=Viena, Athens=Atenas, Prague=Praga, Budapest=Budapest.\n5. UNA SOLA entrada por ciudad aunque tenga varios hoteles (usar el de menor checkinDate).\n6. ORDEN CRONOLOGICO por checkinDate. Dentro de cada ciudad, activities y localTransfers TAMBIEN en orden cronologico por date+time.\n7. checkinDate/checkoutDate: exactamente como en el voucher, SIN horario, formato "DD mon".\n8. intercityTransport: transporte ENTRE ciudades destino (tren, bus, ferry, vuelo interno). Va en la ciudad de ORIGEN del transporte. Si es Edinburgh->Londres es intercityTransport de Edimburgo.\n9. activities: punto de encuentro va en detail, NO como localTransfer separado.\n10. localTransfers: solo traslados puerta a puerta (aeropuerto-hotel, hotel-hotel, hotel-estacion).\n11. Extraer ABSOLUTAMENTE TODAS las reservas. No omitir nada.\n12. sourceFile: indice del archivo fuente (segun la lista de indices al inicio).\n13. IMPORTANTE: cada item (hotel, actividad, traslado, transporte) debe estar en la ciudad CORRECTA segun la fecha. Revisa las fechas del hotel de cada ciudad para asignar correctamente.';
+var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos adjuntos y devuelve UNICAMENTE un JSON valido, sin texto extra, sin backticks, sin comentarios.\n\nESTRUCTURA:\n{"countries":["Pais1"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO – EZE->Ciudad","detail":"Salida HH:MM hs · Llegada HH:MM hs · (Escala: Ciudad si aplica)","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0},"return":{"title":"Aerolinea NRO – Ciudad->EZE","detail":"Salida HH:MM hs · Llegada HH:MM hs","date":"DD mon","time":"HH:MM","confirmation":"COD o —","sourceFile":0}},"cities":[{"name":"CiudadEnEspanol","flag":"🏳️","dates":"DD mon – DD mon","nights":"N noche/s","hotel":{"title":"NombreHotel","checkinDate":"DD mon","checkoutDate":"DD mon","detail":"Direccion","confirmation":"COD o —","sourceFile":0},"activities":[{"title":"NombreTour","detail":"Descripcion completa. Punto de encuentro: Direccion si existe. mapsUrl: https://maps.google.com/?q=URL_ENCODED si hay direccion","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"localTransfers":[{"title":"Traslado","detail":"Origen -> Destino","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}],"intercityTransport":{"type":"vuelo|tren|bus|ferry","title":"Empresa NRO – CiudadA -> CiudadB","detail":"Salida HH:MM hs · Llegada HH:MM hs","time":"HH:MM","date":"DD mon","confirmation":"COD o —","sourceFile":0}}],"personalDocuments":[{"type":"pasaporte|visa|seguro|permiso|otro","name":"Descripcion del documento","holder":"Nombre del titular","expiry":"DD mon AAAA o vacio","sourceFile":0}]}\n\nREGLAS CRITICAS:\n1. internationalFlights: outbound=vuelo que SALE de Argentina (EZE/AEP/Ministro Pistarini). return=vuelo que LLEGA a Argentina. Identificar por aeropuerto origen/destino.\n2. countries: paises destino SIN Argentina.\n3. cities: SOLO destinos con hotel, SIN ciudades argentinas. NUNCA poner Buenos Aires, Ezeiza.\n4. Normalizar ciudades a espanol: London=Londres, Rome=Roma, Florence=Florencia, Venice=Venecia, Milan=Milan, Edinburgh=Edimburgo, Vienna=Viena, Athens=Atenas, Prague=Praga, Budapest=Budapest.\n5. UNA SOLA entrada por ciudad aunque tenga varios hoteles (usar el de menor checkinDate).\n6. ORDEN CRONOLOGICO por checkinDate. Dentro de cada ciudad, activities y localTransfers TAMBIEN en orden cronologico por date+time.\n7. checkinDate/checkoutDate: exactamente como en el voucher, SIN horario, formato "DD mon".\n8. intercityTransport: transporte ENTRE ciudades destino (tren, bus, ferry, vuelo interno). Va en la ciudad de ORIGEN del transporte. Si es Edinburgh->Londres es intercityTransport de Edimburgo.\n9. activities: punto de encuentro va en detail, NO como localTransfer separado.\n10. localTransfers: solo traslados puerta a puerta (aeropuerto-hotel, hotel-hotel, hotel-estacion).\n11. Extraer ABSOLUTAMENTE TODAS las reservas. No omitir nada.\n12. sourceFile: indice del archivo fuente (segun la lista de indices al inicio).\n13. IMPORTANTE: cada item (hotel, actividad, traslado, transporte) debe estar en la ciudad CORRECTA segun la fecha. Revisa las fechas del hotel de cada ciudad para asignar correctamente.\n14. personalDocuments: si hay pasaportes, visas, permisos de conducir, seguros de viaje u otros documentos personales (NO vouchers de reservas), incluirlos en el array personalDocuments con type, name, holder (titular), expiry (vencimiento si figura), sourceFile. Types posibles: pasaporte, visa, seguro, permiso, otro.';
 
 // Consolidation prompt: used when we already have a partial JSON and add more docs
-var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad.\n\nJSON ACTUAL:\n';
+var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad. Agrega personalDocuments nuevos sin duplicar.\n\nJSON ACTUAL:\n';
 
 async function buildContent(allFiles, allB64, allTypes){
   var content=[{type:'text',text:'Lista de archivos:\n'+allFiles.map(function(f,i){return 'Indice '+i+': '+f.name;}).join('\n')+'\n'}];
@@ -360,24 +377,27 @@ async function buildConsolidateContent(existingJSON, newFiles, newB64, newTypes,
 }
 
 function postProcess(parsed){
-  // Normalize city names
   if(parsed.cities) parsed.cities.forEach(function(c){c.name=normalizeCity(c.name);});
-  // Filter origin cities
   if(parsed.cities) parsed.cities=parsed.cities.filter(function(c){return !isOriginCity(c.name);});
-  // Sort cities chronologically
   if(parsed.cities) parsed.cities.sort(function(a,b){return sortDate(a)-sortDate(b);});
-  // Sort items within each city by date+time
   if(parsed.cities) parsed.cities.forEach(function(c){
     function evtSort(a,b){
       var da=parseDate(a.date)||new Date(0);var db=parseDate(b.date)||new Date(0);
       if(da-db!==0)return da-db;
-      // Compare times
       var ta=(a.time||'00:00').replace(':','');var tb=(b.time||'00:00').replace(':','');
       return parseInt(ta)-parseInt(tb);
     }
     if(c.activities)c.activities.sort(evtSort);
     if(c.localTransfers)c.localTransfers.sort(evtSort);
   });
+  // Deduplicate personalDocuments by sourceFile
+  if(parsed.personalDocuments){
+    var seen={};
+    parsed.personalDocuments=parsed.personalDocuments.filter(function(d){
+      var k=d.sourceFile+'_'+(d.holder||'')+'_'+(d.type||'');
+      if(seen[k])return false;seen[k]=true;return true;
+    });
+  }
   return parsed;
 }
 
@@ -414,7 +434,7 @@ async function generar(){
     }
     setStep(4);
     parsed=postProcess(parsed);
-    gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{}};
+    gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},personalDocs:parsed.personalDocuments||[]};
     await new Promise(function(r){setTimeout(r,400);});renderResult();
   }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisa que los archivos sean legibles e intenta de nuevo.</div>';}
 }
@@ -438,6 +458,7 @@ function agregarMas(){
       gData.cities=parsed.cities||[];
       gData.countries=parsed.countries||[];
       gData.intlFlights=parsed.internationalFlights||{};
+      gData.personalDocs=(parsed.personalDocuments||[]);
       await new Promise(function(r){setTimeout(r,300);});renderResult();
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };input.click();
@@ -449,8 +470,18 @@ function cBadge(conf){return (conf&&conf!=='-'&&conf!=='—')?'<span class="badg
 function vBtn(key){return _vData[key]?'<button class="btn-voucher" onclick="openVoucher(\''+key+'\')">📄 Ver voucher</button>':'';}
 function mkIntlFlight(f,key,label){
   if(!f)return '';regV(f,key);
-  var det=(f.detail||'').replace(/\n/g,'<br>');if(f.date)det=f.date+(det?' · '+det:'');
-  return '<div class="intl-flight"><div class="intl-flight-top"><div class="intl-flight-side">'+(f.time?'<div class="intl-flight-time">'+f.time+'</div><div class="intl-flight-lbl">hs</div>':'')+'<div class="intl-flight-icon">✈️</div></div><div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo internacional')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+cBadge(f.confirmation)+vBtn(key)+'</div></div>';
+  var dp=parseDateParts(f.date);
+  var sideHtml='<div class="intl-flight-side">';
+  if(dp){
+    sideHtml+='<div class="intl-flight-date-num">'+dp.day+'</div>';
+    sideHtml+='<div class="intl-flight-date-mon">'+dp.mon+'</div>';
+  }
+  if(f.time){
+    sideHtml+='<div class="intl-flight-time-wrap"><div class="intl-flight-time">'+f.time+'</div><div class="intl-flight-lbl">hs</div></div>';
+  }
+  sideHtml+='<div class="intl-flight-icon">✈️</div></div>';
+  var det=(f.detail||'').replace(/\n/g,'<br>');
+  return '<div class="intl-flight"><div class="intl-flight-top">'+sideHtml+'<div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo internacional')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+cBadge(f.confirmation)+vBtn(key)+'</div></div>';
 }
 function mkHotel(h,key){
   regV(h,key);
@@ -584,12 +615,38 @@ function renderResult(){
   var logo=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
   ib+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logo+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="https://wa.me/5491136358451">+54 9 11 3635-8451</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
   // Docs
+  // ── Docs panel ──
+  var d=gData;
+  var pdocs=d.personalDocs||[];
   var db='<div class="docs-body">';
-  if(files.length)files.forEach(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';var ext=f.name.split('.').pop().toUpperCase();db+='<div class="doc-item" onclick="openFileByIndex('+i+')"><div class="doc-icon-wrap">'+icon+'</div><div><div class="doc-name">'+f.name+'</div><div class="doc-type">'+ext+' · '+(f.size/1024).toFixed(0)+' KB</div></div><span style="color:#ccc;font-size:18px">›</span></div>';});
-  else db+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">No hay documentos cargados</div>';
+
+  // Personal documents section
+  if(pdocs.length){
+    db+='<div class="docs-section-title">📋 Documentos personales</div>';
+    var DOC_ICONS={pasaporte:'🛂',visa:'🔖',seguro:'🏥',permiso:'🚗',otro:'📄'};
+    pdocs.forEach(function(doc,i){
+      var hasFile=(doc.sourceFile!==undefined&&filesB64[doc.sourceFile]);
+      var icon=DOC_ICONS[doc.type]||'📄';
+      var typeLabel=(doc.type||'documento').charAt(0).toUpperCase()+(doc.type||'documento').slice(1);
+      var openBtn=hasFile?'<button class="doc-open-btn" onclick="openFileByIndex('+doc.sourceFile+')">🔍 Ver documento</button>':'<span style="font-size:11px;color:#ccc">Sin archivo</span>';
+      db+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+typeLabel+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||typeLabel)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+(doc.expiry?'<div class="doc-card-expiry">Vence: '+doc.expiry+'</div>':'')+'</div></div><div class="doc-card-footer">'+openBtn+'</div></div>';
+    });
+  }
+
+  // Vouchers section (all uploaded files)
+  if(files.length){
+    db+='<div class="docs-section-title" style="margin-top:.5rem">🗂 Vouchers y reservas</div>';
+    files.forEach(function(f,i){
+      var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
+      var ext=f.name.split('.').pop().toUpperCase();
+      db+='<div class="doc-item" onclick="openFileByIndex('+i+')"><div class="doc-icon-wrap">'+icon+'</div><div><div class="doc-name">'+f.name+'</div><div class="doc-type">'+ext+' · '+(f.size/1024).toFixed(0)+' KB</div></div><span style="color:#ccc;font-size:18px">›</span></div>';
+    });
+  }
+
+  if(!pdocs.length&&!files.length){
+    db+='<div style="padding:3rem 1rem;text-align:center;color:#bbb;font-size:13px">No hay documentos cargados</div>';
+  }
   db+='</div>';
-  // Info
-  var inb='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:var(--green);text-decoration:none">+54 9 11 3635-8451</a></div><div class="info-row"><span class="info-icon">📸</span><span class="info-key">Instagram</span><span class="info-val">@chispa.travelclub</span></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDate+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nU+' ciudad'+(nU!==1?'es':'')+'</span></div></div></div>';
   var full='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+paises+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+paises+' '+flags+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+heroDate+'</div></div></div>'+statsH+'<div class="tabs"><div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div><div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div><div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info util</div></div><div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+db+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
   document.getElementById('itin-preview').innerHTML=full;
   show('sc-result');
@@ -599,6 +656,8 @@ function generarHTMLString(){
   var vouchers={};
   function addV(r,key){if(r&&r.sourceFile!==undefined&&filesB64[r.sourceFile])vouchers[key]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};}
   if(fl.outbound)addV(fl.outbound,'intl-out');if(fl.return)addV(fl.return,'intl-ret');
+  // Add personal documents to vouchers
+  (d.personalDocs||[]).forEach(function(doc){if(doc.sourceFile!==undefined&&filesB64[doc.sourceFile])vouchers['doc_'+doc.sourceFile]={b64:filesB64[doc.sourceFile],type:filesType[doc.sourceFile]};});
   d.cities.forEach(function(city,ci){if(city.hotel)addV(city.hotel,'h'+ci+'_0');(city.activities||[]).forEach(function(r,i){addV(r,'a'+ci+'_'+i);});(city.localTransfers||[]).forEach(function(r,i){addV(r,'t'+ci+'_'+i);});if(city.intercityTransport)addV(city.intercityTransport,'ic'+ci);});
   var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){if(c.intercityTransport&&c.intercityTransport.type==='vuelo')nV++;});
   var nU=countUniq(d.cities),nH=d.cities.filter(function(c){return c.hotel;}).length;
@@ -613,7 +672,16 @@ function generarHTMLString(){
   // build client-side summary using vouchers dict
   function rc(conf){return (conf&&conf!=='-'&&conf!=='—')?'<span class="badge-conf">Confirmado · '+conf+'</span>':'<span class="badge-pend">Pendiente</span>';}
   function rvb(key){return vouchers[key]?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';}
-  function rFlight(f,key,label){if(!f)return '';var det=(f.detail||'').replace(/\n/g,'<br>');if(f.date)det=f.date+(det?' · '+det:'');return '<div class="intl-flight"><div class="intl-flight-top"><div class="intl-flight-side">'+(f.time?'<div class="intl-flight-time">'+f.time+'</div><div class="intl-flight-lbl">hs</div>':'')+'<div class="intl-flight-icon">✈️</div></div><div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+rc(f.confirmation)+rvb(key)+'</div></div>';}
+  function rFlight(f,key,label){
+    if(!f)return '';
+    var dp=pDP(f.date);
+    var sh='<div class="intl-flight-side">';
+    if(dp){sh+='<div class="intl-flight-date-num">'+dp.day+'</div><div class="intl-flight-date-mon">'+dp.mon+'</div>';}
+    if(f.time){sh+='<div class="intl-flight-time-wrap"><div class="intl-flight-time">'+f.time+'</div><div class="intl-flight-lbl">hs</div></div>';}
+    sh+='<div class="intl-flight-icon">✈️</div></div>';
+    var det=(f.detail||'').replace(/\n/g,'<br>');
+    return '<div class="intl-flight"><div class="intl-flight-top">'+sh+'<div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+rc(f.confirmation)+rvb(key)+'</div></div>';
+  }
   function rHotel(h,key){var dr2=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');var det=(h.detail||'').replace(/\n/g,'<br>');return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+rc(h.confirmation)+rvb(key)+'</div></div>';}
   function getMapUrl(d){if(!d)return null;var m=d.match(/mapsUrl:\s*(https?:\/\/[^\s"<]+)/i);return m?m[1]:null;}
   function cleanDet(d){if(!d)return '';d=d.replace(/mapsUrl:\s*https?:\/\/[^\s"<]+/gi,'').trim().replace(/\.?\s*$/,'');d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');return d;}
@@ -646,7 +714,25 @@ function generarHTMLString(){
   var logo=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
   ib+='<div class="pfooter"><div style="margin-bottom:.75rem;display:flex;justify-content:center">'+logo+'</div><div class="pf-contacts"><a href="mailto:info@chispatravel.com">INFO@CHISPATRAVEL.COM</a><br><a href="https://wa.me/5491136358451">+54 9 11 3635-8451</a><br><a href="https://instagram.com/chispa.travelclub">@CHISPA.TRAVELCLUB</a><br><a href="https://chispatravel.com">CHISPATRAVEL.COM</a></div></div></div>';
   var inb='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:#3d5c36;text-decoration:none">+54 9 11 3635-8451</a></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDate+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nU+' ciudad'+(nU!==1?'es':'')+'</span></div></div></div>';
-  body+='<div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel"><div class="docs-body"><div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers estan en cada reserva ↑</div></div></div><div id="panel-info" class="tab-panel">'+inb+'</div>';
+  // Build client docs panel
+  var clientDB='<div class="docs-body">';
+  var pdocs=d.personalDocs||[];
+  var DOC_ICONS_C={pasaporte:'🛂',visa:'🔖',seguro:'🏥',permiso:'🚗',otro:'📄'};
+  if(pdocs.length){
+    clientDB+='<div class="docs-section-title">📋 Documentos personales</div>';
+    pdocs.forEach(function(doc){
+      var hasFile=(doc.sourceFile!==undefined&&vouchers['doc_'+doc.sourceFile]);
+      var icon=DOC_ICONS_C[doc.type]||'📄';
+      var tl=(doc.type||'documento').charAt(0).toUpperCase()+(doc.type||'documento').slice(1);
+      var ob=hasFile?'<button class="doc-open-btn" onclick="openV(\'doc_'+doc.sourceFile+'\')">🔍 Ver documento</button>':'<span style="font-size:11px;color:#ccc">Sin archivo</span>';
+      clientDB+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+tl+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||tl)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+(doc.expiry?'<div class="doc-card-expiry">Vence: '+doc.expiry+'</div>':'')+'</div></div><div class="doc-card-footer">'+ob+'</div></div>';
+    });
+  }
+  if(!pdocs.length){
+    clientDB+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers están disponibles en cada reserva ↑</div>';
+  }
+  clientDB+='</div>';
+  body+='<div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+clientDB+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
   body+='<a style="position:fixed;bottom:1.25rem;right:1.25rem;z-index:90;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.45);text-decoration:none" href="https://wa.me/5491136358451" target="_blank"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>';
   var vscript='var V='+repr(vouchers)+';var SD='+repr(sd)+';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){alert("No se pudo abrir")}}function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}function openSummary(type){var d=SD[type];if(!d)return;document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")});var el=document.querySelector(".stat[data-type=\'"+type+"\']");if(el)el.classList.add("active");document.getElementById("summary-title").textContent=d.title;document.getElementById("summary-content").innerHTML=d.html;document.getElementById("summary-panel").classList.add("open")}function closeSummary(){document.getElementById("summary-panel").classList.remove("open");document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")})}';
   var lmark='<svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>';
