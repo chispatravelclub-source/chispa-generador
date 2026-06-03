@@ -33,6 +33,17 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .fitem-size{color:#ccc;font-size:11px;flex-shrink:0}
 .fitem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
+/* Doc items with label */
+.ditem{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:0;overflow:hidden;margin-bottom:0}
+.ditem-top{display:flex;align-items:center;gap:8px;padding:8px 11px}
+.ditem-icon{font-size:15px;flex-shrink:0}
+.ditem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:12px;color:var(--ink)}
+.ditem-size{color:#ccc;font-size:11px;flex-shrink:0}
+.ditem-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;padding:0 2px}
+.ditem-label{display:flex;align-items:center;gap:7px;padding:0 11px 9px;border-top:1px solid var(--border);background:var(--green-xpale);padding:7px 11px}
+.ditem-label-icon{font-size:13px;flex-shrink:0;color:var(--green-mid)}
+.ditem-label input{flex:1;border:none;background:transparent;font-size:12px;font-family:'DM Sans';color:var(--ink);outline:none;font-weight:500}
+.ditem-label input::placeholder{color:#bbb}
 .btn-main{width:100%;padding:14px;border-radius:14px;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:700;font-family:'DM Sans';cursor:pointer}
 .lscreen{padding:3.5rem 1.25rem;text-align:center}
 .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--green-light);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 1.25rem}
@@ -195,17 +206,32 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
   <div class="body">
     <div><label class="lbl">Nombre del cliente</label><input class="inp" id="inp-client" placeholder="Ej: Daniela y Diego"/></div>
     <div><label class="lbl">Destino y fechas</label><input class="inp" id="inp-dates" placeholder="Ej: Japon · 18 may — 14 jun 2026"/></div>
+
+    <!-- ZONA VOUCHERS -->
     <div>
-      <label class="lbl">Documentos del viaje</label>
+      <label class="lbl">✈️ Vouchers y reservas</label>
       <div class="uzone" id="dzone">
         <input type="file" id="finput" multiple accept=".pdf,image/*" onchange="handleFiles(this.files)"/>
         <div class="uzone-icon">📎</div>
-        <div class="uzone-t">Subir vouchers e itinerarios</div>
-        <div class="uzone-s">PDF · JPG · PNG · podes subir varios a la vez</div>
+        <div class="uzone-t">Tickets · Hoteles · Actividades · Traslados</div>
+        <div class="uzone-s">PDF · JPG · PNG · podés subir varios a la vez</div>
       </div>
       <div class="flist" id="flist"></div>
     </div>
-    <div style="font-size:11px;color:#bbb;text-align:center;line-height:1.7">La IA lee todos los documentos, extrae las reservas<br>y las organiza cronologicamente por ciudad.</div>
+
+    <!-- ZONA DOCUMENTOS PERSONALES -->
+    <div>
+      <label class="lbl">🛂 Documentos personales</label>
+      <div class="uzone" id="dzone-docs" style="margin-bottom:0">
+        <input type="file" id="finput-docs" multiple accept=".pdf,image/*" onchange="handleDocs(this.files)"/>
+        <div class="uzone-icon">🪪</div>
+        <div class="uzone-t">Pasaportes · Visas · Seguros · Permisos</div>
+        <div class="uzone-s">Subí y poné el nombre de cada documento</div>
+      </div>
+      <div class="flist" id="flist-docs"></div>
+    </div>
+
+    <div style="font-size:11px;color:#bbb;text-align:center;line-height:1.7">La IA organiza todo cronológicamente y clasifica<br>cada documento automáticamente.</div>
     <button class="btn-main" onclick="generar()">✦ Generar itinerario</button>
   </div>
 </div>
@@ -279,6 +305,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={},_summaryData={};
+var personalFiles=[],personalLabels=[]; // separate personal docs with custom labels
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
 var ORIGIN_KEYWORDS=['argentina','buenos aires','ezeiza','aep','eze','ministro pistarini'];
 function isOriginCity(n){if(!n)return false;n=n.toLowerCase();return ORIGIN_KEYWORDS.some(function(k){return n.includes(k);});}
@@ -313,10 +340,51 @@ function show(id){document.querySelectorAll('.screen').forEach(function(s){s.cla
 function handleFiles(fl){for(var i=0;i<fl.length;i++){var f=fl[i];if(!files.find(function(x){return x.name===f.name&&x.size===f.size;}))files.push(f);}renderFiles();document.getElementById('finput').value='';}
 function renderFiles(){document.getElementById('flist').innerHTML=files.map(function(f,i){var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';return '<div class="fitem"><span class="fitem-icon">'+icon+'</span><span class="fitem-name">'+f.name+'</span><span class="fitem-size">'+(f.size/1024).toFixed(0)+' KB</span><button class="fitem-rm" onclick="removeFile('+i+')">×</button></div>';}).join('');}
 function removeFile(i){files.splice(i,1);renderFiles();}
+
+// ── Personal documents ──
+function handleDocs(fl){
+  for(var i=0;i<fl.length;i++){
+    var f=fl[i];
+    if(!personalFiles.find(function(x){return x.name===f.name&&x.size===f.size;})){
+      personalFiles.push(f);
+      personalLabels.push(''); // empty label by default
+    }
+  }
+  renderDocs();
+  document.getElementById('finput-docs').value='';
+}
+function removeDoc(i){personalFiles.splice(i,1);personalLabels.splice(i,1);renderDocs();}
+function updateDocLabel(i,val){personalLabels[i]=val;}
+function renderDocs(){
+  var DOC_SUGGEST=['Pasaporte','Visa','Seguro de viaje','Permiso de conducir','DNI','Vacunas','Tarjeta sanitaria'];
+  var html=personalFiles.map(function(f,i){
+    var icon=(f.type==='application/pdf'||f.name.endsWith('.pdf'))?'📄':'🖼️';
+    var label=personalLabels[i]||'';
+    return '<div class="ditem">'+
+      '<div class="ditem-top">'+
+        '<span class="ditem-icon">'+icon+'</span>'+
+        '<span class="ditem-name">'+f.name+'</span>'+
+        '<span class="ditem-size">'+(f.size/1024).toFixed(0)+' KB</span>'+
+        '<button class="ditem-rm" onclick="removeDoc('+i+')">×</button>'+
+      '</div>'+
+      '<div class="ditem-label">'+
+        '<span class="ditem-label-icon">🏷</span>'+
+        '<input type="text" placeholder="Nombre del documento (ej: Pasaporte de Ana)" value="'+label+'" '+
+          'oninput="updateDocLabel('+i+',this.value)" list="doc-suggest-'+i+'"/>'+
+        '<datalist id="doc-suggest-'+i+'">'+DOC_SUGGEST.map(function(s){return '<option value="'+s+'"/>';}).join('')+'</datalist>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  document.getElementById('flist-docs').innerHTML=html;
+}
 var dz=document.getElementById('dzone');
 dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#8aac7a';});
 dz.addEventListener('dragleave',function(){dz.style.borderColor='';});
 dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='';handleFiles(e.dataTransfer.files);});
+var dzd=document.getElementById('dzone-docs');
+dzd.addEventListener('dragover',function(e){e.preventDefault();dzd.style.borderColor='#8aac7a';});
+dzd.addEventListener('dragleave',function(){dzd.style.borderColor='';});
+dzd.addEventListener('drop',function(e){e.preventDefault();dzd.style.borderColor='';handleDocs(e.dataTransfer.files);});
 function toB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('No se pudo leer: '+f.name));};r.readAsDataURL(f);});}
 function compressImage(f){
   // Compress images before sending — PDFs pass through unchanged
@@ -345,7 +413,7 @@ function compressImage(f){
 }
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
-function resetAll(){files=[];filesB64=[];filesType=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
+function resetAll(){files=[];filesB64=[];filesType=[];personalFiles=[];personalLabels=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';document.getElementById('flist-docs').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
 function switchTab(name){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelector('.tab[data-tab="'+name+'"]').classList.add('active');document.getElementById('panel-'+name).classList.add('active');}
 function openSummary(type){var d=_summaryData[type];if(!d)return;document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});var el=document.querySelector('.stat[data-type="'+type+'"]');if(el)el.classList.add('active');document.getElementById('summary-title').textContent=d.title;document.getElementById('summary-content').innerHTML=d.html;document.getElementById('summary-panel').classList.add('open');}
 function closeSummary(){document.getElementById('summary-panel').classList.remove('open');document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});}
@@ -500,8 +568,12 @@ async function generar(){
   show('sc-loading');setStep(1);
   try{
     filesB64=[];filesType=[];
-    for(var i=0;i<files.length;i++){filesB64.push(await compressImage(files[i]));filesType.push(getMT(files[i]));
-      var mt=getMT(files[i]);filesType[filesType.length-1]=(mt==='application/pdf'?mt:'image/jpeg');}
+    for(var i=0;i<files.length;i++){filesB64.push(await compressImage(files[i]));
+      var mt=getMT(files[i]);filesType.push(mt==='application/pdf'?mt:'image/jpeg');}
+    // Read personal docs (separate from vouchers)
+    var personalB64=[],personalTypes=[];
+    for(var i=0;i<personalFiles.length;i++){personalB64.push(await compressImage(personalFiles[i]));
+      var mt=getMT(personalFiles[i]);personalTypes.push(mt==='application/pdf'?mt:'image/jpeg');}
     setStep(2);
     var batches=splitIntoBatches(files,filesB64);
     var parsed=null;
@@ -524,7 +596,22 @@ async function generar(){
     }
     setStep(4);
     parsed=postProcess(parsed||{});
-    gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},personalDocs:parsed.personalDocuments||[]};
+    // Build personalDocuments directly from user-labeled files (no AI guessing needed)
+    // Store personal files AFTER voucher files in the combined array
+    var voucherCount=filesB64.length;
+    var builtPersonalDocs=personalFiles.map(function(f,i){
+      var label=personalLabels[i]||f.name;
+      var lowerLabel=label.toLowerCase();
+      var type='otro';
+      if(lowerLabel.includes('pasaport'))type='pasaporte';
+      else if(lowerLabel.includes('visa'))type='visa';
+      else if(lowerLabel.includes('seguro'))type='seguro';
+      else if(lowerLabel.includes('permiso')||lowerLabel.includes('licencia'))type='permiso';
+      return{type:type,name:label,holder:'',expiry:'',sourceFile:voucherCount+i};
+    });
+    // Append personal file b64 to the combined arrays so openFileByIndex works
+    for(var i=0;i<personalB64.length;i++){filesB64.push(personalB64[i]);filesType.push(personalTypes[i]);}
+    gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},personalDocs:builtPersonalDocs};
     await new Promise(function(r){setTimeout(r,400);});renderResult();
   }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisa que los archivos sean legibles e intenta de nuevo.</div>';}
 }
