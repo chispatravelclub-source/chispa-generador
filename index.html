@@ -318,6 +318,31 @@ dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderCol
 dz.addEventListener('dragleave',function(){dz.style.borderColor='';});
 dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='';handleFiles(e.dataTransfer.files);});
 function toB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('No se pudo leer: '+f.name));};r.readAsDataURL(f);});}
+function compressImage(f){
+  // Compress images before sending — PDFs pass through unchanged
+  var mt=getMT(f);
+  if(mt==='application/pdf')return toB64(f);
+  return new Promise(function(res,rej){
+    var url=URL.createObjectURL(f);
+    var img=new Image();
+    img.onload=function(){
+      var MAX=1600;
+      var w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      var canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      var ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      var q=0.82;
+      var dataUrl=canvas.toDataURL('image/jpeg',q);
+      URL.revokeObjectURL(url);
+      res(dataUrl.split(',')[1]);
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);toB64(f).then(res).catch(rej);};
+    img.src=url;
+  });
+}
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
 function resetAll(){files=[];filesB64=[];filesType=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
@@ -355,15 +380,32 @@ function cleanAIJson(raw){
   if(end>=0&&end<raw.length-1)raw=raw.slice(0,end+1);
   return raw;
 }
+var _apiKey=null;
+async function getApiKey(){
+  if(_apiKey)return _apiKey;
+  // Get key from backend (stored in env var, never exposed in HTML)
+  var r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'getKey'})});
+  var d=await r.json();
+  if(!d.key)throw new Error('No se pudo obtener la clave API');
+  _apiKey=d.key;
+  return _apiKey;
+}
 async function callAI(content){
-  var headers={'Content-Type':'application/json'};
-  if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:7000,messages:[{role:'user',content:content}]})});
+  var key=await getApiKey();
+  // Call Anthropic directly from browser — bypasses Vercel 4.5MB limit entirely
+  var resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':key,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:7000,messages:[{role:'user',content:content}]})
+  });
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
-    // Better 413 message
-    if(resp.status===413||msg.includes('too large')||msg.includes('413'))msg='Los archivos son demasiado pesados. Probá subiendo menos archivos a la vez o comprimiendo los PDFs.';
     throw new Error(msg);
   }
   var data=await resp.json();
@@ -373,7 +415,6 @@ async function callAI(content){
   try{
     return JSON.parse(raw);
   }catch(e){
-    // Try to extract valid JSON if there's extra text
     var m=raw.match(/\{[\s\S]*\}/);
     if(m){try{return JSON.parse(m[0]);}catch(e2){}}
     throw new Error('La IA devolvió un formato inesperado. Intentá de nuevo.');
@@ -459,7 +500,8 @@ async function generar(){
   show('sc-loading');setStep(1);
   try{
     filesB64=[];filesType=[];
-    for(var i=0;i<files.length;i++){filesB64.push(await toB64(files[i]));filesType.push(getMT(files[i]));}
+    for(var i=0;i<files.length;i++){filesB64.push(await compressImage(files[i]));filesType.push(getMT(files[i]));
+      var mt=getMT(files[i]);filesType[filesType.length-1]=(mt==='application/pdf'?mt:'image/jpeg');}
     setStep(2);
     var batches=splitIntoBatches(files,filesB64);
     var parsed=null;
@@ -495,7 +537,7 @@ function agregarMas(){
     show('sc-loading');setStep(1);
     try{
       var newB64=[],newTypes=[];
-      for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
+      for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var origMt=getMT(nuevos[i]);var b=await compressImage(nuevos[i]);var t=(origMt==='application/pdf'?origMt:'image/jpeg');filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
       setStep(2);
       // Consolidate: pass current data + new files
       setStep(2);
