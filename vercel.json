@@ -3,5 +3,10 @@
     "api/generate.js": {
       "maxDuration": 60
     }
+  },
+  "api": {
+    "bodyParser": {
+      "sizeLimit": "25mb"
+    }
   }
 }
