@@ -353,10 +353,11 @@ var PROMPT_SYSTEM='Sos un extractor de datos de viaje. Analiza los documentos ad
 // Consolidation prompt: used when we already have a partial JSON and add more docs
 var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad. Agrega personalDocuments nuevos sin duplicar.\n\nJSON ACTUAL:\n';
 
-async function buildContent(allFiles, allB64, allTypes){
-  var content=[{type:'text',text:'Lista de archivos:\n'+allFiles.map(function(f,i){return 'Indice '+i+': '+f.name;}).join('\n')+'\n'}];
+async function buildContent(allFiles, allB64, allTypes, offset){
+  offset=offset||0;
+  var content=[{type:'text',text:'Lista de archivos:\n'+allFiles.map(function(f,i){return 'Indice '+(offset+i)+': '+f.name;}).join('\n')+'\n'}];
   for(var j=0;j<allFiles.length;j++){
-    content.push({type:'text',text:'=== Archivo '+j+': '+allFiles[j].name+' ==='});
+    content.push({type:'text',text:'=== Archivo '+(offset+j)+': '+allFiles[j].name+' ==='});
     var mt=allTypes[j];
     if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:allB64[j]}});
     else content.push({type:'image',source:{type:'base64',media_type:mt,data:allB64[j]}});
@@ -402,7 +403,24 @@ function postProcess(parsed){
 }
 
 // Max files per single AI call (Haiku handles ~6 PDFs well)
-var MAX_SINGLE_CALL=6;
+// Max MB per batch (Haiku handles ~8MB of base64 safely)
+var MAX_BATCH_MB=7;
+
+function splitIntoBatches(files, b64arr){
+  // Split files into batches by cumulative base64 size
+  var batches=[];var batch=[];var batchSize=0;
+  for(var i=0;i<files.length;i++){
+    var sz=b64arr[i].length; // base64 length in chars ≈ bytes
+    if(batch.length>0&&batchSize+sz>MAX_BATCH_MB*1024*1024){
+      batches.push(batch);batch=[];batchSize=0;
+    }
+    batch.push(i);batchSize+=sz;
+    // Also cap at 4 files per batch regardless of size
+    if(batch.length>=4){batches.push(batch);batch=[];batchSize=0;}
+  }
+  if(batch.length>0)batches.push(batch);
+  return batches;
+}
 
 async function generar(){
   var client=document.getElementById('inp-client').value.trim();var dates=document.getElementById('inp-dates').value.trim();
@@ -412,28 +430,27 @@ async function generar(){
     filesB64=[];filesType=[];
     for(var i=0;i<files.length;i++){filesB64.push(await toB64(files[i]));filesType.push(getMT(files[i]));}
     setStep(2);
-    var parsed;
-    if(files.length<=MAX_SINGLE_CALL){
-      // All in one call - best quality
-      var content=await buildContent(files,filesB64,filesType);
-      parsed=await callAI(content);
-      setStep(3);
-    } else {
-      // First call: first MAX_SINGLE_CALL files
-      setStep(2);
-      var content=await buildContent(files.slice(0,MAX_SINGLE_CALL),filesB64.slice(0,MAX_SINGLE_CALL),filesType.slice(0,MAX_SINGLE_CALL));
-      parsed=await callAI(content);
-      // Subsequent calls: consolidate with remaining files in batches
-      var BS=4;
-      for(var start=MAX_SINGLE_CALL;start<files.length;start+=BS){
-        setStep(3);
-        var end=Math.min(start+BS,files.length);
-        var cc=await buildConsolidateContent(parsed,files.slice(start,end),filesB64.slice(start,end),filesType.slice(start,end),start);
-        parsed=await callAI(cc);
+    var batches=splitIntoBatches(files,filesB64);
+    var parsed=null;
+    for(var bi=0;bi<batches.length;bi++){
+      setStep(bi===0?2:3);
+      var idxs=batches[bi];
+      var bFiles=idxs.map(function(i){return files[i];});
+      var bB64=idxs.map(function(i){return filesB64[i];});
+      var bTypes=idxs.map(function(i){return filesType[i];});
+      var bOffset=idxs[0];
+      if(!parsed){
+        // First batch: fresh extraction
+        var c=await buildContent(bFiles,bB64,bTypes,bOffset);
+        parsed=await callAI(c);
+      } else {
+        // Subsequent batches: consolidate
+        var c=await buildConsolidateContent(parsed,bFiles,bB64,bTypes,bOffset);
+        parsed=await callAI(c);
       }
     }
     setStep(4);
-    parsed=postProcess(parsed);
+    parsed=postProcess(parsed||{});
     gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},personalDocs:parsed.personalDocuments||[]};
     await new Promise(function(r){setTimeout(r,400);});renderResult();
   }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisa que los archivos sean legibles e intenta de nuevo.</div>';}
@@ -450,9 +467,20 @@ function agregarMas(){
       for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
       setStep(2);
       // Consolidate: pass current data + new files
-      var cc=await buildConsolidateContent(gData,nuevos,newB64,newTypes,offset);
-      setStep(3);
-      var parsed=await callAI(cc);
+      setStep(2);
+      var batches2=splitIntoBatches(nuevos,newB64);
+      var parsed=JSON.parse(JSON.stringify(gData)); // start from current data
+      parsed.internationalFlights=gData.intlFlights;parsed.personalDocuments=gData.personalDocs;
+      for(var bi=0;bi<batches2.length;bi++){
+        setStep(bi===0?2:3);
+        var idxs2=batches2[bi];
+        var bFiles2=idxs2.map(function(i){return nuevos[i];});
+        var bB64_2=idxs2.map(function(i){return newB64[i];});
+        var bTypes2=idxs2.map(function(i){return newTypes[i];});
+        var bOffset2=offset+idxs2[0];
+        var cc=await buildConsolidateContent(parsed,bFiles2,bB64_2,bTypes2,bOffset2);
+        parsed=await callAI(cc);
+      }
       setStep(4);
       parsed=postProcess(parsed);
       gData.cities=parsed.cities||[];
