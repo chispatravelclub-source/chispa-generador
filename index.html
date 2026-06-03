@@ -23,7 +23,8 @@ label.lbl{font-size:10px;color:var(--green);text-transform:uppercase;letter-spac
 input.inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'DM Sans';color:var(--ink);background:var(--white);transition:border-color .15s}
 input.inp:focus{outline:none;border-color:var(--green-light)}
 .uzone{border:2px dashed #c5ddb0;border-radius:var(--radius);background:var(--green-xpale);padding:1.75rem 1rem;text-align:center;cursor:pointer;position:relative}
-.uzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uzone input{display:none}
+.uzone-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 18px;border-radius:20px;background:var(--green);color:#fff;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none}
 .uzone-icon{font-size:26px;margin-bottom:8px}
 .uzone-t{font-size:13px;font-weight:700;color:var(--green);margin-bottom:3px}
 .uzone-s{font-size:11px;color:var(--ink3)}
@@ -216,21 +217,23 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
     <div><label class="lbl">Destino y fechas</label><input class="inp" id="inp-dates" placeholder="Ej: Japon · 18 may — 14 jun 2026"/></div>
     <div>
       <label class="lbl">✈️ Vouchers y reservas</label>
-      <div class="uzone" id="dzone">
+      <div class="uzone" id="dzone" onclick="document.getElementById('finput').click()">
         <input type="file" id="finput" multiple accept=".pdf,image/*" onchange="handleFiles(this.files)"/>
         <div class="uzone-icon">📎</div>
         <div class="uzone-t">Tickets · Hoteles · Actividades · Traslados</div>
-        <div class="uzone-s">PDF · JPG · PNG · podés subir varios a la vez</div>
+        <div class="uzone-s">PDF · JPG · PNG</div>
+        <button class="uzone-btn" onclick="event.stopPropagation();document.getElementById('finput').click()">+ Seleccionar archivos</button>
       </div>
       <div class="flist" id="flist"></div>
     </div>
     <div>
       <label class="lbl">🛂 Documentos personales</label>
-      <div class="uzone" id="dzone-docs">
+      <div class="uzone" id="dzone-docs" onclick="document.getElementById('finput-docs').click()">
         <input type="file" id="finput-docs" multiple accept=".pdf,image/*" onchange="handleDocs(this.files)"/>
         <div class="uzone-icon">🪪</div>
         <div class="uzone-t">Pasaportes · Visas · Seguros · Permisos</div>
-        <div class="uzone-s">Completá los datos de cada documento</div>
+        <div class="uzone-s">PDF · JPG · PNG</div>
+        <button class="uzone-btn" onclick="event.stopPropagation();document.getElementById('finput-docs').click()">+ Seleccionar archivos</button>
       </div>
       <div class="flist" id="flist-docs"></div>
     </div>
