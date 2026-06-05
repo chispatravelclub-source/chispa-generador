@@ -156,7 +156,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .badge-pend::before{content:'';width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0}
 .btn-voucher{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:'DM Sans';font-weight:700;display:flex;align-items:center;gap:4px}
 .maps-link{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:var(--white);color:var(--green);cursor:pointer;font-family:'DM Sans';font-weight:700;display:inline-flex;align-items:center;gap:4px;text-decoration:none;margin-top:4px}
-/* Connector */
+/* Connector (legacy minimal) */
 .connector{display:flex;flex-direction:column;align-items:center;margin:.5rem 0 1rem}
 .conn-line{width:2px;height:20px;background:var(--border)}
 .conn-pill{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.5rem 1rem;font-size:11px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);max-width:92%}
@@ -165,6 +165,22 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 .conn-title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}
 .conn-sub{font-size:10px;color:var(--ink3);margin-top:1px}
 .conn-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-pale);color:var(--green);font-weight:700;flex-shrink:0}
+/* Transfer card between destinations */
+.tc-line{width:2px;height:18px;background:var(--border)}
+.tc-inner{background:var(--white);border:1.5px solid var(--green-light);border-radius:var(--radius);width:100%;overflow:hidden}
+.tc-header{display:flex;align-items:center;gap:10px;padding:.65rem 1rem;background:var(--green-xpale);border-bottom:1px solid #deefd0}
+.tc-icon{font-size:22px;flex-shrink:0}
+.tc-label{font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em}
+.tc-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.2;margin-top:1px}
+.tc-route{display:flex;align-items:flex-start;padding:.75rem 1rem;gap:0}
+.tc-ep{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.tc-time{font-size:22px;font-weight:700;color:var(--ink);line-height:1}
+.tc-station{font-size:11px;color:var(--ink3);font-weight:500;margin-top:2px;line-height:1.3}
+.tc-date{font-size:10px;font-weight:700;color:var(--green);background:var(--green-pale);padding:2px 8px;border-radius:10px;margin-top:3px;display:inline-block}
+.tc-mid{display:flex;flex-direction:column;align-items:center;padding:0 .5rem;flex-shrink:0;padding-top:8px}
+.tc-arrow{font-size:14px;color:var(--green-mid)}
+.tc-dur{font-size:9px;color:var(--ink3);text-align:center;margin-top:4px;font-weight:600;white-space:nowrap}
+.tc-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:.55rem 1rem;background:var(--green-xpale);border-top:1px solid #deefd0}
 /* Docs / Info */
 .docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:1rem}
 .docs-section-title{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;padding:0 .1rem;margin-bottom:.25rem}
@@ -688,7 +704,9 @@ function mkHotel(h,key){
   regV(h,key);
   var dr=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');
   var det=(h.detail||'').replace(/\n/g,'<br>');
-  return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+cBadge(h.confirmation)+vBtn(key)+'</div></div>';
+  var mu=h.mapsUrl||'';
+  var mapsBtn=mu?'<a href="'+mu+'" target="_blank" class="maps-link" style="margin-top:6px">📍 Ver hotel</a>':'';
+  return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+mapsBtn+'</div><div class="evt-footer">'+cBadge(h.confirmation)+vBtn(key)+'</div></div>';
 }
 function extractMapsUrl(detail){
   if(!detail)return null;
@@ -731,9 +749,9 @@ function mkDateTimeCol(date,time,icon){
 function mkEvt(r,key,typeLabel,icon){
   regV(r,key);
   var rawDet=r.detail||'';
-  var mapsUrl=extractMapsUrl(rawDet);
+  var mapsUrl=extractMapsUrl(rawDet)||r.mapsUrl||'';
   var det=cleanDetail(rawDet).replace(/\n/g,'<br>');
-  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:6px">📍 Ver en mapa</a>':'';
+  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" class="maps-link" style="margin-top:6px">📍 Ver en mapa</a>':'';
   var col=mkDateTimeCol(r.date,r.time,icon);
   return '<div class="evt-card"><div class="evt-card-top">'+col+'<div class="evt-main"><div class="evt-type">'+typeLabel+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mapsBtn+'</div></div><div class="evt-footer">'+cBadge(r.confirmation)+vBtn(key)+'</div></div>';
 }
@@ -744,9 +762,11 @@ function mkExcursion(evt,key){
   var det=cleanDetail(rawDet).replace(/\n/g,'<br>');
   var depTime=evt.time||'';
   var arrTime=evt.endTime||'';
-  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" class="maps-link">📍 Ver punto</a>':'';
+  var dp=parseDateParts(evt.date);
+  var mapsBtn=mapsUrl?'<a href="'+mapsUrl+'" target="_blank" class="maps-link">📍 Ver punto de salida</a>':'';
   return '<div class="excursion-card">'+
     '<div class="excursion-header">'+
+      (dp?'<span style="font-size:11px;font-weight:700;color:var(--green-mid);background:var(--green-pale);padding:2px 8px;border-radius:10px">'+dp.day+' '+dp.mon+'</span>':'')+
       '<span class="excursion-tag">Excursión del día</span>'+
       (depTime?'<span style="font-size:11px;color:var(--green-mid);font-weight:700">'+depTime+(arrTime?' — '+arrTime:'')+'</span>':'')+
     '</div>'+
@@ -760,8 +780,10 @@ function mkExcursion(evt,key){
 }
 function mkConn(dep,key){
   regV(dep,key);
-  var icons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};
+  var icons={vuelo:'✈️',vuelo_interno:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️',auto:'🚗'};
+  var typeLabels={vuelo:'Vuelo internacional',vuelo_interno:'Vuelo interno',tren:'En tren',bus:'En bus',ferry:'En ferry',auto:'En auto/transfer'};
   var icon=icons[dep.type]||'🚌';
+  var typeLabel=typeLabels[dep.type]||'Traslado';
   var depInfo=dep.departure||{};var arrInfo=dep.arrival||{};
   var depStation=depInfo.station||'';
   var depTime=depInfo.time||dep.time||'';
@@ -769,20 +791,33 @@ function mkConn(dep,key){
   var depMaps=depInfo.mapsUrl||dep.mapsUrl||'';
   var arrStation=arrInfo.station||'';
   var arrTime=arrInfo.time||'';
+  var arrDate=arrInfo.date||'';
   var arrMaps=arrInfo.mapsUrl||'';
-  var det='';
-  if(depDate)det+=depDate;
-  if(depTime)det+=(det?' · ':'')+depTime+'hs';
-  if(depStation)det+=(det?' · ':'')+depStation;
-  if(arrTime)det+=' → '+arrTime+'hs';
-  if(arrStation)det+=' '+arrStation;
-  if(!det){det=dep.detail||'';}
-  var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';
-    var vb=_vData[key]?'<button class="btn-voucher" style="margin-left:4px" onclick="openVoucher(\'"+key+"\')">📄</button>':'';
-  var mapsLinks='';
-  if(depMaps)mapsLinks+=' <a href="'+depMaps+'" target="_blank" class="maps-link">📍 Salida</a>';
-  if(arrMaps)mapsLinks+=' <a href="'+arrMaps+'" target="_blank" class="maps-link">📍 Llegada</a>';
-  return '<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+(dep.title||'Siguiente destino')+'</div>'+(det?'<div class="conn-sub">'+det+mapsLinks+'</div>':mapsLinks)+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';
+  var duration=dep.duration||'';
+  var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="badge-conf">Confirmado · '+dep.confirmation+'</span>':'';
+  var vb=vBtn(key);
+  var hasRoute=depTime||depStation||arrTime||arrStation;
+  // Build departure endpoint
+  var depEp='<div class="tc-ep">';
+  if(depTime)depEp+='<div class="tc-time">'+depTime+'</div>';
+  if(depStation)depEp+='<div class="tc-station">'+depStation+'</div>';
+  if(depDate)depEp+='<div class="tc-date">'+depDate+'</div>';
+  if(depMaps)depEp+='<a href="'+depMaps+'" target="_blank" class="maps-link" style="margin-top:5px">📍 Ver punto</a>';
+  depEp+='</div>';
+  // Build arrival endpoint
+  var arrEp='<div class="tc-ep">';
+  if(arrTime)arrEp+='<div class="tc-time">'+arrTime+'</div>';
+  if(arrStation)arrEp+='<div class="tc-station">'+arrStation+'</div>';
+  if(arrDate)arrEp+='<div class="tc-date">'+arrDate+'</div>';
+  if(arrMaps)arrEp+='<a href="'+arrMaps+'" target="_blank" class="maps-link" style="margin-top:5px">📍 Ver punto</a>';
+  arrEp+='</div>';
+  var mid='<div class="tc-mid"><div class="tc-arrow">→</div>'+(duration?'<div class="tc-dur">'+duration+'</div>':'')+'</div>';
+  var html='<div class="connector"><div class="tc-line"></div><div class="tc-inner">';
+  html+='<div class="tc-header"><span class="tc-icon">'+icon+'</span><div><div class="tc-label">'+typeLabel+'</div><div class="tc-title">'+(dep.title||'Traslado al siguiente destino')+'</div></div></div>';
+  if(hasRoute)html+='<div class="tc-route">'+depEp+mid+arrEp+'</div>';
+  html+='<div class="tc-footer">'+conf+vb+'</div>';
+  html+='</div><div class="tc-line"></div></div>';
+  return html;
 }
 function siHtml(icon,city,title,detail,conf,extra){
   var badge=(conf&&conf!=='-'&&conf!=='—')?'<span class="summary-badge">'+conf+'</span>':(extra?'<span class="summary-badge" style="background:#f0f0ec;color:#666">'+extra+'</span>':'');
@@ -803,10 +838,18 @@ function buildSummary(d){
   var hls=d.cities.filter(function(c){return c.hotel;});
   if(hls.length)sd.hoteles={title:'Hoteles ('+hls.length+')',html:hls.map(function(c){var h=c.hotel;return siHtml('🏨',c.name,h.title,(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:''),h.confirmation);}).join('')};
   // traslados
-  var trs=[];d.cities.forEach(function(c){(c.localTransfers||[]).forEach(function(t){trs.push(siHtml('🚐',c.name,t.title||'Traslado',(t.date||'')+(t.time?' · '+t.time+' hs':'')+(t.detail?' · '+t.detail:''),t.confirmation));});if(c.intercityTransport&&c.intercityTransport.type!=='vuelo'){var ic=c.intercityTransport;trs.push(siHtml('🚄',c.name,ic.title||'Transporte',(ic.date||'')+(ic.time?' · '+ic.time+' hs':''),ic.confirmation));}});
+  var trs=[];d.cities.forEach(function(c){
+    (c.events||[]).forEach(function(t){if(t.type==='traslado_local')trs.push(siHtml('🚐',c.name,t.title||'Traslado',(t.date||'')+(t.time?' · '+t.time+' hs':''),t.confirmation));});
+    (c.localTransfers||[]).forEach(function(t){trs.push(siHtml('🚐',c.name,t.title||'Traslado',(t.date||'')+(t.time?' · '+t.time+' hs':'')+(t.detail?' · '+t.detail:''),t.confirmation));});
+    var ics=c.intercityTransports||[];if(!ics.length&&c.intercityTransport)ics=[c.intercityTransport];
+    ics.forEach(function(ic){var icIcon=ic.type==='vuelo'||ic.type==='vuelo_interno'?'✈️':'🚄';var icDate=(ic.departure&&ic.departure.date)||ic.date||'';var icTime=(ic.departure&&ic.departure.time)||ic.time||'';trs.push(siHtml(icIcon,c.name,ic.title||'Transporte',icDate+(icTime?' · '+icTime+' hs':''),ic.confirmation));});
+  });
   if(trs.length)sd.traslados={title:'Traslados ('+trs.length+')',html:trs.join('')};
   // actividades
-  var acts=[];d.cities.forEach(function(c){(c.activities||[]).forEach(function(a){acts.push(siHtml('🎟️',c.name,a.title||'Actividad',(a.date||'')+(a.time?' · '+a.time+' hs':'')+(a.detail?' · '+a.detail:''),a.confirmation));});});
+  var acts=[];d.cities.forEach(function(c){
+    (c.events||[]).forEach(function(a){if(a.type==='actividad'||a.type==='excursion_dia')acts.push(siHtml(a.type==='excursion_dia'?'🗺️':'🎟️',c.name,a.title||'Actividad',(a.date||'')+(a.time?' · '+a.time+' hs':''),a.confirmation));});
+    (c.activities||[]).forEach(function(a){acts.push(siHtml('🎟️',c.name,a.title||'Actividad',(a.date||'')+(a.time?' · '+a.time+' hs':'')+(a.detail?' · '+a.detail:''),a.confirmation));});
+  });
   if(acts.length)sd.actividades={title:'Actividades ('+acts.length+')',html:acts.join('')};
   return sd;
 }
@@ -814,10 +857,10 @@ function renderResult(){
   var d=gData;_vData={};
   var fl=d.intlFlights||{};
   _summaryData=buildSummary(d);
-  var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){if(c.intercityTransport&&c.intercityTransport.type==='vuelo')nV++;});
+  var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){var ics=c.intercityTransports||[];if(!ics.length&&c.intercityTransport)ics=[c.intercityTransport];ics.forEach(function(ic){if(ic.type==='vuelo'||ic.type==='vuelo_interno')nV++;});});
   var nU=countUniq(d.cities),nH=d.cities.filter(function(c){return c.hotel;}).length;
-  var nT=0;d.cities.forEach(function(c){nT+=(c.localTransfers||[]).length;if(c.intercityTransport&&c.intercityTransport.type!=='vuelo')nT++;});
-  var nA=0;d.cities.forEach(function(c){nA+=(c.activities||[]).length;});
+  var nT=0;d.cities.forEach(function(c){(c.events||[]).forEach(function(e){if(e.type==='traslado_local')nT++;});nT+=(c.localTransfers||[]).length;var ics=c.intercityTransports||[];if(!ics.length&&c.intercityTransport)ics=[c.intercityTransport];ics.forEach(function(ic){if(ic.type!=='vuelo'&&ic.type!=='vuelo_interno')nT++;});});
+  var nA=0;d.cities.forEach(function(c){(c.events||[]).forEach(function(e){if(e.type==='actividad'||e.type==='excursion_dia')nA++;});nA+=(c.activities||[]).length;});
   var paises=(d.countries&&d.countries.length)?d.countries.join(' & '):'Viaje';
   var flags=d.cities.map(function(c){return c.flag||'';}).filter(function(f,i,a){return f&&a.indexOf(f)===i;}).join(' ');
   var dr=getTripRange(d.cities,fl);
@@ -916,11 +959,12 @@ function generarHTMLString(){
   if(fl.outbound)addV(fl.outbound,'intl-out');if(fl.return)addV(fl.return,'intl-ret');
   // Add personal documents to vouchers
   (d.personalDocs||[]).forEach(function(doc){if(doc.sourceFile!==undefined&&filesB64[doc.sourceFile])vouchers['doc_'+doc.sourceFile]={b64:filesB64[doc.sourceFile],type:filesType[doc.sourceFile]};});
-  d.cities.forEach(function(city,ci){if(city.hotel)addV(city.hotel,'h'+ci+'_0');(city.activities||[]).forEach(function(r,i){addV(r,'a'+ci+'_'+i);});(city.localTransfers||[]).forEach(function(r,i){addV(r,'t'+ci+'_'+i);});if(city.intercityTransport)addV(city.intercityTransport,'ic'+ci);});
-  var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){if(c.intercityTransport&&c.intercityTransport.type==='vuelo')nV++;});
+  d.cities.forEach(function(city,ci){if(city.hotel)addV(city.hotel,'h'+ci+'_0');(city.events||[]).forEach(function(r,i){addV(r,'ev'+ci+'_'+i);});(city.activities||[]).forEach(function(r,i){addV(r,'a'+ci+'_'+i);});(city.localTransfers||[]).forEach(function(r,i){addV(r,'t'+ci+'_'+i);});(city.intercityTransports||[]).forEach(function(r,i){addV(r,'ic'+ci+'_'+i);});if(city.intercityTransport&&!city.intercityTransports)addV(city.intercityTransport,'ic'+ci+'_0');});
+  function parseDate2(s){if(!s)return null;var m=s.toLowerCase().match(/(\d{1,2})\s+([a-z]+)/);if(!m)return null;var MONTHS2={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11};var mo=MONTHS2[m[2].substring(0,3)];if(mo===undefined)return null;return new Date(2026,mo,parseInt(m[1]));}
+  var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){var ics=c.intercityTransports||[];if(!ics.length&&c.intercityTransport)ics=[c.intercityTransport];ics.forEach(function(ic){if(ic.type==='vuelo'||ic.type==='vuelo_interno')nV++;});});
   var nU=countUniq(d.cities),nH=d.cities.filter(function(c){return c.hotel;}).length;
-  var nT=0;d.cities.forEach(function(c){nT+=(c.localTransfers||[]).length;if(c.intercityTransport&&c.intercityTransport.type!=='vuelo')nT++;});
-  var nA=0;d.cities.forEach(function(c){nA+=(c.activities||[]).length;});
+  var nT=0;d.cities.forEach(function(c){(c.events||[]).forEach(function(e){if(e.type==='traslado_local')nT++;});nT+=(c.localTransfers||[]).length;var ics=c.intercityTransports||[];if(!ics.length&&c.intercityTransport)ics=[c.intercityTransport];ics.forEach(function(ic){if(ic.type!=='vuelo'&&ic.type!=='vuelo_interno')nT++;});});
+  var nA=0;d.cities.forEach(function(c){(c.events||[]).forEach(function(e){if(e.type==='actividad'||e.type==='excursion_dia')nA++;});nA+=(c.activities||[]).length;});
   var paises=(d.countries&&d.countries.length)?d.countries.join(' & '):'Viaje';
   var flags=d.cities.map(function(c){return c.flag||'';}).filter(function(f,i,a){return f&&a.indexOf(f)===i;}).join(' ');
   var dr=getTripRange(d.cities,fl);
@@ -940,13 +984,13 @@ function generarHTMLString(){
     var det=(f.detail||'').replace(/\n/g,'<br>');
     return '<div class="intl-flight"><div class="intl-flight-top">'+sh+'<div class="intl-flight-main"><div class="intl-flight-type">'+label+'</div><div class="intl-flight-title">'+(f.title||'Vuelo')+'</div>'+(det?'<div class="intl-flight-detail">'+det+'</div>':'')+'</div></div><div class="intl-flight-footer">'+rc(f.confirmation)+rvb(key)+'</div></div>';
   }
-  function rHotel(h,key){var dr2=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');var det=(h.detail||'').replace(/\n/g,'<br>');return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+'</div><div class="evt-footer">'+rc(h.confirmation)+rvb(key)+'</div></div>';}
+  function rHotel(h,key){var dr2=(h.checkinDate||'')+(h.checkoutDate?' – '+h.checkoutDate:'');var det=(h.detail||'').replace(/\n/g,'<br>');var mu=h.mapsUrl||'';var mapsBtn=mu?'<a href="'+mu+'" target="_blank" class="maps-link" style="margin-top:6px">📍 Ver hotel</a>':'';return '<div class="evt-card"><div class="evt-hotel-date"><div class="evt-hotel-date-sub">Alojamiento</div><div class="evt-hotel-date-big">'+dr2+'</div></div><div class="evt-hotel-body"><div class="evt-hotel-title">'+h.title+'</div>'+(det?'<div class="evt-hotel-detail">'+det+'</div>':'')+mapsBtn+'</div><div class="evt-footer">'+rc(h.confirmation)+rvb(key)+'</div></div>';}
   function getMapUrl(d){if(!d)return null;var m=d.match(/mapsUrl:\s*(https?:\/\/[^\s"<]+)/i);return m?m[1]:null;}
   function cleanDet(d){if(!d)return '';d=d.replace(/mapsUrl:\s*https?:\/\/[^\s"<]+/gi,'').trim().replace(/\.?\s*$/,'');d=d.replace(/(Punto de encuentro:)/gi,'<strong>$1</strong>');return d;}
   function pDP(dateStr){if(!dateStr)return null;var m=dateStr.toLowerCase().match(/(\d{1,2})\s+([a-z]+)/);if(!m)return null;return{day:m[1],mon:m[2].substring(0,3)};}
   function mkDTCol(date,time,icon){var dp=pDP(date);var h='<div class="evt-time-col">';if(dp){h+='<div class="evt-date-num">'+dp.day+'</div><div class="evt-date-mon">'+dp.mon+'</div>';}if(time){h+='<div class="evt-time-wrap"><div class="evt-time">'+time+'</div><div class="evt-time-lbl">hs</div></div>';if(dp)h+='<div class="evt-icon-circle" style="margin-top:5px">'+icon+'</div>';}else if(!dp){h+='<div class="evt-icon-only">'+icon+'</div>';}else{h+='<div class="evt-icon-circle" style="margin-top:6px">'+icon+'</div>';}h+='</div>';return h;}
-  function rEvt(r,key,tl,icon){var rawDet=r.detail||'';var mu=getMapUrl(rawDet);var det=cleanDet(rawDet).replace(/\n/g,'<br>');var mb=mu?'<a href="'+mu+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#3d5c36;text-decoration:none;padding:4px 10px;border-radius:20px;border:1px solid #c5ddb0;background:#fff;margin-top:6px">📍 Ver en mapa</a>':'';var col=mkDTCol(r.date,r.time,icon);return '<div class="evt-card"><div class="evt-card-top">'+col+'<div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mb+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
-  function rConn(dep,key){var icons={vuelo:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️'};var icon=icons[dep.type]||'🚌';var det=dep.detail||'';if(dep.date&&!det.includes(dep.date))det=dep.date+(det?' · '+det:'');var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="conn-badge">'+dep.confirmation+'</span>':'';var vb=vouchers[key]?'<button class="btn-voucher" style="margin-left:4px" onclick="openV(\''+key+'\')">📄</button>':'';return '<div class="connector"><div class="conn-line"></div><div class="conn-pill"><span class="conn-icon">'+icon+'</span><div class="conn-info"><div class="conn-title">'+(dep.title||'Siguiente destino')+'</div>'+(det?'<div class="conn-sub">'+det+'</div>':'')+'</div>'+conf+vb+'</div><div class="conn-line"></div></div>';}
+  function rEvt(r,key,tl,icon){var rawDet=r.detail||'';var mu=getMapUrl(rawDet)||r.mapsUrl||'';var det=cleanDet(rawDet).replace(/\n/g,'<br>');var mb=mu?'<a href="'+mu+'" target="_blank" class="maps-link" style="margin-top:6px">📍 Ver en mapa</a>':'';var col=mkDTCol(r.date,r.time,icon);return '<div class="evt-card"><div class="evt-card-top">'+col+'<div class="evt-main"><div class="evt-type">'+tl+'</div><div class="evt-title">'+(r.title||'')+'</div>'+(det?'<div class="evt-detail">'+det+'</div>':'')+mb+'</div></div><div class="evt-footer">'+rc(r.confirmation)+rvb(key)+'</div></div>';}
+  function rConn(dep,key){var icons={vuelo:'✈️',vuelo_interno:'✈️',tren:'🚄',bus:'🚌',ferry:'⛴️',auto:'🚗'};var typeLabels={vuelo:'Vuelo internacional',vuelo_interno:'Vuelo interno',tren:'En tren',bus:'En bus',ferry:'En ferry',auto:'En auto/transfer'};var icon=icons[dep.type]||'🚌';var tl=typeLabels[dep.type]||'Traslado';var depInfo=dep.departure||{};var arrInfo=dep.arrival||{};var depStation=depInfo.station||'';var depTime=depInfo.time||dep.time||'';var depDate=depInfo.date||dep.date||'';var depMaps=depInfo.mapsUrl||dep.mapsUrl||'';var arrStation=arrInfo.station||'';var arrTime=arrInfo.time||'';var arrDate=arrInfo.date||'';var arrMaps=arrInfo.mapsUrl||'';var dur=dep.duration||'';var conf=(dep.confirmation&&dep.confirmation!=='-'&&dep.confirmation!=='—')?'<span class="badge-conf">Confirmado · '+dep.confirmation+'</span>':'';var vb=vouchers[key]?'<button class="btn-voucher" onclick="openV(\''+key+'\')">📄 Ver voucher</button>':'';var hasRoute=depTime||depStation||arrTime||arrStation;var depEp='<div class="tc-ep">'+(depTime?'<div class="tc-time">'+depTime+'</div>':'')+(depStation?'<div class="tc-station">'+depStation+'</div>':'')+(depDate?'<div class="tc-date">'+depDate+'</div>':'')+(depMaps?'<a href="'+depMaps+'" target="_blank" class="maps-link" style="margin-top:5px">📍 Ver punto</a>':'')+'</div>';var arrEp='<div class="tc-ep">'+(arrTime?'<div class="tc-time">'+arrTime+'</div>':'')+(arrStation?'<div class="tc-station">'+arrStation+'</div>':'')+(arrDate?'<div class="tc-date">'+arrDate+'</div>':'')+(arrMaps?'<a href="'+arrMaps+'" target="_blank" class="maps-link" style="margin-top:5px">📍 Ver punto</a>':'')+'</div>';var mid='<div class="tc-mid"><div class="tc-arrow">→</div>'+(dur?'<div class="tc-dur">'+dur+'</div>':'')+'</div>';var html='<div class="connector"><div class="tc-line"></div><div class="tc-inner"><div class="tc-header"><span class="tc-icon">'+icon+'</span><div><div class="tc-label">'+tl+'</div><div class="tc-title">'+(dep.title||'Traslado al siguiente destino')+'</div></div></div>'+(hasRoute?'<div class="tc-route">'+depEp+mid+arrEp+'</div>':'')+'<div class="tc-footer">'+conf+vb+'</div></div><div class="tc-line"></div></div>';return html;}
   var statsItems=[];
   if(nV)statsItems.push({n:nV,l:'vuelos',t:'vuelos'});statsItems.push({n:nU,l:'destinos',t:'destinos'});if(nH)statsItems.push({n:nH,l:'hoteles',t:'hoteles'});if(nT)statsItems.push({n:nT,l:'traslados',t:'traslados'});if(nA)statsItems.push({n:nA,l:'actividades',t:'actividades'});statsItems.push({n:'24/7',l:'soporte',t:null});
   var statsH=statsItems.map(function(s){var c=s.t?'onclick="openSummary(\''+s.t+'\')"':'';return '<div class="stat" data-type="'+(s.t||'')+'" '+c+'><div class="stat-num">'+s.n+'</div><div class="stat-lbl">'+s.l+'</div></div>';}).join('');
@@ -962,11 +1006,14 @@ function generarHTMLString(){
     ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+cityDateStr2+'</div></div><span class="city-nights-badge">'+(city.nights||'')+'</span><span class="city-chev">▼</span></div>';
     ib+='<div class="city-body">';
     if(city.hotel)ib+=rHotel(city.hotel,'h'+ci+'_0');
-    (city.activities||[]).forEach(function(a,i){ib+=rEvt(a,'a'+ci+'_'+i,'Actividad','🎟️');});
-    (city.localTransfers||[]).forEach(function(t,i){ib+=rEvt(t,'t'+ci+'_'+i,'Traslado','🚐');});
+    var allEvts2=city.events||[];
+    if(!allEvts2.length){(city.activities||[]).forEach(function(a){allEvts2.push(Object.assign({type:'actividad'},a));});(city.localTransfers||[]).forEach(function(t){allEvts2.push(Object.assign({type:'traslado_local'},t));});}
+    allEvts2.sort(function(a,b){var da=parseDate2(a.date)||new Date(0),db=parseDate2(b.date)||new Date(0);if(da-db)return da-db;return parseInt((a.time||'0').replace(':',''))-parseInt((b.time||'0').replace(':',''));});
+    allEvts2.forEach(function(evt,ei){var ekey='ev'+ci+'_'+ei;if(evt.type==='excursion_dia'){var rawDet2=evt.detail||'';var mu2=getMapUrl(rawDet2)||evt.mapsUrl||'';var det2=cleanDet(rawDet2).replace(/\n/g,'<br>');var mb2=mu2?'<a href="'+mu2+'" target="_blank" class="maps-link">📍 Ver punto</a>':'';ib+='<div class="excursion-card"><div class="excursion-header"><span class="excursion-tag">Excursión del día</span>'+(evt.time?'<span style="font-size:11px;color:var(--green-mid);font-weight:700">'+evt.time+(evt.endTime?' — '+evt.endTime:'')+'</span>':'')+'</div><div style="padding:.65rem .9rem"><div class="evt-title">'+evt.title+'</div>'+(det2?'<div class="evt-detail" style="margin-top:4px">'+det2+'</div>':'')+mb2+'</div><div class="evt-footer">'+rc(evt.confirmation)+rvb(ekey)+'</div></div>';}else if(evt.type==='traslado_local'){ib+=rEvt(evt,ekey,'Traslado','🚐');}else{ib+=rEvt(evt,ekey,'Actividad','🎟️');}});
     ib+='</div></div>';
     var isLast=(ci===d.cities.length-1);
-    if(!isLast){if(city.intercityTransport)ib+=rConn(city.intercityTransport,'ic'+ci);else ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';}
+    var icTransports2=city.intercityTransports||[];if(!icTransports2.length&&city.intercityTransport)icTransports2=[city.intercityTransport];
+    if(!isLast){if(icTransports2.length){icTransports2.forEach(function(ic,ti){ib+=rConn(ic,'ic'+ci+'_'+ti);});}else{ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';}}
     if(isLast&&fl.return){ib+='<div class="connector"><div class="conn-line"></div></div>';ib+=rFlight(fl.return,'intl-ret','Vuelo de regreso');}
   });
   var logo=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
