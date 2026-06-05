@@ -472,7 +472,7 @@ function cleanAIJson(raw){
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,messages:[{role:'user',content:content}]})});
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:16000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
@@ -480,6 +480,7 @@ async function callAI(content){
     throw new Error(msg);
   }
   var raw;
+  var stopReason=null;
   var ct=(resp.headers.get('content-type')||'');
   if(ct.indexOf('text/event-stream')!==-1){
     // SSE stream from our proxy — accumulate content_block_delta text
@@ -503,6 +504,8 @@ async function callAI(content){
           var evt=JSON.parse(payload);
           if(evt.type==='content_block_delta'&&evt.delta&&evt.delta.type==='text_delta'){
             fullText+=evt.delta.text;
+          }else if(evt.type==='message_delta'&&evt.delta&&evt.delta.stop_reason){
+            stopReason=evt.delta.stop_reason;
           }else if(evt.type==='error'){
             streamError=(evt.error&&evt.error.message)||'Error de la IA';
           }
@@ -516,6 +519,7 @@ async function callAI(content){
     // Regular JSON response (direct Anthropic call in iframe mode)
     var data=await resp.json();
     if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
+    stopReason=data.stop_reason;
     raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   }
   raw=cleanAIJson(raw);
@@ -524,8 +528,44 @@ async function callAI(content){
   }catch(e){
     var m=raw.match(/\{[\s\S]*\}/);
     if(m){try{return JSON.parse(m[0]);}catch(e2){}}
+    // Try to repair JSON that was cut off by max_tokens
+    var repaired=repairTruncatedJson(raw);
+    if(repaired){try{return JSON.parse(repaired);}catch(e3){}}
+    if(stopReason==='max_tokens')throw new Error('El itinerario es muy extenso y se cortó. Probá subiendo menos archivos a la vez.');
     throw new Error('La IA devolvió un formato inesperado. Intentá de nuevo.');
   }
+}
+// Repair JSON cut off mid-stream by closing open strings/brackets
+function repairTruncatedJson(raw){
+  var s=raw.indexOf('{');
+  if(s<0)return null;
+  var str=raw.slice(s);
+  // Remove a trailing incomplete token (e.g. partial "key": "val...)
+  // Walk the string tracking structure, then close all open brackets.
+  var stack=[];
+  var inStr=false;
+  var esc=false;
+  var lastGood=-1;
+  for(var i=0;i<str.length;i++){
+    var ch=str[i];
+    if(inStr){
+      if(esc){esc=false;}
+      else if(ch==='\\'){esc=true;}
+      else if(ch==='"'){inStr=false;lastGood=i;}
+      continue;
+    }
+    if(ch==='"'){inStr=true;}
+    else if(ch==='{'||ch==='['){stack.push(ch==='{'?'}':']');}
+    else if(ch==='}'||ch===']'){stack.pop();lastGood=i;}
+    else if(ch===','||/[0-9truefalsn]/.test(ch)){lastGood=i;}
+  }
+  // Cut at last structurally-safe position
+  var out=str.slice(0,lastGood+1);
+  // Drop a dangling comma
+  out=out.replace(/,\s*$/,'');
+  // Close any still-open brackets
+  for(var k=stack.length-1;k>=0;k--)out+=stack[k];
+  return out;
 }
 var PROMPT_SYSTEM='Sos un experto en organizar itinerarios de viaje. Analiza TODOS los documentos y devuelve UNICAMENTE un JSON valido sin texto extra ni backticks.\n\n=== REGLA MAS IMPORTANTE ===\nDESTINOS = SOLO ciudades donde el viajero DUERME (tiene hotel con checkin/checkout).\nSi un tren o bus es IDA Y VUELTA en el mismo dia = EXCURSION DEL DIA, NO un destino separado.\nEJEMPLO: cliente duerme en Bristol del 15 al 18 jun. El dia 16 toma tren Bristol->Oxford->Bath->Bristol. Oxford y Bath son EXCURSIONES DEL DIA dentro de Bristol, NO cities separadas.\nSOLO crea una city si hay HOTEL VOUCHER con checkin/checkout especifico en esa ciudad.\n\n=== TIPOS DE ELEMENTOS ===\n1. VUELOS INTERNACIONALES: salen de Argentina (EZE/AEP/Ezeiza/Ministro Pistarini) o llegan a Argentina. Van SOLO en internationalFlights.outbound y .return. NUNCA como city.\n2. CITY: tiene hotel propio con checkin y checkout. Ordenar cronologicamente por checkinDate.\n3. excursion_dia: tren/bus ida Y vuelta mismo dia, cliente vuelve a dormir al hotel base. Va en events[] de la city donde duerme esa noche. NO es una city separada.\n4. intercityTransport: tren/bus/ferry que lleva a OTRA city donde dormira sin volver. Va en intercityTransports[] de la city de ORIGEN.\n5. actividad: tour, visita guiada, excursion con guia. Va en events[] de la city.\n6. traslado_local: transfer aeropuerto-hotel, shuttle, taxi reservado. Va en events[] de la city.\n\n=== ESTRUCTURA JSON ===\n{"countries":["Pais"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO","route":"Buenos Aires -> Ciudad","departure":{"airport":"Ministro Pistarini","terminal":"A","time":"HH:MM","date":"DD mon"},"arrival":{"airport":"Aeropuerto Destino","terminal":"T","time":"HH:MM","date":"DD mon"},"stops":"Sin escalas","duration":"Xh XXm","class":"Economy","confirmation":"COD","sourceFile":0},"return":{"title":"Aerolinea NRO","route":"Ciudad -> Buenos Aires","departure":{"airport":"Aeropuerto","terminal":"T","time":"HH:MM","date":"DD mon"},"arrival":{"airport":"Ministro Pistarini","terminal":"A","time":"HH:MM","date":"DD mon"},"stops":"Sin escalas","duration":"Xh XXm","class":"Economy","confirmation":"COD","sourceFile":0}},"cities":[{"name":"Londres","flag":"🇬🇧","checkinDate":"DD mon","checkoutDate":"DD mon","nights":"N noches","hotel":{"title":"Nombre Hotel","detail":"Direccion completa","checkinDate":"DD mon","checkoutDate":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Hotel+Londres","confirmation":"COD","sourceFile":0},"events":[{"type":"traslado_local|actividad|excursion_dia","title":"Nombre","detail":"Descripcion completa del evento","time":"HH:MM","endTime":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Punto+encuentro+o+estacion","confirmation":"COD","sourceFile":0}],"intercityTransports":[{"type":"tren|bus|ferry|vuelo_interno","title":"Empresa - Origen -> Destino","departure":{"station":"Nombre exacto estacion segun voucher","time":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Estacion+Ciudad"},"arrival":{"station":"Nombre exacto estacion destino","time":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Estacion+Ciudad"},"duration":"Xh XXm","confirmation":"COD","sourceFile":0}]}],"personalDocuments":[{"type":"pasaporte|visa|seguro|permiso|otro","name":"Descripcion","holder":"Titular","expiry":"fecha","sourceFile":0}]}\n\n=== REGLAS CRITICAS ===\n1. sourceFile: SIEMPRE numero entero 0+. NUNCA guion ni null.\n2. cities: UNICAMENTE ciudades con hotel propio. Ordenadas por checkinDate.\n3. events: ordenados por date + time. excursion_dia va AQUI, NO como city separada.\n4. mapsUrl hoteles: https://maps.google.com/?q=Nombre+Hotel+Ciudad\n5. mapsUrl estaciones: nombre EXACTO de la estacion segun el voucher.\n6. mapsUrl actividades y excursiones del dia: punto de encuentro o estacion de salida.\n7. Ciudades en espanol: London=Londres, Edinburgh=Edimburgo, Florence=Florencia, Venice=Venecia, Rome=Roma, Vienna=Viena, Athens=Atenas, Prague=Praga, Tokyo=Tokio, Lisbon=Lisboa, Milan=Milan, Naples=Napoles, Amsterdam=Amsterdam.\n8. countries: SOLO paises destino SIN Argentina.\n9. Extraer ABSOLUTAMENTE todo. No omitir ninguna reserva.\n10. intercityTransports: SIEMPRE incluir mapsUrl de estacion de salida Y llegada.';
 
