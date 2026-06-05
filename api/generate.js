@@ -6,6 +6,7 @@ export const config = {
     },
     responseLimit: false,
   },
+  maxDuration: 60,
 };
 
 export default async function handler(req, res) {
