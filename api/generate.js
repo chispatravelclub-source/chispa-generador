@@ -6,6 +6,7 @@ export const config = {
     },
     responseLimit: false,
   },
+  maxDuration: 60,
 };
 
 export default async function handler(req, res) {
@@ -24,10 +25,12 @@ export default async function handler(req, res) {
     return res.json({ token });
   }
 
-  // Proxy to Anthropic
+  // Proxy to Anthropic with streaming pass-through
   try {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) return res.status(500).json({ error: 'ANTHROPIC_API_KEY no configurado en Vercel' });
+
+    const anthropicBody = { ...body, stream: true };
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -36,12 +39,32 @@ export default async function handler(req, res) {
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(anthropicBody),
     });
 
-    const data = await response.json();
-    return res.status(response.status).json(data);
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      return res.status(response.status).json(errData);
+    }
+
+    // Pipe the Anthropic SSE stream to the client using a manual read loop
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        res.write(Buffer.from(value));
+      }
+    } finally {
+      res.end();
+    }
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    if (!res.headersSent) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.end();
   }
 }
