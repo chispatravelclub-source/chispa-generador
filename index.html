@@ -472,38 +472,53 @@ function cleanAIJson(raw){
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:content}]})});
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
     if(resp.status===413||msg.includes('too large')||msg.includes('413'))msg='Los archivos son demasiado pesados. Probá subiendo menos archivos a la vez o comprimiendo los PDFs.';
     throw new Error(msg);
   }
-  // Read Anthropic SSE stream and accumulate content_block_delta text
-  var reader=resp.body.getReader();
-  var decoder=new TextDecoder();
-  var buffer='';
-  var fullText='';
-  while(true){
-    var chunk=await reader.read();
-    if(chunk.done)break;
-    buffer+=decoder.decode(chunk.value,{stream:true});
-    var lines=buffer.split('\n');
-    buffer=lines.pop();
-    for(var i=0;i<lines.length;i++){
-      var line=lines[i].trim();
-      if(!line.startsWith('data: '))continue;
-      var payload=line.slice(6).trim();
-      if(!payload||payload==='[DONE]')continue;
-      try{
-        var evt=JSON.parse(payload);
-        if(evt.type==='content_block_delta'&&evt.delta&&evt.delta.type==='text_delta')fullText+=evt.delta.text;
-        if(evt.type==='error')throw new Error((evt.error&&evt.error.message)||'Error de la IA');
-      }catch(ex){if(ex.message&&ex.message!=='Unexpected token'&&!ex.message.startsWith('JSON'))throw ex;}
+  var raw;
+  var ct=(resp.headers.get('content-type')||'');
+  if(ct.indexOf('text/event-stream')!==-1){
+    // SSE stream from our proxy — accumulate content_block_delta text
+    var reader=resp.body.getReader();
+    var decoder=new TextDecoder();
+    var buffer='';
+    var fullText='';
+    var streamError=null;
+    while(true){
+      var chunk=await reader.read();
+      if(chunk.done)break;
+      buffer+=decoder.decode(chunk.value,{stream:true});
+      var lines=buffer.split('\n');
+      buffer=lines.pop();
+      for(var i=0;i<lines.length;i++){
+        var line=lines[i].trim();
+        if(!line.startsWith('data: '))continue;
+        var payload=line.slice(6).trim();
+        if(!payload||payload==='[DONE]')continue;
+        try{
+          var evt=JSON.parse(payload);
+          if(evt.type==='content_block_delta'&&evt.delta&&evt.delta.type==='text_delta'){
+            fullText+=evt.delta.text;
+          }else if(evt.type==='error'){
+            streamError=(evt.error&&evt.error.message)||'Error de la IA';
+          }
+        }catch(parseErr){}
+      }
     }
+    if(streamError)throw new Error(streamError);
+    if(!fullText)throw new Error('La IA no devolvió respuesta. Intentá de nuevo.');
+    raw=fullText;
+  }else{
+    // Regular JSON response (direct Anthropic call in iframe mode)
+    var data=await resp.json();
+    if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
+    raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   }
-  if(!fullText)throw new Error('La IA no devolvió respuesta. Intentá de nuevo.');
-  var raw=cleanAIJson(fullText);
+  raw=cleanAIJson(raw);
   try{
     return JSON.parse(raw);
   }catch(e){

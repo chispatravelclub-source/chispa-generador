@@ -1,6 +1,4 @@
 // api/generate.js
-import { Readable } from 'stream';
-
 export const config = {
   api: {
     bodyParser: {
@@ -49,11 +47,20 @@ export default async function handler(req, res) {
       return res.status(response.status).json(errData);
     }
 
-    // Pass through the Anthropic SSE stream directly to the client
+    // Pipe the Anthropic SSE stream to the client using a manual read loop
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Transfer-Encoding', 'chunked');
-    Readable.fromWeb(response.body).pipe(res);
+
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        res.write(Buffer.from(value));
+      }
+    } finally {
+      res.end();
+    }
   } catch (err) {
     if (!res.headersSent) {
       return res.status(500).json({ error: err.message });
