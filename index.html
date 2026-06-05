@@ -476,18 +476,35 @@ async function callAI(content){
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
-    // Better 413 message
     if(resp.status===413||msg.includes('too large')||msg.includes('413'))msg='Los archivos son demasiado pesados. Probá subiendo menos archivos a la vez o comprimiendo los PDFs.';
     throw new Error(msg);
   }
-  var data=await resp.json();
-  if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
-  var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+  // Read SSE stream: server sends keepalive comments then a final "data: {...}" event
+  var reader=resp.body.getReader();
+  var decoder=new TextDecoder();
+  var buffer='';
+  var finalData=null;
+  while(true){
+    var chunk=await reader.read();
+    if(chunk.done)break;
+    buffer+=decoder.decode(chunk.value,{stream:true});
+    var lines=buffer.split('\n');
+    buffer=lines.pop();
+    for(var i=0;i<lines.length;i++){
+      var line=lines[i].trim();
+      if(!line.startsWith('data: '))continue;
+      var payload=line.slice(6).trim();
+      if(!payload||payload==='[DONE]')continue;
+      try{finalData=JSON.parse(payload);}catch(ex){}
+    }
+  }
+  if(!finalData)throw new Error('La IA no devolvió respuesta. Intentá de nuevo.');
+  if(finalData.error)throw new Error(finalData.error.message||JSON.stringify(finalData.error));
+  var raw=finalData.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   raw=cleanAIJson(raw);
   try{
     return JSON.parse(raw);
   }catch(e){
-    // Try to extract valid JSON if there's extra text
     var m=raw.match(/\{[\s\S]*\}/);
     if(m){try{return JSON.parse(m[0]);}catch(e2){}}
     throw new Error('La IA devolvió un formato inesperado. Intentá de nuevo.');
