@@ -272,8 +272,8 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
   </div>
   <div class="lscreen">
     <div class="spin"></div>
-    <div class="ltitle">Analizando documentos...</div>
-    <div class="lsub">Esto puede tardar unos segundos</div>
+    <div class="ltitle" id="ltitle">Analizando documentos...</div>
+    <div class="lsub" id="lsub">Esto puede tardar unos segundos</div>
     <div class="steps">
       <div class="step" id="st1">📄 Leyendo documentos</div>
       <div class="step" id="st2">🔍 Extrayendo reservas</div>
@@ -626,24 +626,14 @@ function postProcess(parsed){
 }
 function c_checkin(city){return city.checkinDate||(city.hotel&&city.hotel.checkinDate)||city.dates||'';}
 
-// Max files per single AI call (Haiku handles ~6 PDFs well)
-// Max MB per batch (Haiku handles ~8MB of base64 safely)
-var MAX_BATCH_MB=7;
-
-function splitIntoBatches(files, b64arr){
-  // Split files into batches by cumulative base64 size
-  var batches=[];var batch=[];var batchSize=0;
-  for(var i=0;i<files.length;i++){
-    var sz=b64arr[i].length; // base64 length in chars ≈ bytes
-    if(batch.length>0&&batchSize+sz>MAX_BATCH_MB*1024*1024){
-      batches.push(batch);batch=[];batchSize=0;
-    }
-    batch.push(i);batchSize+=sz;
-    // Also cap at 4 files per batch regardless of size
-    if(batch.length>=4){batches.push(batch);batch=[];batchSize=0;}
-  }
-  if(batch.length>0)batches.push(batch);
-  return batches;
+function splitIntoBatches(files){
+  // One file per batch for maximum accuracy
+  return files.map(function(_,i){return [i];});
+}
+function setLoadingText(title,sub){
+  var t=document.getElementById('ltitle');var s=document.getElementById('lsub');
+  if(t&&title)t.textContent=title;
+  if(s&&sub!==undefined)s.textContent=sub;
 }
 
 async function generar(){
@@ -656,21 +646,24 @@ async function generar(){
     var personalB64=[],personalTypes=[];
     for(var i=0;i<personalFiles.length;i++){var _pmt=getMT(personalFiles[i]);personalB64.push(await compressImage(personalFiles[i]));personalTypes.push(_pmt==='application/pdf'?_pmt:'image/jpeg');}
     setStep(2);
-    var batches=splitIntoBatches(files,filesB64);
+    var batches=splitIntoBatches(files);
     var parsed=null;
     for(var bi=0;bi<batches.length;bi++){
-      setStep(bi===0?2:3);
       var idxs=batches[bi];
       var bFiles=idxs.map(function(i){return files[i];});
       var bB64=idxs.map(function(i){return filesB64[i];});
       var bTypes=idxs.map(function(i){return filesType[i];});
       var bOffset=idxs[0];
+      var fname=bFiles[0]?bFiles[0].name:'';
+      setLoadingText(
+        'Analizando documento '+(bi+1)+' de '+batches.length+'…',
+        fname
+      );
+      setStep(bi===0?2:3);
       if(!parsed){
-        // First batch: fresh extraction
         var c=await buildContent(bFiles,bB64,bTypes,bOffset);
         parsed=await callAI(c);
       } else {
-        // Subsequent batches: consolidate
         var c=await buildConsolidateContent(parsed,bFiles,bB64,bTypes,bOffset);
         parsed=await callAI(c);
       }
@@ -702,16 +695,18 @@ function agregarMas(){
       setStep(2);
       // Consolidate: pass current data + new files
       setStep(2);
-      var batches2=splitIntoBatches(nuevos,newB64);
+      var batches2=splitIntoBatches(nuevos);
       var parsed=JSON.parse(JSON.stringify(gData)); // start from current data
       parsed.internationalFlights=gData.intlFlights;parsed.personalDocuments=gData.personalDocs;
       for(var bi=0;bi<batches2.length;bi++){
-        setStep(bi===0?2:3);
         var idxs2=batches2[bi];
         var bFiles2=idxs2.map(function(i){return nuevos[i];});
         var bB64_2=idxs2.map(function(i){return newB64[i];});
         var bTypes2=idxs2.map(function(i){return newTypes[i];});
         var bOffset2=offset+idxs2[0];
+        var fname2=bFiles2[0]?bFiles2[0].name:'';
+        setLoadingText('Analizando documento '+(bi+1)+' de '+batches2.length+'…',fname2);
+        setStep(bi===0?2:3);
         var cc=await buildConsolidateContent(parsed,bFiles2,bB64_2,bTypes2,bOffset2);
         parsed=await callAI(cc);
       }
