@@ -456,7 +456,7 @@ function cleanAIJson(raw){
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:7000,messages:[{role:'user',content:content}]})});
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-5-20250514',max_tokens:8000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
