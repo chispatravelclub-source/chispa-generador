@@ -168,6 +168,24 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 /* Docs / Info */
 .docs-body{padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;gap:1rem}
 .docs-section-title{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;padding:0 .1rem;margin-bottom:.25rem}
+/* La lista de comprobantes en orden: un renglón por archivo, agrupado por
+   día, pensada para el pulgar en un teléfono. */
+.doc-day{font-size:11px;font-weight:700;color:#8aac7a;text-transform:uppercase;letter-spacing:.08em;margin:1rem .1rem .4rem;padding-bottom:.3rem;border-bottom:1px solid #eceae4}
+.doc-day:first-of-type{margin-top:.5rem}
+.doc-row{display:flex;align-items:center;gap:.7rem;padding:.7rem .15rem;border-bottom:1px solid #f4f2ed}
+.doc-row:last-child{border-bottom:0}
+.doc-row-ico{font-size:20px;flex:0 0 26px;text-align:center;line-height:1}
+.doc-row-mid{flex:1 1 auto;min-width:0}
+.doc-row-tit{font-size:13.5px;font-weight:600;color:#3a3a38;line-height:1.3;overflow-wrap:anywhere}
+.doc-row-sub{font-size:11.5px;color:#9a978f;margin-top:2px}
+.doc-row-acc{flex:0 0 auto;display:flex;gap:.35rem}
+.doc-btn{background:none;border:1px solid #d8d4cb;border-radius:20px;color:#5a5750;cursor:pointer;font-size:11px;font-weight:600;padding:5px 11px;font-family:inherit;white-space:nowrap}
+.doc-btn:active{background:#f4f2ed}
+.doc-btn-dl{background:#e8f2e0;border-color:#b9d4a6;color:#3d5c36}
+@media(max-width:400px){
+  .doc-row{align-items:flex-start;flex-wrap:wrap}
+  .doc-row-acc{width:100%;padding-left:34px;margin-top:.45rem}
+}
 .doc-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .doc-card:active{opacity:.85}
 .doc-card-top{display:flex;align-items:stretch}
@@ -207,12 +225,83 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 @keyframes toast-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes toast-out{from{opacity:1}to{opacity:0;transform:translateY(10px)}}
 #modal-pub{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
+
+/* ═══ VARIOS VIAJES A LA VEZ ═══════════════════════════════════════════
+   La app era de un viaje por vez: escribías el nombre, subías los
+   vouchers de ESE cliente y generabas. Ahora Lara tira todo junto y la
+   app los separa. Estas son las dos pantallas nuevas: la lista de
+   viajes y la de revisión del reparto.                                */
+.vj-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1.1rem}
+.vj-top h2{font-family:'DM Serif Display',serif;font-size:21px;font-weight:400;color:var(--ink);margin:0}
+.vj-sub{font-size:12.5px;color:var(--ink3);margin:-.5rem 0 1.25rem;line-height:1.5}
+.vj-card{background:#fff;border:1px solid #e9e6df;border-radius:var(--radius);padding:.95rem 1.1rem;margin-bottom:.7rem;display:flex;align-items:center;gap:.9rem;cursor:pointer}
+.vj-card:active{background:#faf9f6}
+.vj-card-ico{font-size:24px;flex:0 0 auto}
+.vj-card-mid{flex:1 1 auto;min-width:0}
+.vj-card-nom{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.3;overflow-wrap:anywhere}
+.vj-card-det{font-size:12px;color:var(--ink3);margin-top:3px}
+.vj-card-chev{color:#ccc;font-size:19px;flex:0 0 auto}
+.vj-pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:5px}
+.vj-pill.listo{background:#e8f2e0;color:#3d5c36}
+.vj-pill.pend{background:#fff4e5;color:#8a5a00}
+.vj-vacio{padding:2.75rem 1rem;text-align:center;color:#bbb;font-size:13px;line-height:1.6}
+
+.gr-card{background:#fff;border:1px solid #e9e6df;border-radius:var(--radius);padding:1rem 1.1rem;margin-bottom:.85rem}
+.gr-card.sinasignar{border-color:#f0d9b5;background:#fffdf8}
+.gr-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.2rem}
+.gr-head .gr-ico{font-size:20px}
+.gr-nom{flex:1;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--ink);border:0;border-bottom:1px dashed #d8d4cb;background:none;padding:2px 0;width:100%}
+.gr-nom:focus{outline:none;border-bottom-color:var(--green)}
+.gr-meta{font-size:11.5px;color:var(--ink3);margin:.1rem 0 .7rem}
+.gr-arch{display:flex;align-items:center;gap:.55rem;padding:.45rem 0;border-top:1px solid #f4f2ed;font-size:12.5px}
+.gr-arch-ico{flex:0 0 20px;text-align:center}
+.gr-arch-mid{flex:1 1 auto;min-width:0}
+.gr-arch-nom{color:#3a3a38;font-weight:600;overflow-wrap:anywhere;line-height:1.3}
+.gr-arch-sub{color:#9a978f;font-size:11px;margin-top:1px}
+.gr-mover{flex:0 0 auto;font-size:11px;font-family:inherit;border:1px solid #d8d4cb;border-radius:8px;background:#fff;color:#5a5750;padding:4px 6px;max-width:112px}
 </style>
 </head>
 <body>
 
+<!-- LISTA DE VIAJES: la pantalla con la que arranca -->
+<div class="screen active" id="sc-viajes">
+  <div class="hdr">
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <span class="hdr-title">Generador de itinerarios</span>
+  </div>
+  <div class="body">
+    <div class="vj-top"><h2>Viajes</h2></div>
+    <p class="vj-sub">Subí todos los vouchers juntos, de todos los clientes. La app lee cada uno, mira a nombre de quién está y los reparte. Después revisás el reparto antes de generar nada.</p>
+    <input type="file" id="finput-todo" multiple accept=".pdf,image/*" style="display:none" onchange="sumarArchivos(this.files)"/>
+    <button class="btn-main" onclick="document.getElementById('finput-todo').click()">+ Sumar archivos</button>
+    <div id="vj-lista" style="margin-top:1.4rem"></div>
+    <p style="text-align:center;margin-top:1.5rem">
+      <button class="doc-btn" onclick="nuevoViajeAMano()">Cargar un viaje a mano</button>
+    </p>
+  </div>
+</div>
+
+<!-- REVISIÓN DEL REPARTO -->
+<div class="screen" id="sc-grupos">
+  <div class="hdr">
+    <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
+    <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
+    <span class="hdr-title">Revisar el reparto</span>
+  </div>
+  <div class="body">
+    <div class="vj-top"><h2 id="gr-titulo">Así los repartí</h2></div>
+    <p class="vj-sub">Cambiá el nombre del viaje si hace falta y movés cualquier archivo que haya caído en el lugar equivocado. Nada se genera hasta que toques el botón de abajo.</p>
+    <div id="gr-lista"></div>
+    <button class="btn-main" id="gr-ok" onclick="generarGrupos()">Generar los itinerarios</button>
+    <p style="text-align:center;margin-top:.9rem">
+      <button class="doc-btn" onclick="show('sc-viajes')">Cancelar</button>
+    </p>
+  </div>
+</div>
+
 <!-- EDITOR -->
-<div class="screen active" id="sc-editor">
+<div class="screen" id="sc-editor">
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
     <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
@@ -272,7 +361,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
   <div class="hdr">
     <svg class="lmark" viewBox="0 0 100 100"><path d="M85,50C85,70 70,86 50,86 30,86 15,70 15,50 15,30 30,14 50,14c12,0 22,6 29,15L65,29c-5-4-10-6-15-6C35,23 24,35 24,50c0,15 11,27 26,27 10,0 18-6 23-15l12,0C79,76 65,86 50,86Z" fill="#c8e6b8"/></svg>
     <div><div class="lc">CHISPA</div><div class="ls">Travel Club</div></div>
-    <button class="back" onclick="resetAll()">← Nuevo</button>
+    <button class="back" onclick="volverAViajes()">← Viajes</button>
   </div>
   <div style="padding:.85rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:1px solid var(--border);background:var(--white)">
     <button style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:14px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;font-family:'DM Sans';cursor:pointer" onclick="publicar()">🌐 Publicar y obtener link</button>
@@ -280,7 +369,7 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
       <button style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer" onclick="descargar()">⬇ Descargar HTML</button>
       <button style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--ink2);font-size:12px;font-weight:600;font-family:'DM Sans';cursor:pointer" onclick="agregarMas()">➕ Mas docs</button>
     </div>
-    <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-family:'DM Sans';cursor:pointer;padding:.25rem;font-weight:500" onclick="resetAll()">Generar otro itinerario</button>
+    <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-family:'DM Sans';cursor:pointer;padding:.25rem;font-weight:500" onclick="volverAViajes()">Volver a todos los viajes</button>
   </div>
   <!-- Modal publicar -->
   <div id="modal-pub" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center">
@@ -314,9 +403,20 @@ input.inp:focus{outline:none;border-color:var(--green-light)}
 </a>
 
 <script>
+/* ═══ EL MODELO ═══════════════════════════════════════════════════════
+   ACÁ ESTABA EL ERROR QUE TIRABA TODO. El modelo era
+   'claude-sonnet-4-20250514' y ese nombre ya no existe: la API contesta
+   404 not_found_error. O sea que TODA generación fallaba, con cualquier
+   archivo, siempre. No era el peso ni el formato de los vouchers.
+
+   Los nombres con fecha adentro se jubilan. 'claude-sonnet-5' no la
+   lleva, así que no se vuelve a vencer solo.                          */
+var MODELO='claude-sonnet-5';
+
 var IN_IFRAME=(window.self!==window.top);
 var API_ENDPOINT=IN_IFRAME?'https://api.anthropic.com/v1/messages':'/api/generate';
 var files=[],filesB64=[],filesType=[],gData=null,_vData={},_summaryData={};
+var _sinUsar=[];   // archivos de los que no salió ninguna reserva
 var personalFiles=[],personalDocs_meta=[];
 var LOGO_SVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 75"><path d="M58,3 C28,3 5,17 5,36 C5,55 28,68 58,68 C72,68 84,64 93,57 L80,49 C73,55 66,59 58,59 C32,59 17,49 17,36 C17,23 32,13 58,13 C66,13 73,17 80,23 L93,15 C84,7 72,3 58,3Z" fill="#c8e0b8"/><circle cx="58" cy="36" r="12" fill="white"/><g transform="translate(49,30)"><path d="M0,6 L18,6 L15,2 L15,10Z" fill="#4a6741"/><rect x="4" y="0" width="3" height="12" fill="#4a6741"/></g><text x="108" y="43" font-family="Arial Black,Arial,sans-serif" font-size="28" font-weight="900" fill="#8aac7a">CHISPA</text><text x="111" y="60" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4a6741" letter-spacing="4">TRAVEL CLUB</text></svg>';
 var ORIGIN_KEYWORDS=['argentina','buenos aires','ezeiza','aep','eze','ministro pistarini'];
@@ -368,7 +468,7 @@ function compressImage(f){
 }
 function getMT(f){if(f.type&&f.type!=='application/octet-stream')return f.type;var m={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',heic:'image/heic'};return m[f.name.split('.').pop().toLowerCase()]||'application/pdf';}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('st'+i);if(el)el.className='step'+(i<n?' done':i===n?' act':'');}}
-function resetAll(){files=[];filesB64=[];filesType=[];personalFiles=[];personalDocs_meta=[];gData=null;_vData={};_summaryData={};document.getElementById('flist').innerHTML='';var fd=document.getElementById('flist-docs');if(fd)fd.innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
+function resetAll(){files=[];filesB64=[];filesType=[];personalFiles=[];personalDocs_meta=[];gData=null;_vData={};_summaryData={};_sinUsar=[];document.getElementById('flist').innerHTML='';var fd=document.getElementById('flist-docs');if(fd)fd.innerHTML='';document.getElementById('inp-client').value='';document.getElementById('inp-dates').value='';show('sc-editor');}
 
 var _toastWrap=null;
 function getToastWrap(){if(_toastWrap)return _toastWrap;_toastWrap=document.createElement('div');_toastWrap.className='toast-wrap';document.body.appendChild(_toastWrap);return _toastWrap;}
@@ -422,9 +522,78 @@ function renderDocs(){
 function switchTab(name){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelector('.tab[data-tab="'+name+'"]').classList.add('active');document.getElementById('panel-'+name).classList.add('active');}
 function openSummary(type){var d=_summaryData[type];if(!d)return;document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});var el=document.querySelector('.stat[data-type="'+type+'"]');if(el)el.classList.add('active');document.getElementById('summary-title').textContent=d.title;document.getElementById('summary-content').innerHTML=d.html;document.getElementById('summary-panel').classList.add('open');}
 function closeSummary(){document.getElementById('summary-panel').classList.remove('open');document.querySelectorAll('.stat').forEach(function(s){s.classList.remove('active');});}
-var MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11};
+var MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,ene:0,abr:3,ago:7,dic:11,set:8};
 var MNAMES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-function parseDate(s){if(!s)return null;var m=s.toLowerCase().match(/(\d{1,2})\s+([a-z]+)/);if(!m)return null;var mo=MONTHS[m[2].substring(0,3)];if(mo===undefined)return null;return new Date(2026,mo,parseInt(m[1]));}
+
+/* ═══ EL AÑO ═══════════════════════════════════════════════════════════
+   Antes todas las fechas se armaban con new Date(2026, mes, dia): el año
+   estaba escrito en el código. Un viaje que cruza a enero del año
+   siguiente se ordenaba al revés —diciembre quedaba después de enero— y
+   en 2027 el generador entero quedaba viejo.
+
+   Ahora hay dos datos: el año en que arranca el viaje (ANIO_BASE, que
+   sale del campo "Destino y fechas" si lo escribió, y si no del año
+   actual) y el mes en que arranca (ANCLA_MES). Con esos dos, cualquier
+   mes anterior al de arranque es del año siguiente. Un viaje dura menos
+   de doce meses, así que eso alcanza y no se equivoca. */
+var ANIO_BASE=new Date().getFullYear();
+var ANCLA_MES=null;
+
+function anioDe(mes){
+  if(ANCLA_MES===null)return ANIO_BASE;
+  return mes<ANCLA_MES?ANIO_BASE+1:ANIO_BASE;
+}
+function mesDe(txt){
+  if(!txt)return null;
+  var t=String(txt).toLowerCase();
+  /* "18 may" y también "18 may 2026": si el documento trae el año, se usa
+     ese y no hay que adivinar nada. */
+  var m=t.match(/(\d{1,2})\s+([a-z]+)\.?(?:\s+(\d{4}))?/);
+  if(m){var mo=MONTHS[m[2].substring(0,3)];if(mo!==undefined)return {d:parseInt(m[1],10),m:mo,a:m[3]?parseInt(m[3],10):null};}
+  /* Formatos numéricos que la IA a veces devuelve igual: 18/05, 18/05/2026, 2026-05-18. */
+  m=t.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m)return {d:parseInt(m[3],10),m:parseInt(m[2],10)-1,a:parseInt(m[1],10)};
+  m=t.match(/(\d{1,2})[\/.](\d{1,2})(?:[\/.](\d{2,4}))?/);
+  if(m){
+    var a=m[3]?parseInt(m[3],10):null;
+    if(a!==null&&a<100)a+=2000;
+    return {d:parseInt(m[1],10),m:parseInt(m[2],10)-1,a:a};
+  }
+  return null;
+}
+function parseDate(s){
+  var p=mesDe(s);
+  if(!p||p.m<0||p.m>11)return null;
+  return new Date(p.a!==null?p.a:anioDe(p.m),p.m,p.d);
+}
+
+/** Fija ANIO_BASE y ANCLA_MES antes de ordenar nada. */
+function fijarAnio(textoFechas,parsed){
+  var m=String(textoFechas||'').match(/\b(20\d{2})\b/);
+  ANIO_BASE=m?parseInt(m[1],10):new Date().getFullYear();
+  ANCLA_MES=null;
+
+  /* El mes de arranque es el del vuelo de ida: por definición, el viaje
+     empieza ahí. */
+  var fl=parsed&&parsed.internationalFlights;
+  var ida=fl&&fl.outbound&&(fl.outbound.date||(fl.outbound.departure&&fl.outbound.departure.date));
+  var pi=mesDe(ida);
+  if(pi){ANCLA_MES=pi.m;if(pi.a!==null)ANIO_BASE=pi.a;return;}
+
+  /* Sin vuelo de ida: se juntan todos los meses que aparecen. Si hay
+     meses de fin de año Y de principio de año, el viaje cruza el año y
+     el arranque es el más chico de los de fin de año. */
+  var meses={};
+  (function recorrer(x){
+    if(!x)return;
+    if(Array.isArray(x)){x.forEach(recorrer);return;}
+    if(typeof x==='object'){for(var k in x){if(/date|fecha/i.test(k)&&typeof x[k]==='string'){var q=mesDe(x[k]);if(q)meses[q.m]=1;}else recorrer(x[k]);}return;}
+  })(parsed);
+  var lista=Object.keys(meses).map(Number).sort(function(a,b){return a-b;});
+  if(!lista.length)return;
+  var fin=lista.filter(function(x){return x>=10;}), ini=lista.filter(function(x){return x<=2;});
+  ANCLA_MES=(fin.length&&ini.length)?fin[0]:lista[0];
+}
 function fmtDate(d){return d.getDate()+' '+MNAMES[d.getMonth()];}
 function sortDate(city){return parseDate(city.checkinDate||(city.hotel&&city.hotel.checkinDate)||city.dates)||new Date(0);}
 function countUniq(cities){var s={};cities.forEach(function(c){s[c.name.toLowerCase().trim()]=1;});return Object.keys(s).length;}
@@ -456,7 +625,11 @@ function cleanAIJson(raw){
 async function callAI(content){
   var headers={'Content-Type':'application/json'};
   if(IN_IFRAME)headers['anthropic-version']='2023-06-01';
-  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:content}]})});
+  /* 8.000 no alcanzaba: un itinerario de tres semanas pasa ese tope, la
+     respuesta volvía cortada a la mitad y cleanAIJson la "arreglaba"
+     tirando todo lo que quedaba después de la última llave. Salía un
+     itinerario que se veía perfecto y le faltaban reservas. */
+  var resp=await fetch(API_ENDPOINT,{method:'POST',headers:headers,body:JSON.stringify({model:MODELO,max_tokens:16000,messages:[{role:'user',content:content}]})});
   if(!resp.ok){
     var e=await resp.json().catch(function(){return{};});
     var msg=(e.error&&e.error.message)||'Error '+resp.status;
@@ -466,6 +639,9 @@ async function callAI(content){
   }
   var data=await resp.json();
   if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
+  /* Y si aun así se corta, se dice. Nunca más un itinerario incompleto
+     que parezca completo. */
+  if(data.stop_reason==='max_tokens')throw new Error('Este viaje tiene más reservas de las que entran en una sola respuesta. Subí los documentos en dos tandas: los primeros ahora y el resto con "Agregar más".');
   var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
   raw=cleanAIJson(raw);
   try{
@@ -479,8 +655,120 @@ async function callAI(content){
 }
 var PROMPT_SYSTEM='Sos un experto en organizar itinerarios de viaje. Analiza TODOS los documentos y devuelve UNICAMENTE un JSON valido sin texto extra ni backticks.\n\n=== REGLA MAS IMPORTANTE ===\nDESTINOS = SOLO ciudades donde el viajero DUERME (tiene hotel con checkin/checkout).\nSi un tren o bus es IDA Y VUELTA en el mismo dia = EXCURSION DEL DIA, NO un destino separado.\nEJEMPLO: cliente duerme en Bristol del 15 al 18 jun. El dia 16 toma tren Bristol->Oxford->Bath->Bristol. Oxford y Bath son EXCURSIONES DEL DIA dentro de Bristol, NO cities separadas.\nSOLO crea una city si hay HOTEL VOUCHER con checkin/checkout especifico en esa ciudad.\n\n=== TIPOS DE ELEMENTOS ===\n1. VUELOS INTERNACIONALES: salen de Argentina (EZE/AEP/Ezeiza/Ministro Pistarini) o llegan a Argentina. Van SOLO en internationalFlights.outbound y .return. NUNCA como city.\n2. CITY: tiene hotel propio con checkin y checkout. Ordenar cronologicamente por checkinDate.\n3. excursion_dia: tren/bus ida Y vuelta mismo dia, cliente vuelve a dormir al hotel base. Va en events[] de la city donde duerme esa noche. NO es una city separada.\n4. intercityTransport: tren/bus/ferry que lleva a OTRA city donde dormira sin volver. Va en intercityTransports[] de la city de ORIGEN.\n5. actividad: tour, visita guiada, excursion con guia. Va en events[] de la city.\n6. traslado_local: transfer aeropuerto-hotel, shuttle, taxi reservado. Va en events[] de la city.\n\n=== ESTRUCTURA JSON ===\n{"countries":["Pais"],"internationalFlights":{"outbound":{"title":"Aerolinea NRO","route":"Buenos Aires -> Ciudad","departure":{"airport":"Ministro Pistarini","terminal":"A","time":"HH:MM","date":"DD mon"},"arrival":{"airport":"Aeropuerto Destino","terminal":"T","time":"HH:MM","date":"DD mon"},"stops":"Sin escalas","duration":"Xh XXm","class":"Economy","confirmation":"COD","sourceFile":0},"return":{"title":"Aerolinea NRO","route":"Ciudad -> Buenos Aires","departure":{"airport":"Aeropuerto","terminal":"T","time":"HH:MM","date":"DD mon"},"arrival":{"airport":"Ministro Pistarini","terminal":"A","time":"HH:MM","date":"DD mon"},"stops":"Sin escalas","duration":"Xh XXm","class":"Economy","confirmation":"COD","sourceFile":0}},"cities":[{"name":"Londres","flag":"🇬🇧","checkinDate":"DD mon","checkoutDate":"DD mon","nights":"N noches","hotel":{"title":"Nombre Hotel","detail":"Direccion completa","checkinDate":"DD mon","checkoutDate":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Hotel+Londres","confirmation":"COD","sourceFile":0},"events":[{"type":"traslado_local|actividad|excursion_dia","title":"Nombre","detail":"Descripcion completa del evento","time":"HH:MM","endTime":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Punto+encuentro+o+estacion","confirmation":"COD","sourceFile":0}],"intercityTransports":[{"type":"tren|bus|ferry|vuelo_interno","title":"Empresa - Origen -> Destino","departure":{"station":"Nombre exacto estacion segun voucher","time":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Estacion+Ciudad"},"arrival":{"station":"Nombre exacto estacion destino","time":"HH:MM","date":"DD mon","mapsUrl":"https://maps.google.com/?q=Nombre+Estacion+Ciudad"},"duration":"Xh XXm","confirmation":"COD","sourceFile":0}]}],"personalDocuments":[{"type":"pasaporte|visa|seguro|permiso|otro","name":"Descripcion","holder":"Titular","expiry":"fecha","sourceFile":0}]}\n\n=== REGLAS CRITICAS ===\n1. sourceFile: SIEMPRE numero entero 0+. NUNCA guion ni null.\n2. cities: UNICAMENTE ciudades con hotel propio. Ordenadas por checkinDate.\n3. events: ordenados por date + time. excursion_dia va AQUI, NO como city separada.\n4. mapsUrl hoteles: https://maps.google.com/?q=Nombre+Hotel+Ciudad\n5. mapsUrl estaciones: nombre EXACTO de la estacion segun el voucher.\n6. mapsUrl actividades y excursiones del dia: punto de encuentro o estacion de salida.\n7. Ciudades en espanol: London=Londres, Edinburgh=Edimburgo, Florence=Florencia, Venice=Venecia, Rome=Roma, Vienna=Viena, Athens=Atenas, Prague=Praga, Tokyo=Tokio, Lisbon=Lisboa, Milan=Milan, Naples=Napoles, Amsterdam=Amsterdam.\n8. countries: SOLO paises destino SIN Argentina.\n9. Extraer ABSOLUTAMENTE todo. No omitir ninguna reserva.\n10. intercityTransports: SIEMPRE incluir mapsUrl de estacion de salida Y llegada.';
 
-// Consolidation prompt: used when we already have a partial JSON and add more docs
-var PROMPT_CONSOLIDATE='Tenes un itinerario parcial en JSON y documentos adicionales. Actualiza el JSON incorporando TODA la informacion de los nuevos documentos. Devuelve el JSON completo actualizado, sin texto extra ni backticks.\n\nREGLAS: aplica las mismas que para extraccion nueva. Mergea ciudades del mismo nombre. Agrega actividades/traslados a la ciudad correcta segun fechas. Mantén orden cronologico dentro de cada ciudad. Agrega personalDocuments nuevos sin duplicar.\n\nJSON ACTUAL:\n';
+/* ═══ POR QUÉ YA NO HAY PROMPT DE CONSOLIDACIÓN ═══════════════════════
+   Antes, cuando los archivos no entraban en una sola llamada, a cada
+   lote siguiente se le pasaba el JSON que ya había y se le pedía a la IA
+   que devolviera TODO el itinerario actualizado. Con quince vouchers eso
+   significa que la IA reescribe de memoria lo que ya estaba bien: se le
+   caen reservas, le cambia horarios, le mezcla ciudades. Y encima paga
+   el itinerario completo en tokens en cada vuelta.
+
+   Ahora cada lote se extrae por separado, con el mismo prompt de
+   siempre, y los pedazos se unen acá abajo en JavaScript. Unir dos
+   listas es determinístico: sale igual todas las veces y no se pierde
+   nada.                                                               */
+
+function kNorm(x){return String(x==null?'':x).toLowerCase().replace(/\s+/g,' ').trim();}
+
+/** Cuántos datos de verdad tiene un objeto. Para elegir, entre dos
+    versiones de la misma reserva, la que vino más completa. */
+function cuantoTiene(x){
+  if(x==null)return 0;
+  if(Array.isArray(x))return x.reduce(function(n,y){return n+cuantoTiene(y);},0);
+  if(typeof x==='object'){var n=0;for(var k in x)n+=cuantoTiene(x[k]);return n;}
+  var t=String(x).trim();
+  return (t===''||t==='—'||t==='-')?0:1;
+}
+function elMasCompleto(a,b){
+  if(!a)return b||null;
+  if(!b)return a;
+  return cuantoTiene(b)>cuantoTiene(a)?b:a;
+}
+function noVacio(a,b){
+  var ta=String(a==null?'':a).trim(), tb=String(b==null?'':b).trim();
+  if(ta&&ta!=='—'&&ta!=='-')return a;
+  return (tb&&tb!=='—'&&tb!=='-')?b:a;
+}
+
+function claveEvt(e){return [kNorm(e.type),kNorm(e.title),kNorm(e.date),kNorm(e.time),kNorm(e.confirmation)].join('|');}
+function claveTr(t){var d=t.departure||{};return [kNorm(t.type),kNorm(t.title),kNorm(d.date),kNorm(d.time),kNorm(t.confirmation)].join('|');}
+function claveDoc(d){return [kNorm(d.type),kNorm(d.holder),kNorm(d.name)].join('|');}
+
+/** Une dos listas sin repetir, quedándose con la versión más completa de
+    cada reserva repetida. */
+function unirListas(a,b,clave){
+  var out=[],pos={};
+  (a||[]).concat(b||[]).forEach(function(x){
+    if(!x)return;
+    var k=clave(x);
+    if(pos[k]===undefined){pos[k]=out.length;out.push(x);}
+    else out[pos[k]]=elMasCompleto(out[pos[k]],x);
+  });
+  return out;
+}
+
+function mergeItin(a,b){
+  if(!a)return b||{};
+  if(!b)return a;
+  var r={};
+
+  var pa=[].concat(a.countries||[]).map(String), pb=[].concat(b.countries||[]).map(String);
+  r.countries=unirListas(pa,pb,kNorm);
+
+  var fa=a.internationalFlights||{}, fb=b.internationalFlights||{};
+  r.internationalFlights={
+    outbound:elMasCompleto(fa.outbound,fb.outbound),
+    return:elMasCompleto(fa['return'],fb['return'])
+  };
+
+  /* Las ciudades se juntan por nombre normalizado: "London" y "Londres"
+     son la misma, así que no quedan dos bloques para el mismo hotel. */
+  var orden=[],porClave={};
+  function sumarCiudad(c){
+    if(!c||!c.name)return;
+    var k=cityKey(normalizeCity(c.name));
+    if(!porClave[k]){
+      porClave[k]=JSON.parse(JSON.stringify(c));
+      porClave[k].name=normalizeCity(c.name);
+      orden.push(k);
+      return;
+    }
+    var d=porClave[k];
+    d.flag=noVacio(d.flag,c.flag);
+    d.checkinDate=noVacio(d.checkinDate,c.checkinDate);
+    d.checkoutDate=noVacio(d.checkoutDate,c.checkoutDate);
+    d.nights=noVacio(d.nights,c.nights);
+    d.hotel=elMasCompleto(d.hotel,c.hotel);
+    d.events=unirListas(d.events,c.events,claveEvt);
+    d.intercityTransports=unirListas(d.intercityTransports,c.intercityTransports,claveTr);
+    /* Las formas viejas del JSON, por si quedó algún itinerario guardado. */
+    if(d.activities||c.activities)d.activities=unirListas(d.activities,c.activities,claveEvt);
+    if(d.localTransfers||c.localTransfers)d.localTransfers=unirListas(d.localTransfers,c.localTransfers,claveEvt);
+  }
+  (a.cities||[]).forEach(sumarCiudad);
+  (b.cities||[]).forEach(sumarCiudad);
+  r.cities=orden.map(function(k){return porClave[k];});
+
+  r.personalDocuments=unirListas(a.personalDocuments,b.personalDocuments,claveDoc);
+  return r;
+}
+
+/** Qué archivos no aportaron ni una reserva. Es el control de que no se
+    perdió nada: si uno queda afuera, se avisa con nombre y apellido. */
+function archivosSinUsar(parsed,nombres){
+  var usados={};
+  (function recorrer(x){
+    if(!x)return;
+    if(Array.isArray(x)){x.forEach(recorrer);return;}
+    if(typeof x==='object'){
+      if(typeof x.sourceFile==='number')usados[x.sourceFile]=1;
+      for(var k in x)recorrer(x[k]);
+    }
+  })(parsed);
+  var fuera=[];
+  (nombres||[]).forEach(function(n,i){if(!usados[i])fuera.push(n);});
+  return fuera;
+}
 
 async function buildContent(allFiles, allB64, allTypes, offset){
   offset=offset||0;
@@ -492,17 +780,6 @@ async function buildContent(allFiles, allB64, allTypes, offset){
     else content.push({type:'image',source:{type:'base64',media_type:mt,data:allB64[j]}});
   }
   content.push({type:'text',text:PROMPT_SYSTEM});
-  return content;
-}
-
-async function buildConsolidateContent(existingJSON, newFiles, newB64, newTypes, offset){
-  var content=[{type:'text',text:PROMPT_CONSOLIDATE+JSON.stringify(existingJSON,null,2)+'\n\nNUEVOS DOCUMENTOS A INCORPORAR:\n'+newFiles.map(function(f,i){return 'Indice '+(offset+i)+': '+f.name;}).join('\n')+'\n'}];
-  for(var j=0;j<newFiles.length;j++){
-    content.push({type:'text',text:'=== Archivo '+(offset+j)+': '+newFiles[j].name+' ==='});
-    var mt=newTypes[j];
-    if(mt==='application/pdf')content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:newB64[j]}});
-    else content.push({type:'image',source:{type:'base64',media_type:mt,data:newB64[j]}});
-  }
   return content;
 }
 
@@ -536,24 +813,187 @@ function postProcess(parsed){
 }
 function c_checkin(city){return city.checkinDate||(city.hotel&&city.hotel.checkinDate)||city.dates||'';}
 
-// Max files per single AI call (Haiku handles ~6 PDFs well)
-// Max MB per batch (Haiku handles ~8MB of base64 safely)
-var MAX_BATCH_MB=7;
+/* ═══ LAS DOS FORMAS DEL JSON ══════════════════════════════════════════
+   El prompt pide `events` y `intercityTransports` (lista). La página que
+   se le publica al cliente leía `activities`, `localTransfers` y
+   `intercityTransport` (uno solo), que es la forma vieja. Resultado: en
+   la app Lara veía el itinerario completo y el cliente recibía una
+   página sin actividades, sin excursiones, sin traslados y sin los
+   trenes entre ciudades —ni sus vouchers—, con los contadores en cero.
+
+   Estas dos funciones leen las dos formas, así que da igual de qué
+   versión venga el itinerario.                                        */
+function evtsDe(city){
+  var out=[].concat(city.events||[]);
+  if(!out.length){
+    (city.activities||[]).forEach(function(a){out.push(Object.assign({type:'actividad'},a));});
+    (city.localTransfers||[]).forEach(function(t){out.push(Object.assign({type:'traslado_local'},t));});
+  }
+  out.sort(function(a,b){
+    var da=parseDate(a.date)||new Date(0),db=parseDate(b.date)||new Date(0);
+    if(da-db)return da-db;
+    return parseInt((a.time||'0').replace(':',''),10)-parseInt((b.time||'0').replace(':',''),10);
+  });
+  return out;
+}
+function transDe(city){
+  var out=[].concat(city.intercityTransports||[]);
+  if(city.intercityTransport)out.push(city.intercityTransport);
+  return out;
+}
+
+/* ═══ TODOS LOS COMPROBANTES, EN ORDEN ════════════════════════════════
+   Lo que el cliente necesita: una lista sola, del primer día al último,
+   con todo lo que tenga archivo —vuelos, hoteles, trenes, excursiones,
+   traslados— para abrir o bajar de un toque. Antes había que ir
+   buscándolos reserva por reserva adentro del itinerario.
+
+   Devuelve una fila por comprobante, ya ordenada, con la clave con la
+   que está guardado el archivo. Las claves son las mismas que usa el
+   itinerario, así que el archivo se guarda una sola vez.              */
+var TIPO_ICONO={vuelo:'✈️',hotel:'🏨',tren:'🚄',bus:'🚌',ferry:'⛴️',vuelo_interno:'✈️',
+                actividad:'🎟️',excursion_dia:'🗺️',traslado_local:'🚐',documento:'📄'};
+
+/* El HTML de la lista. `modo` cambia sólo los nombres de las funciones
+   que llaman los botones: en la app son openVoucher/descargarVoucher y en
+   la página publicada openV/bajarV. Todo lo demás es idéntico, para que
+   el cliente vea exactamente lo que Lara revisó. */
+function htmlIndiceDocs(filas,archivos,modo){
+  if(!filas.length)return '';
+  var abrir=(modo==='cliente')?'openV':'openVoucher';
+  var bajar=(modo==='cliente')?'bajarV':'descargarVoucher';
+  var esc=function(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+  var h='<div class="docs-section-title">🗂 Todos los comprobantes, en orden</div>';
+  var diaAnterior=null;
+  filas.forEach(function(f){
+    if(!archivos[f.key])return;
+    var dia=f.orden?(f.orden.getDate()+' '+MNAMES[f.orden.getMonth()]+' '+f.orden.getFullYear()):'Sin fecha';
+    if(dia!==diaAnterior){h+='<div class="doc-day">'+esc(dia)+'</div>';diaAnterior=dia;}
+    var nom=nombreArchivo(f,archivos[f.key].type);
+    h+='<div class="doc-row">'+
+         '<div class="doc-row-ico">'+f.icono+'</div>'+
+         '<div class="doc-row-mid">'+
+           '<div class="doc-row-tit">'+esc(f.titulo)+'</div>'+
+           '<div class="doc-row-sub">'+[f.hora,f.ciudad,f.conf?'Cód. '+f.conf:''].filter(Boolean).map(esc).join(' · ')+'</div>'+
+         '</div>'+
+         '<div class="doc-row-acc">'+
+           '<button class="doc-btn" onclick="'+abrir+'(\''+f.key+'\')">Ver</button>'+
+           '<button class="doc-btn doc-btn-dl" onclick="'+bajar+'(\''+f.key+'\',\''+esc(nom).replace(/'/g,'')+'\')">Descargar</button>'+
+         '</div>'+
+       '</div>';
+  });
+  return h;
+}
+
+function indiceDocs(d){
+  var fl=d.intlFlights||d.internationalFlights||{};
+  var filas=[];
+  function sumar(r,key,tipo,titulo,ciudad,fecha,hora){
+    if(!r)return;
+    filas.push({key:key,tipo:tipo,icono:TIPO_ICONO[tipo]||'📄',
+                titulo:titulo||'Reserva',ciudad:ciudad||'',
+                fecha:fecha||'',hora:hora||'',
+                conf:(r.confirmation&&r.confirmation!=='-'&&r.confirmation!=='—')?r.confirmation:'',
+                orden:parseDate(fecha)||null});
+  }
+  if(fl.outbound)sumar(fl.outbound,'intl-out','vuelo',fl.outbound.title||'Vuelo de ida','Vuelo de ida',
+    (fl.outbound.departure&&fl.outbound.departure.date)||fl.outbound.date,
+    (fl.outbound.departure&&fl.outbound.departure.time)||'');
+
+  (d.cities||[]).forEach(function(city,ci){
+    if(city.hotel)sumar(city.hotel,'h'+ci+'_0','hotel',city.hotel.title||'Hotel',city.name,
+      city.hotel.checkinDate||city.checkinDate,'');
+    evtsDe(city).forEach(function(e,i){
+      sumar(e,'ev'+ci+'_'+i,e.type||'actividad',e.title||'Actividad',city.name,e.date,e.time);
+    });
+    transDe(city).forEach(function(t,i){
+      var dep=t.departure||{};
+      sumar(t,'ic'+ci+'_'+i,t.type||'tren',t.title||'Traslado',city.name,dep.date,dep.time);
+    });
+  });
+
+  if(fl['return'])sumar(fl['return'],'intl-ret','vuelo',fl['return'].title||'Vuelo de regreso','Vuelo de regreso',
+    (fl['return'].departure&&fl['return'].departure.date)||fl['return'].date,
+    (fl['return'].departure&&fl['return'].departure.time)||'');
+
+  /* Sin fecha van al final, no al principio: con new Date(0) se iban
+     arriba de todo y el cliente abría la lista y veía lo que menos le
+     importa. */
+  filas.sort(function(a,b){
+    if(a.orden&&b.orden&&a.orden-b.orden!==0)return a.orden-b.orden;
+    if(a.orden&&!b.orden)return -1;
+    if(!a.orden&&b.orden)return 1;
+    var ta=(a.hora||'00:00').replace(':',''),tb=(b.hora||'00:00').replace(':','');
+    return parseInt(ta,10)-parseInt(tb,10);
+  });
+  return filas;
+}
+
+/** El nombre con el que se baja el archivo: que en la carpeta de
+    Descargas se entienda qué es sin abrirlo.
+
+    SIN ACENTOS, Y NO ES UN CAPRICHO. Si el atributo download de un <a>
+    tiene un solo caracter que no sea ASCII, Chrome lo ignora entero y el
+    archivo baja llamado "download". Con "Mercado Tsukiji con guía" o
+    "Nápoles" —o con un guión largo, que la IA usa seguido— el cliente
+    terminaba con download, download(1), download(2)… que es exactamente
+    lo que no queremos. Probado: "sin acento.pdf" baja bien, "con
+    guía.pdf" baja como "download".
+
+    Así que se pasan los acentos a su letra sola y se tira lo que no sea
+    ASCII. "guía" queda "guia", que además es lo que conviene en una
+    carpeta de Windows. */
+function sinAcentos(t){
+  var x=String(t==null?'':t);
+  try{ x=x.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }catch(e){}
+  return x.replace(/[\u2010-\u2015]/g,'-').replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"')
+          .replace(/[^\x20-\x7e]/g,'');
+}
+function nombreArchivo(fila,tipoMime){
+  var ext=(tipoMime==='application/pdf')?'pdf':(String(tipoMime||'').indexOf('image/')===0?String(tipoMime).split('/')[1]:'pdf');
+  var p=[];
+  if(fila.orden)p.push(fila.orden.getFullYear()+'-'+String(fila.orden.getMonth()+1).padStart(2,'0')+'-'+String(fila.orden.getDate()).padStart(2,'0'));
+  if(fila.ciudad)p.push(fila.ciudad);
+  p.push(fila.titulo);
+  var n=sinAcentos(p.join(' - ')).replace(/[\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim().slice(0,110);
+  return (n||'voucher')+'.'+ext;
+}
+
+/* ═══ EL TAMAÑO DE CADA LOTE ══════════════════════════════════════════
+   Los lotes eran de 7 MB porque el vercel.json dice sizeLimit 25mb. Pero
+   ese número no manda: Vercel corta el cuerpo del pedido mucho antes
+   —alrededor de 4,5 MB en el plan gratis— así que el lote salía, moría
+   con 413 y la pantalla decía "los archivos son demasiado pesados" sin
+   que nadie supiera cuánto es demasiado.
+
+   3,3 MB de base64 deja aire para el JSON que lo envuelve y entra
+   siempre. Y el corte por cantidad va junto con el de tamaño: antes
+   estaba después de empujar el lote por tamaño y podía dejar lotes
+   vacíos.                                                             */
+var MAX_LOTE_B64=3.3*1024*1024;
+var MAX_ARCH_LOTE=4;
 
 function splitIntoBatches(files, b64arr){
-  // Split files into batches by cumulative base64 size
-  var batches=[];var batch=[];var batchSize=0;
+  var batches=[],batch=[],size=0;
   for(var i=0;i<files.length;i++){
-    var sz=b64arr[i].length; // base64 length in chars ≈ bytes
-    if(batch.length>0&&batchSize+sz>MAX_BATCH_MB*1024*1024){
-      batches.push(batch);batch=[];batchSize=0;
+    var sz=b64arr[i].length;                 // el base64 ya está en caracteres ≈ bytes
+    if(batch.length&&(size+sz>MAX_LOTE_B64||batch.length>=MAX_ARCH_LOTE)){
+      batches.push(batch);batch=[];size=0;
     }
-    batch.push(i);batchSize+=sz;
-    // Also cap at 4 files per batch regardless of size
-    if(batch.length>=4){batches.push(batch);batch=[];batchSize=0;}
+    batch.push(i);size+=sz;
   }
-  if(batch.length>0)batches.push(batch);
+  if(batch.length)batches.push(batch);
   return batches;
+}
+
+/** Un archivo que solo no entra en un pedido no hay lote que lo salve:
+    se avisa antes de empezar, con el nombre, en vez de fallar a mitad. */
+function archivosDemasiadoGrandes(files,b64arr){
+  var malos=[];
+  for(var i=0;i<files.length;i++){
+    if(b64arr[i].length>MAX_LOTE_B64)malos.push(files[i].name+' ('+(b64arr[i].length/1024/1024*0.75).toFixed(1)+' MB)');
+  }
+  return malos;
 }
 
 async function generar(){
@@ -566,6 +1006,12 @@ async function generar(){
     var personalB64=[],personalTypes=[];
     for(var i=0;i<personalFiles.length;i++){var _pmt=getMT(personalFiles[i]);personalB64.push(await compressImage(personalFiles[i]));personalTypes.push(_pmt==='application/pdf'?_pmt:'image/jpeg');}
     setStep(2);
+    var grandes=archivosDemasiadoGrandes(files,filesB64);
+    if(grandes.length)throw new Error('Estos archivos son demasiado pesados para mandarlos: '+grandes.join(', ')+'. Comprimilos o subí cada uno por separado con "Agregar más".');
+
+    /* Cada lote se extrae por su cuenta, con el mismo prompt, y los
+       pedazos se unen acá. La IA nunca vuelve a escribir lo que ya
+       estaba bien. */
     var batches=splitIntoBatches(files,filesB64);
     var parsed=null;
     for(var bi=0;bi<batches.length;bi++){
@@ -574,19 +1020,14 @@ async function generar(){
       var bFiles=idxs.map(function(i){return files[i];});
       var bB64=idxs.map(function(i){return filesB64[i];});
       var bTypes=idxs.map(function(i){return filesType[i];});
-      var bOffset=idxs[0];
-      if(!parsed){
-        // First batch: fresh extraction
-        var c=await buildContent(bFiles,bB64,bTypes,bOffset);
-        parsed=await callAI(c);
-      } else {
-        // Subsequent batches: consolidate
-        var c=await buildConsolidateContent(parsed,bFiles,bB64,bTypes,bOffset);
-        parsed=await callAI(c);
-      }
+      var c=await buildContent(bFiles,bB64,bTypes,idxs[0]);
+      parsed=mergeItin(parsed,await callAI(c));
     }
     setStep(4);
-    parsed=postProcess(parsed||{});
+    parsed=parsed||{};
+    fijarAnio(dates,parsed);
+    parsed=postProcess(parsed);
+    _sinUsar=archivosSinUsar(parsed,files.map(function(f){return f.name;}));
     var voucherCount=filesB64.length;
     var DOC_LABELS_MAP={pasaporte:'Pasaporte',visa:'Visa',seguro:'Seguro de viaje',permiso:'Permiso de conducir',dni:'DNI',vacunas:'Cert. vacunas',otro:'Documento'};
     var builtPersonalDocs=personalFiles.map(function(f,i){
@@ -596,6 +1037,24 @@ async function generar(){
     });
     for(var i=0;i<personalB64.length;i++){filesB64.push(personalB64[i]);filesType.push(personalTypes[i]);}
     gData={client:client,dates:dates,cities:parsed.cities||[],countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},personalDocs:builtPersonalDocs};
+    /* Un viaje cargado a mano también va a la lista: si no, quedaba
+       suelto y desaparecía al volver. Los archivos se suman a la
+       biblioteca para que el viaje sea igual a los repartidos. */
+    if(typeof VIAJES!=='undefined'&&!VIAJE_ABIERTO){
+      var baseB=BIBLIO.length;
+      for(var bi=0;bi<filesB64.length;bi++){
+        BIBLIO.push({name:(files[bi]&&files[bi].name)||('archivo-'+bi),b64:filesB64[bi],type:filesType[bi],
+                     size:(files[bi]&&files[bi].size)||0,pasajeros:[],tipo:'otro',
+                     titulo:(files[bi]&&files[bi].name)||'',fecha:'',destino:''});
+      }
+      var arch=[];for(var ai=0;ai<filesB64.length;ai++)arch.push(baseB+ai);
+      VIAJES.push({id:'v'+Date.now(),cliente:client,dates:dates,pasajeros:[client],
+                   arch:arch,sitio:'',sinUsar:_sinUsar.slice(),
+                   data:JSON.parse(JSON.stringify(gData))});
+      VIAJE_ABIERTO=VIAJES[VIAJES.length-1].id;
+      renderViajes();
+      guardarTodo();
+    }
     await new Promise(function(r){setTimeout(r,400);});renderResult();
   }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ <strong>'+e.message+'</strong><br><br>Revisa que los archivos sean legibles e intenta de nuevo.</div>';}
 }
@@ -608,25 +1067,37 @@ function agregarMas(){
     show('sc-loading');setStep(1);
     try{
       var newB64=[],newTypes=[];
-      for(var i=0;i<nuevos.length;i++){files.push(nuevos[i]);var b=await toB64(nuevos[i]);var t=getMT(nuevos[i]);filesB64.push(b);filesType.push(t);newB64.push(b);newTypes.push(t);}
+      /* compressImage y no toB64: acá iban las fotos sin comprimir, que
+         es la mitad de los 413 que daba "Agregar más". */
+      for(var i=0;i<nuevos.length;i++){
+        files.push(nuevos[i]);
+        var t=getMT(nuevos[i]);
+        var b=await compressImage(nuevos[i]);
+        var tt=(t==='application/pdf')?t:'image/jpeg';
+        filesB64.push(b);filesType.push(tt);newB64.push(b);newTypes.push(tt);
+      }
       setStep(2);
-      // Consolidate: pass current data + new files
-      setStep(2);
+      var grandes2=archivosDemasiadoGrandes(nuevos,newB64);
+      if(grandes2.length)throw new Error('Estos archivos son demasiado pesados: '+grandes2.join(', ')+'. Subilos de a uno.');
+
+      /* Lo que ya estaba es la base, y los archivos nuevos se extraen
+         solos y se unen encima. Lo viejo no se vuelve a preguntar. */
+      var parsed={cities:gData.cities,countries:gData.countries,
+                  internationalFlights:gData.intlFlights,personalDocuments:gData.personalDocs};
       var batches2=splitIntoBatches(nuevos,newB64);
-      var parsed=JSON.parse(JSON.stringify(gData)); // start from current data
-      parsed.internationalFlights=gData.intlFlights;parsed.personalDocuments=gData.personalDocs;
       for(var bi=0;bi<batches2.length;bi++){
         setStep(bi===0?2:3);
         var idxs2=batches2[bi];
         var bFiles2=idxs2.map(function(i){return nuevos[i];});
         var bB64_2=idxs2.map(function(i){return newB64[i];});
         var bTypes2=idxs2.map(function(i){return newTypes[i];});
-        var bOffset2=offset+idxs2[0];
-        var cc=await buildConsolidateContent(parsed,bFiles2,bB64_2,bTypes2,bOffset2);
-        parsed=await callAI(cc);
+        var cc=await buildContent(bFiles2,bB64_2,bTypes2,offset+idxs2[0]);
+        parsed=mergeItin(parsed,await callAI(cc));
       }
       setStep(4);
+      fijarAnio(gData.dates,parsed);
       parsed=postProcess(parsed);
+      _sinUsar=archivosSinUsar(parsed,files.map(function(f){return f.name;}));
       gData.cities=parsed.cities||[];
       gData.countries=parsed.countries||[];
       gData.intlFlights=parsed.internationalFlights||{};
@@ -635,7 +1106,20 @@ function agregarMas(){
     }catch(e){show('sc-result');document.getElementById('itin-preview').innerHTML='<div class="err">❌ '+e.message+'</div>';}
   };input.click();
 }
-function openVoucher(key){var v=_vData[key];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),'_blank');}catch(e){showToast('No se pudo abrir el archivo','error');}}
+function bytesDe(b64){var b=atob(b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function openVoucher(key){var v=_vData[key];if(!v)return;try{window.open(URL.createObjectURL(new Blob([bytesDe(v.b64)],{type:v.type})),'_blank');}catch(e){showToast('No se pudo abrir el archivo','error');}}
+/* window.open con un blob no baja nada: en el iPhone abre una pestaña en
+   blanco y el cliente se queda sin el voucher. Un <a download> sí baja, y
+   con el nombre puesto queda ordenado en Descargas. */
+function descargarVoucher(key,nombre){
+  var v=_vData[key];if(!v)return;
+  try{
+    var u=URL.createObjectURL(new Blob([bytesDe(v.b64)],{type:v.type}));
+    var a=document.createElement('a');a.href=u;a.download=nombre||'voucher';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u);},4000);
+  }catch(e){showToast('No se pudo descargar','error');}
+}
 function openFileByIndex(i){if(!filesB64[i])return;try{var b=atob(filesB64[i]),a=new Uint8Array(b.length);for(var j=0;j<b.length;j++)a[j]=b.charCodeAt(j);window.open(URL.createObjectURL(new Blob([a],{type:filesType[i]})),'_blank');}catch(e){showToast('No se pudo abrir el archivo','error');}}
 function regV(r,key){if(r&&r.sourceFile!==undefined&&filesB64[r.sourceFile])_vData[key]={b64:filesB64[r.sourceFile],type:filesType[r.sourceFile]};}
 function cBadge(conf){return (conf&&conf!=='-'&&conf!=='—')?'<span class="badge-conf">Confirmado · '+conf+'</span>':'<span class="badge-pend">Pendiente</span>';}
@@ -844,14 +1328,7 @@ function renderResult(){
     ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+cityDateStr+'</div></div><span class="city-nights-badge">'+nightsStr+'</span><span class="city-chev">▼</span></div>';
     ib+='<div class="city-body">';
     if(city.hotel)ib+=mkHotel(city.hotel,'h'+ci+'_0');
-    // New events array (activities + local transfers + excursions)
-    var allEvents=city.events||[];
-    // Legacy fallback
-    if(!allEvents.length){
-      (city.activities||[]).forEach(function(a){allEvents.push(Object.assign({type:'actividad'},a));});
-      (city.localTransfers||[]).forEach(function(t){allEvents.push(Object.assign({type:'traslado_local'},t));});
-    }
-    allEvents.sort(function(a,b){var da=parseDate(a.date)||new Date(0),db=parseDate(b.date)||new Date(0);if(da-db)return da-db;return parseInt((a.time||'0').replace(':',''))-parseInt((b.time||'0').replace(':',''));});
+    var allEvents=evtsDe(city);
     allEvents.forEach(function(evt,ei){
       var ekey='ev'+ci+'_'+ei;
       if(evt.type==='excursion_dia'){ib+=mkExcursion(evt,ekey);}
@@ -861,12 +1338,17 @@ function renderResult(){
     ib+='</div></div>';
     var isLast=(ci===d.cities.length-1);
     // intercityTransports (new array) or intercityTransport (legacy single)
-    var icTransports=city.intercityTransports||[];
-    if(!icTransports.length&&city.intercityTransport)icTransports=[city.intercityTransport];
-    if(!isLast){
-      if(icTransports.length){icTransports.forEach(function(ic,ti){ib+=mkConn(ic,'ic'+ci+'_'+ti);});}
-      else{ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';}
-    }
+    /* ACÁ SE PERDÍA UN VOUCHER. Los traslados entre ciudades se dibujaban
+       sólo si la ciudad NO era la última, porque visualmente son el
+       conector entre dos tarjetas. Pero un tren que sale de la última
+       ciudad —o de la única— existe igual: el Eurostar a París del
+       último día no se mostraba, y como el voucher se registra al
+       dibujarlo, tampoco aparecía en la lista de comprobantes ni se
+       podía descargar. Ahora se dibujan siempre; el conector vacío sigue
+       siendo sólo para el medio. */
+    var icTransports=transDe(city);
+    if(icTransports.length){icTransports.forEach(function(ic,ti){ib+=mkConn(ic,'ic'+ci+'_'+ti);});}
+    else if(!isLast){ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';}
     if(isLast&&fl.return){ib+='<div class="connector"><div class="conn-line"></div></div>';ib+=mkIntlFlight(fl.return,'intl-ret','Vuelo de regreso');}
   });
   var logo=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
@@ -876,6 +1358,11 @@ function renderResult(){
   var d=gData;
   var pdocs=d.personalDocs||[];
   var db='<div class="docs-body">';
+
+  /* Lo primero que ve el cliente al entrar a Documentos: todo en orden,
+     del primer día al último, para abrir o bajar de un toque. Antes había
+     que ir buscando voucher por voucher dentro del itinerario. */
+  db+=htmlIndiceDocs(indiceDocs(d),_vData,'app');
 
   // Personal documents section
   if(pdocs.length){
@@ -906,6 +1393,15 @@ function renderResult(){
   db+='</div>';
   var inb='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:var(--green);text-decoration:none">+54 9 11 3635-8451</a></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+(d.client||'')+' </span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDate+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nU+' ciudad'+(nU!==1?'es':'')+' </span></div></div></div>';
   var full='<div class="hero"><img class="hero-img" src="'+heroUrl+'" alt="'+paises+'" onerror="this.style.display=\'none\'"><div class="hero-grad"></div><div class="hero-content"><div class="hero-dest">'+paises+' '+flags+'</div><div class="hero-names">'+d.client+'</div><div class="hero-dates">'+heroDate+'</div></div></div>'+statsH+'<div class="tabs"><div class="tab active" data-tab="itin" onclick="switchTab(\'itin\')">Itinerario</div><div class="tab" data-tab="docs" onclick="switchTab(\'docs\')">Documentos</div><div class="tab" data-tab="info" onclick="switchTab(\'info\')">Info util</div></div><div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+db+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
+  /* El control de que no quedó nada afuera. Va arriba de todo y en la
+     pantalla de Lara, no en el sitio que se le manda al cliente: es un
+     aviso para ella, para que revise antes de publicar. */
+  if(_sinUsar&&_sinUsar.length){
+    full='<div id="aviso-sinusar" style="background:#fff4e5;border-bottom:1px solid #f0d9b5;padding:.85rem 1.25rem;font-size:13px;color:#8a5a00;line-height:1.5">'+
+      '⚠️ <strong>De '+_sinUsar.length+' archivo'+(_sinUsar.length===1?'':'s')+' no saqué ninguna reserva:</strong> '+
+      _sinUsar.map(function(n){return String(n).replace(/[<>&]/g,'');}).join(', ')+
+      '.<br>Puede ser que sea un comprobante de pago o algo que no es una reserva, o que no se lea bien. Revisalo antes de publicar.</div>'+full;
+  }
   document.getElementById('itin-preview').innerHTML=full;
   show('sc-result');
 }
@@ -916,11 +1412,30 @@ function generarHTMLString(){
   if(fl.outbound)addV(fl.outbound,'intl-out');if(fl.return)addV(fl.return,'intl-ret');
   // Add personal documents to vouchers
   (d.personalDocs||[]).forEach(function(doc){if(doc.sourceFile!==undefined&&filesB64[doc.sourceFile])vouchers['doc_'+doc.sourceFile]={b64:filesB64[doc.sourceFile],type:filesType[doc.sourceFile]};});
-  d.cities.forEach(function(city,ci){if(city.hotel)addV(city.hotel,'h'+ci+'_0');(city.activities||[]).forEach(function(r,i){addV(r,'a'+ci+'_'+i);});(city.localTransfers||[]).forEach(function(r,i){addV(r,'t'+ci+'_'+i);});if(city.intercityTransport)addV(city.intercityTransport,'ic'+ci);});
-  var nV=(fl.outbound?1:0)+(fl.return?1:0);d.cities.forEach(function(c){if(c.intercityTransport&&c.intercityTransport.type==='vuelo')nV++;});
+  /* ACÁ FALTABA LA MITAD DEL VIAJE. Esto registraba los archivos de
+     city.activities, city.localTransfers y city.intercityTransport —la
+     forma vieja del JSON—, pero la IA devuelve city.events y
+     city.intercityTransports. Así que en la página que recibía el
+     cliente no había ni una actividad, ni una excursión, ni un traslado,
+     ni un tren entre ciudades, ni sus vouchers, y los contadores de
+     arriba marcaban cero. En la app Lara veía todo y el cliente recibía
+     el itinerario pelado: sólo vuelos y hoteles.
+
+     evtsDe y transDe leen las dos formas y dan las mismas claves que usa
+     la app, así que el archivo se guarda una sola vez. */
+  d.cities.forEach(function(city,ci){
+    if(city.hotel)addV(city.hotel,'h'+ci+'_0');
+    evtsDe(city).forEach(function(r,i){addV(r,'ev'+ci+'_'+i);});
+    transDe(city).forEach(function(r,i){addV(r,'ic'+ci+'_'+i);});
+  });
+  var nV=(fl.outbound?1:0)+(fl.return?1:0);
+  d.cities.forEach(function(c){transDe(c).forEach(function(t){if(t.type==='vuelo'||t.type==='vuelo_interno')nV++;});});
   var nU=countUniq(d.cities),nH=d.cities.filter(function(c){return c.hotel;}).length;
-  var nT=0;d.cities.forEach(function(c){nT+=(c.localTransfers||[]).length;if(c.intercityTransport&&c.intercityTransport.type!=='vuelo')nT++;});
-  var nA=0;d.cities.forEach(function(c){nA+=(c.activities||[]).length;});
+  var nT=0,nA=0;
+  d.cities.forEach(function(c){
+    evtsDe(c).forEach(function(e){if(e.type==='traslado_local')nT++;else nA++;});
+    transDe(c).forEach(function(t){if(t.type!=='vuelo'&&t.type!=='vuelo_interno')nT++;});
+  });
   var paises=(d.countries&&d.countries.length)?d.countries.join(' & '):'Viaje';
   var flags=d.cities.map(function(c){return c.flag||'';}).filter(function(f,i,a){return f&&a.indexOf(f)===i;}).join(' ');
   var dr=getTripRange(d.cities,fl);
@@ -962,11 +1477,17 @@ function generarHTMLString(){
     ib+='<div class="city-card-hdr"><span class="city-flag">'+(city.flag||'📍')+'</span><div class="city-card-info"><div class="city-name">'+city.name+'</div><div class="city-dates-small">'+cityDateStr2+'</div></div><span class="city-nights-badge">'+(city.nights||'')+'</span><span class="city-chev">▼</span></div>';
     ib+='<div class="city-body">';
     if(city.hotel)ib+=rHotel(city.hotel,'h'+ci+'_0');
-    (city.activities||[]).forEach(function(a,i){ib+=rEvt(a,'a'+ci+'_'+i,'Actividad','🎟️');});
-    (city.localTransfers||[]).forEach(function(t,i){ib+=rEvt(t,'t'+ci+'_'+i,'Traslado','🚐');});
+    evtsDe(city).forEach(function(e,i){
+      var k='ev'+ci+'_'+i;
+      if(e.type==='traslado_local')ib+=rEvt(e,k,'Traslado','🚐');
+      else if(e.type==='excursion_dia')ib+=rEvt(e,k,'Excursión del día','🗺️');
+      else ib+=rEvt(e,k,'Actividad','🎟️');
+    });
     ib+='</div></div>';
     var isLast=(ci===d.cities.length-1);
-    if(!isLast){if(city.intercityTransport)ib+=rConn(city.intercityTransport,'ic'+ci);else ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';}
+    var trs=transDe(city);
+    if(trs.length)trs.forEach(function(t,ti){ib+=rConn(t,'ic'+ci+'_'+ti);});
+    else if(!isLast)ib+='<div class="connector"><div class="conn-line"></div><div style="height:8px"></div><div class="conn-line"></div></div>';
     if(isLast&&fl.return){ib+='<div class="connector"><div class="conn-line"></div></div>';ib+=rFlight(fl.return,'intl-ret','Vuelo de regreso');}
   });
   var logo=LOGO_SVG.replace('<svg ','<svg style="height:52px;width:auto" ');
@@ -974,6 +1495,8 @@ function generarHTMLString(){
   var inb='<div class="info-body"><div class="info-card"><div class="info-card-title">📞 Contacto Chispa</div><div class="info-row"><span class="info-icon">📧</span><span class="info-key">Email</span><span class="info-val">info@chispatravel.com</span></div><div class="info-row"><span class="info-icon">💬</span><span class="info-key">WhatsApp</span><a class="info-val" href="https://wa.me/5491136358451" style="color:#3d5c36;text-decoration:none">+54 9 11 3635-8451</a></div></div><div class="info-card"><div class="info-card-title">✈️ Tu viaje</div><div class="info-row"><span class="info-icon">👤</span><span class="info-key">Viajeros</span><span class="info-val">'+d.client+'</span></div><div class="info-row"><span class="info-icon">📅</span><span class="info-key">Fechas</span><span class="info-val">'+heroDate+'</span></div><div class="info-row"><span class="info-icon">🏙</span><span class="info-key">Destinos</span><span class="info-val">'+nU+' ciudad'+(nU!==1?'es':'')+'</span></div></div></div>';
   // Build client docs panel
   var clientDB='<div class="docs-body">';
+  /* Lo mismo que revisa Lara, con los mismos botones. */
+  clientDB+=htmlIndiceDocs(indiceDocs(d),vouchers,'cliente');
   var pdocs=d.personalDocs||[];
   var DOC_ICONS_C={pasaporte:'🛂',visa:'🔖',seguro:'🏥',permiso:'🚗',otro:'📄'};
   if(pdocs.length){
@@ -986,8 +1509,8 @@ function generarHTMLString(){
       clientDB+='<div class="doc-card"><div class="doc-card-top"><div class="doc-card-side"><div class="doc-card-icon">'+icon+'</div><div class="doc-card-typelbl">'+tl+'</div></div><div class="doc-card-main"><div class="doc-card-name">'+(doc.name||tl)+'</div>'+(doc.holder?'<div class="doc-card-holder">👤 '+doc.holder+'</div>':'')+(doc.expiry?'<div class="doc-card-expiry">Vence: '+doc.expiry+'</div>':'')+'</div></div><div class="doc-card-footer">'+ob+'</div></div>';
     });
   }
-  if(!pdocs.length){
-    clientDB+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Los vouchers están disponibles en cada reserva ↑</div>';
+  if(!pdocs.length&&!Object.keys(vouchers).length){
+    clientDB+='<div style="padding:2rem;text-align:center;color:#bbb;font-size:13px">Todavía no hay comprobantes cargados</div>';
   }
   clientDB+='</div>';
   body+='<div id="panel-itin" class="tab-panel active">'+ib+'</div><div id="panel-docs" class="tab-panel">'+clientDB+'</div><div id="panel-info" class="tab-panel">'+inb+'</div>';
@@ -995,7 +1518,12 @@ function generarHTMLString(){
   var _vp=[];
   _vp.push('var V='+repr(vouchers));
   _vp.push(';var SD='+repr(sd));
-  _vp.push(';function openV(k){var v=V[k];if(!v)return;try{var b=atob(v.b64),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);window.open(URL.createObjectURL(new Blob([a],{type:v.type})),"_blank")}catch(e){}}');
+  _vp.push(';function _by(s){var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}');
+  _vp.push('function openV(k){var v=V[k];if(!v)return;try{window.open(URL.createObjectURL(new Blob([_by(v.b64)],{type:v.type})),"_blank")}catch(e){}}');
+  /* window.open con un blob no baja nada: en el iPhone abre una pestaña
+     en blanco. Con <a download> el archivo cae en Descargas, y con el
+     nombre puesto se entiende qué es sin abrirlo. */
+  _vp.push('function bajarV(k,n){var v=V[k];if(!v)return;try{var u=URL.createObjectURL(new Blob([_by(v.b64)],{type:v.type}));var a=document.createElement("a");a.href=u;a.download=n||"voucher";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){}}');
   _vp.push('function switchTab(n){document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});document.querySelector(".tab[data-tab=\'"+n+"\']").classList.add("active");document.getElementById("panel-"+n).classList.add("active")}');
   _vp.push('function openSummary(type){var d=SD[type];if(!d)return;document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")});var el=document.querySelector(".stat[data-type=\'"+type+"\']");if(el)el.classList.add("active");document.getElementById("summary-title").textContent=d.title;document.getElementById("summary-content").innerHTML=d.html;document.getElementById("summary-panel").classList.add("open")}');
   _vp.push('function closeSummary(){document.getElementById("summary-panel").classList.remove("open");document.querySelectorAll(".stat").forEach(function(s){s.classList.remove("active")})}');
@@ -1034,6 +1562,12 @@ async function confirmarPublicar(){
     var eb=document.getElementById('pub-banner');if(eb)eb.remove();
     var banner=document.createElement('div');banner.id='pub-banner';
     banner.style.cssText='background:#e8f2e0;padding:.85rem 1.25rem;font-size:13px;color:#3d5c36;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap';
+    /* El link queda pegado al viaje: así la lista muestra cuáles ya
+       están publicados y cuáles no. */
+    if(typeof VIAJE_ABIERTO!=='undefined'&&VIAJE_ABIERTO){
+      var _v=VIAJES.find(function(x){return x.id===VIAJE_ABIERTO;});
+      if(_v){_v.sitio=url;if(typeof renderViajes==='function')renderViajes();if(typeof guardarTodo==='function')guardarTodo();}
+    }
     banner.innerHTML='✅ Publicado: <a href="'+url+'" target="_blank" style="color:#3d5c36">'+url+'</a>';
     var copyBtn=document.createElement('button');copyBtn.textContent='Copiar';
     copyBtn.style.cssText='background:none;border:1px solid #8aac7a;border-radius:20px;color:#3d5c36;cursor:pointer;font-size:11px;padding:3px 10px;font-family:DM Sans,sans-serif';
@@ -1043,6 +1577,506 @@ async function confirmarPublicar(){
   }catch(e){document.getElementById('pub-error').textContent=e.message;document.getElementById('pub-error').style.display='block';}
   finally{btn.textContent='🌐 Publicar';btn.disabled=false;}
 }
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║  VARIOS CLIENTES DE UNA SOLA VEZ                                    ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   Lara sube todo junto —vouchers de seis clientes mezclados— y la app
+   tiene que repartirlos. Son dos pasadas por la IA, no una:
+
+   1ª PASADA, barata: de cada archivo saca sólo a nombre de quién está,
+      qué es y de qué fecha. Es una respuesta corta, así que entran
+      muchos archivos por llamada y cuesta poco.
+   2ª PASADA, la de siempre: ya separados por cliente, se extrae el
+      itinerario de cada grupo con el prompt completo.
+
+   En el medio hay una pantalla de revisión, y no es un adorno: acá hay
+   pasaportes y vuelos, y un archivo mal repartido termina en el sitio
+   del cliente equivocado. Así que la app propone y Lara confirma.      */
+
+var VIAJES=[];          // [{id, cliente, dates, arch:[i], data, sitio}]
+var BIBLIO=[];          // [{name, b64, type, size, pasajeros:[], tipo, fecha, destino}]
+var GRUPOS=[];          // el reparto propuesto, mientras se revisa
+var VIAJE_ABIERTO=null;
+
+var PROMPT_CLASIF='Mirá cada documento y devolvé UNICAMENTE un JSON valido, sin texto extra ni backticks.\n\n'+
+'{"archivos":[{"sourceFile":0,"pasajeros":["Nombre Apellido"],"tipo":"vuelo|hotel|tren|bus|ferry|actividad|traslado|seguro|pasaporte|visa|otro","titulo":"breve","fecha":"DD mon","destino":"Ciudad"}]}\n\n'+
+'REGLAS:\n'+
+'1. sourceFile: el numero de Indice que figura arriba de cada archivo. SIEMPRE entero, nunca guion ni null.\n'+
+'2. pasajeros: las personas que viajan, como figuran en el documento pero escritas normal. Si dice "PEREZ/DANIELA MRS" poné "Daniela Perez". Si hay varias, todas. Si el documento no nombra a nadie, lista vacia.\n'+
+'3. tipo: que es el documento.\n'+
+'4. fecha: la fecha principal (salida, checkin, dia de la actividad), con el año si el documento lo dice: "18 may 2026". Si no tiene fecha, "".\n'+
+'5. destino: la ciudad a la que corresponde. Si no se sabe, "".\n'+
+'6. UNA entrada por archivo. No omitas ninguno, aunque no entiendas que es.';
+
+/** Cómo se escribe el nombre para mostrarlo. Los PDF de aerolínea vienen
+    "PEREZ/DANIELA MRS" y así quedaba el nombre del viaje. Acá se da vuelta
+    el apellido/nombre, se tira el MR/MRS y se pasa a mayúscula inicial.
+    Los acentos SE MANTIENEN: esto es para la pantalla, no para un nombre
+    de archivo. */
+function nombreLindo(n){
+  var x=String(n==null?'':n).replace(/\s+/g,' ').trim();
+  x=x.replace(/\b(MR|MRS|MS|SR|SRA|SRTA|DR|DRA|MISS|DON|DO[NÑ]A)\b\.?/gi,' ').replace(/\s+/g,' ').trim();
+  if(x.indexOf('/')>=0){
+    var pr=x.split('/').map(function(y){return y.trim();}).filter(Boolean);
+    if(pr.length>=2)x=pr.slice(1).join(' ')+' '+pr[0];   // APELLIDO/NOMBRE → Nombre Apellido
+    else x=pr.join(' ');
+  }
+  /* Sólo se cambia el caso si vino TODO EN MAYÚSCULAS: si ya venía bien
+     escrito, no se toca (hay apellidos como "de la Vega"). */
+  if(x===x.toUpperCase()){
+    x=x.toLowerCase().replace(/(^|[\s'-])([a-záéíóúüñ])/g,function(m,a,b){return a+b.toUpperCase();});
+  }
+  return x.trim();
+}
+
+/** Un nombre comparable: sin acentos, sin "MRS", y con las palabras
+    ordenadas, para que "Daniela Perez" y "PEREZ/DANIELA MRS" den igual. */
+function normNombre(n){
+  var x=sinAcentos(n).toUpperCase()
+        .replace(/\b(MR|MRS|MS|SR|SRA|SRTA|DR|DRA|MISS|DON|DONA)\b\.?/g,' ')
+        .replace(/[^A-Z ]/g,' ').replace(/\s+/g,' ').trim();
+  var t=x.split(' ').filter(function(w){return w.length>2;});
+  t.sort();
+  return t.join(' ');
+}
+
+async function clasificarArchivos(nuevos){
+  var b64=[],tipos=[];
+  for(var i=0;i<nuevos.length;i++){
+    var mt=getMT(nuevos[i]);
+    b64.push(await compressImage(nuevos[i]));
+    tipos.push(mt==='application/pdf'?mt:'image/jpeg');
+  }
+  var grandes=archivosDemasiadoGrandes(nuevos,b64);
+  if(grandes.length)throw new Error('Estos archivos son demasiado pesados para mandarlos: '+grandes.join(', ')+'. Comprimilos o subilos de a uno.');
+
+  var base=BIBLIO.length;
+  for(var k=0;k<nuevos.length;k++){
+    BIBLIO.push({name:nuevos[k].name,b64:b64[k],type:tipos[k],size:nuevos[k].size,
+                 pasajeros:[],tipo:'otro',titulo:nuevos[k].name,fecha:'',destino:''});
+  }
+
+  var lotes=splitIntoBatches(nuevos,b64);
+  for(var li=0;li<lotes.length;li++){
+    setStep(li===0?1:2);
+    var idxs=lotes[li];
+    var contenido=[{type:'text',text:'Lista de archivos:\n'+idxs.map(function(i,j){return 'Indice '+(base+i)+': '+nuevos[i].name;}).join('\n')+'\n'}];
+    idxs.forEach(function(i){
+      contenido.push({type:'text',text:'=== Archivo '+(base+i)+': '+nuevos[i].name+' ==='});
+      if(tipos[i]==='application/pdf')contenido.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:b64[i]}});
+      else contenido.push({type:'image',source:{type:'base64',media_type:tipos[i],data:b64[i]}});
+    });
+    contenido.push({type:'text',text:PROMPT_CLASIF});
+    var r=await callAI(contenido);
+    (r.archivos||[]).forEach(function(a){
+      var n=Number(a.sourceFile);
+      if(!BIBLIO[n])return;
+      BIBLIO[n].pasajeros=(a.pasajeros||[]).map(String).filter(Boolean);
+      BIBLIO[n].tipo=a.tipo||'otro';
+      BIBLIO[n].titulo=a.titulo||BIBLIO[n].name;
+      BIBLIO[n].fecha=a.fecha||'';
+      BIBLIO[n].destino=a.destino||'';
+    });
+  }
+  return base;
+}
+
+/** Junta los archivos que comparten al menos un pasajero. Los que no
+    nombran a nadie —una entrada de museo, un transfer sin nombre— van a
+    "Sin asignar" y Lara los acomoda a mano. */
+function agruparPorCliente(desde){
+  var pend=[];
+  for(var i=desde;i<BIBLIO.length;i++)pend.push(i);
+
+  var grupos=[],sinNombre=[];
+  pend.forEach(function(i){
+    var nombres=BIBLIO[i].pasajeros.map(normNombre).filter(Boolean);
+    if(!nombres.length){sinNombre.push(i);return;}
+    var encontrado=null;
+    for(var g=0;g<grupos.length;g++){
+      if(nombres.some(function(n){return grupos[g].claves[n];})){encontrado=grupos[g];break;}
+    }
+    if(!encontrado){encontrado={claves:{},arch:[],crudos:[]};grupos.push(encontrado);}
+    nombres.forEach(function(n){encontrado.claves[n]=1;});
+    BIBLIO[i].pasajeros.forEach(function(n){encontrado.crudos.push(n);});
+    encontrado.arch.push(i);
+  });
+
+  /* Si ya existe un viaje con los mismos pasajeros, el archivo va ahí en
+     vez de armar un viaje nuevo: así "Agregar más" para un cliente que ya
+     estaba funciona sin que Lara tenga que acordarse de nada. */
+  var out=grupos.map(function(g){
+    var cuenta={};
+    g.crudos.forEach(function(n){var k=normNombre(n);if(!cuenta[k])cuenta[k]={n:n,c:0};cuenta[k].c++;});
+    var nombres=Object.keys(cuenta).map(function(k){return cuenta[k];})
+                  .sort(function(a,b){return b.c-a.c;}).slice(0,3)
+                  .map(function(x){return nombreLindo(x.n);});
+    var existente=VIAJES.find(function(v){
+      return (v.pasajeros||[]).some(function(n){return g.claves[normNombre(n)];});
+    });
+    return {cliente:existente?existente.cliente:nombres.join(' y '),
+            viajeId:existente?existente.id:null,
+            pasajeros:nombres,arch:g.arch};
+  });
+  if(sinNombre.length)out.push({cliente:'Sin asignar',viajeId:null,pasajeros:[],arch:sinNombre,sinAsignar:true});
+  return out;
+}
+
+/* Corre fn con el año anclado a ESTOS archivos y después deja los
+   globales como estaban. Sin esto, el ancla del viaje anterior se le
+   pegaba al siguiente: tres viajes seguidos salían 2026, 2027 y 2028. */
+function conAnclaDe(idxs,fn){
+  var aB=ANIO_BASE,aM=ANCLA_MES;
+  try{
+    var conA=idxs.map(function(i){return mesDe(BIBLIO[i].fecha);}).filter(Boolean);
+    var conAnio=conA.filter(function(x){return x.a!==null;});
+    ANIO_BASE=conAnio.length?conAnio[0].a:new Date().getFullYear();
+    var meses=[];conA.forEach(function(x){if(meses.indexOf(x.m)<0)meses.push(x.m);});
+    meses.sort(function(a,b){return a-b;});
+    var fin=meses.filter(function(x){return x>=10;}),ini=meses.filter(function(x){return x<=2;});
+    ANCLA_MES=meses.length?((fin.length&&ini.length)?fin[0]:meses[0]):null;
+    return fn();
+  } finally { ANIO_BASE=aB;ANCLA_MES=aM; }
+}
+
+function rangoDe(idxs){
+  return conAnclaDe(idxs,function(){return rangoDe_(idxs);});
+}
+function rangoDe_(idxs){
+  var ds=idxs.map(function(i){return parseDate(BIBLIO[i].fecha);}).filter(Boolean).sort(function(a,b){return a-b;});
+  if(!ds.length)return '';
+  var dest=[];
+  idxs.forEach(function(i){var x=BIBLIO[i].destino;if(x&&dest.indexOf(x)<0)dest.push(x);});
+  var f=(ds.length>1&&(ds[0]-ds[ds.length-1]))?(fmtDate(ds[0])+' — '+fmtDate(ds[ds.length-1])+' '+ds[ds.length-1].getFullYear()):(fmtDate(ds[0])+' '+ds[0].getFullYear());
+  return (dest.length?dest.slice(0,3).join(', ')+' · ':'')+f;
+}
+
+async function sumarArchivos(fl){
+  var nuevos=Array.prototype.slice.call(fl||[]);
+  document.getElementById('finput-todo').value='';
+  if(!nuevos.length)return;
+  show('sc-loading');
+  var st=document.getElementById('st1');if(st)st.textContent='📄 Leyendo '+nuevos.length+' archivo'+(nuevos.length===1?'':'s');
+  var st2=document.getElementById('st2');if(st2)st2.textContent='🔍 Viendo a nombre de quién está cada uno';
+  var st3=document.getElementById('st3');if(st3)st3.textContent='🔗 Separando por cliente';
+  setStep(1);
+  try{
+    var desde=await clasificarArchivos(nuevos);
+    await guardarArchivos().catch(function(){});
+    setStep(3);
+    GRUPOS=agruparPorCliente(desde);
+    setStep(4);
+    renderGrupos();
+    show('sc-grupos');
+  }catch(e){
+    show('sc-viajes');
+    showToast(e.message,'error',8000);
+  }
+}
+
+var TIPO_ICO_CLASIF={vuelo:'✈️',hotel:'🏨',tren:'🚄',bus:'🚌',ferry:'⛴️',actividad:'🎟️',
+                     traslado:'🚐',seguro:'🏥',pasaporte:'🛂',visa:'🔖',otro:'📄'};
+
+function renderGrupos(){
+  var cont=document.getElementById('gr-lista');
+  var reales=GRUPOS.filter(function(g){return !g.sinAsignar;}).length;
+  document.getElementById('gr-titulo').textContent=reales===1?'Encontré 1 viaje':'Encontré '+reales+' viajes';
+  var esc=function(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+  var opciones=GRUPOS.map(function(g,gi){return '<option value="'+gi+'">'+esc(g.cliente||('Viaje '+(gi+1)))+'</option>';}).join('');
+
+  cont.innerHTML=GRUPOS.map(function(g,gi){
+    var h='<div class="gr-card'+(g.sinAsignar?' sinasignar':'')+'">';
+    h+='<div class="gr-head"><span class="gr-ico">'+(g.sinAsignar?'❓':'🧳')+'</span>'+
+       (g.sinAsignar?'<span class="gr-nom" style="border:0">Sin asignar</span>'
+                   :'<input class="gr-nom" data-gnom="'+gi+'" value="'+esc(g.cliente)+'" placeholder="Nombre del viaje">')+
+       '</div>';
+    h+='<div class="gr-meta">'+(g.sinAsignar
+        ? 'Estos no nombran a nadie. Mandalos al viaje que corresponda.'
+        : (g.arch.length+' archivo'+(g.arch.length===1?'':'s')+(rangoDe(g.arch)?' · '+esc(rangoDe(g.arch)):'')+(g.viajeId?' · se suma a un viaje que ya tenías':'')))+'</div>';
+    g.arch.forEach(function(i){
+      var a=BIBLIO[i];
+      h+='<div class="gr-arch">'+
+           '<span class="gr-arch-ico">'+(TIPO_ICO_CLASIF[a.tipo]||'📄')+'</span>'+
+           '<div class="gr-arch-mid"><div class="gr-arch-nom">'+esc(a.titulo||a.name)+'</div>'+
+             '<div class="gr-arch-sub">'+[a.fecha,a.destino,a.pasajeros.join(', ')].filter(Boolean).map(esc).join(' · ')+'</div></div>'+
+           '<select class="gr-mover" data-mover="'+i+'">'+
+             opciones.replace('value="'+gi+'"','value="'+gi+'" selected')+
+           '</select>'+
+         '</div>';
+    });
+    return h+'</div>';
+  }).join('');
+
+  cont.querySelectorAll('[data-gnom]').forEach(function(el){
+    el.addEventListener('input',function(){GRUPOS[+el.getAttribute('data-gnom')].cliente=el.value;});
+  });
+  cont.querySelectorAll('[data-mover]').forEach(function(sel){
+    sel.addEventListener('change',function(){
+      var i=+sel.getAttribute('data-mover'),destino=+sel.value;
+      GRUPOS.forEach(function(g){var k=g.arch.indexOf(i);if(k>=0)g.arch.splice(k,1);});
+      GRUPOS[destino].arch.push(i);
+      GRUPOS=GRUPOS.filter(function(g){return g.arch.length||!g.sinAsignar;});
+      renderGrupos();
+    });
+  });
+}
+
+async function generarGrupos(){
+  var pend=GRUPOS.filter(function(g){return !g.sinAsignar&&g.arch.length;});
+  if(!pend.length){showToast('No hay ningún viaje para generar','error');return;}
+  var sin=GRUPOS.filter(function(g){return g.sinAsignar&&g.arch.length;});
+  if(sin.length&&!confirm('Quedan '+sin[0].arch.length+' archivo(s) sin asignar: no van a entrar en ningún itinerario.\n\n¿Genero igual?'))return;
+
+  show('sc-loading');
+  var st1=document.getElementById('st1');
+  try{
+    for(var gi=0;gi<pend.length;gi++){
+      var g=pend[gi];
+      if(st1)st1.textContent='📄 '+g.cliente+' ('+(gi+1)+' de '+pend.length+')';
+      setStep(2);
+      /* Cada viaje se extrae con los globales de siempre, así que todo lo
+         que ya andaba —el merge, el orden, los vouchers— sigue igual. */
+      files=g.arch.map(function(i){return {name:BIBLIO[i].name,size:BIBLIO[i].size,type:BIBLIO[i].type};});
+      filesB64=g.arch.map(function(i){return BIBLIO[i].b64;});
+      filesType=g.arch.map(function(i){return BIBLIO[i].type;});
+      var parsed=null;
+      var lotes=splitIntoBatches(files,filesB64);
+      for(var li=0;li<lotes.length;li++){
+        setStep(li===0?2:3);
+        var idxs=lotes[li];
+        var c=await buildContent(idxs.map(function(i){return files[i];}),
+                                 idxs.map(function(i){return filesB64[i];}),
+                                 idxs.map(function(i){return filesType[i];}),idxs[0]);
+        parsed=mergeItin(parsed,await callAI(c));
+      }
+      setStep(4);
+      parsed=parsed||{};
+      /* El año se saca de los documentos de ESTE viaje, no del anterior. */
+      var dates=rangoDe(g.arch);
+      ANIO_BASE=new Date().getFullYear();ANCLA_MES=null;
+      fijarAnio(dates,parsed);
+      parsed=postProcess(parsed);
+
+      var viaje=g.viajeId?VIAJES.find(function(v){return v.id===g.viajeId;}):null;
+      if(viaje){
+        /* Ya existía: se le suma, no se le pisa. Los sourceFile del viaje
+           son locales a su propia lista de archivos, así que los del
+           grupo nuevo se corren tantos lugares como archivos ya había. */
+        var corr=viaje.arch.length,mapaC={};
+        for(var q=0;q<g.arch.length;q++)mapaC[q]=corr+q;
+        parsed=reindexar(parsed,mapaC);
+        var antes={cities:viaje.data.cities,countries:viaje.data.countries,
+                   internationalFlights:viaje.data.intlFlights,personalDocuments:viaje.data.personalDocs};
+        var junto=mergeItin(antes,parsed);
+        junto=postProcess(junto);
+        viaje.arch=viaje.arch.concat(g.arch);
+        /* El período se recalcula sobre todos los archivos del viaje: si
+           no, seguía mostrando el rango de la primera tanda. */
+        viaje.dates=rangoDe(viaje.arch)||viaje.dates||dates;
+        viaje.data={client:viaje.cliente,dates:viaje.dates,cities:junto.cities||[],
+                    countries:junto.countries||[],intlFlights:junto.internationalFlights||{},
+                    personalDocs:junto.personalDocuments||[]};
+        viaje.sinUsar=archivosSinUsar(junto,viaje.arch.map(function(i){return BIBLIO[i].name;}));
+      }else{
+        VIAJES.push({id:'v'+Date.now()+'_'+gi,cliente:g.cliente||'Viaje',dates:dates,
+          pasajeros:g.pasajeros,arch:g.arch.slice(),sitio:'',
+          sinUsar:archivosSinUsar(parsed,g.arch.map(function(i){return BIBLIO[i].name;})),
+          data:{client:g.cliente||'Viaje',dates:dates,cities:parsed.cities||[],
+                countries:parsed.countries||[],intlFlights:parsed.internationalFlights||{},
+                personalDocs:parsed.personalDocuments||[]}});
+      }
+    }
+    GRUPOS=[];
+    renderViajes();
+    await guardarTodo();
+    show('sc-viajes');
+    showToast(pend.length===1?'Itinerario listo':pend.length+' itinerarios listos','success');
+  }catch(e){
+    renderViajes();show('sc-viajes');
+    showToast(e.message,'error',9000);
+  }
+}
+
+function renderViajes(){
+  var cont=document.getElementById('vj-lista');
+  if(!cont)return;
+  if(!VIAJES.length){
+    cont.innerHTML='<div class="vj-vacio">Todavía no hay viajes.<br>Tocá <b>+ Sumar archivos</b> y subí todo junto.</div>';
+    return;
+  }
+  var esc=function(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  cont.innerHTML=VIAJES.map(function(v){
+    var nC=(v.data&&v.data.cities||[]).length;
+    var pill=v.sitio?'<span class="vj-pill listo">Publicado</span>':'<span class="vj-pill pend">Sin publicar</span>';
+    return '<div class="vj-card" onclick="abrirViaje(\''+v.id+'\')">'+
+      '<span class="vj-card-ico">🧳</span>'+
+      '<div class="vj-card-mid"><div class="vj-card-nom">'+esc(v.cliente)+'</div>'+
+        '<div class="vj-card-det">'+esc(v.dates||'')+(nC?' · '+nC+' ciudad'+(nC===1?'':'es'):'')+' · '+v.arch.length+' archivo'+(v.arch.length===1?'':'s')+'</div>'+
+        pill+(v.sinUsar&&v.sinUsar.length?' <span class="vj-pill pend">'+v.sinUsar.length+' sin usar</span>':'')+
+      '</div>'+
+      '<button class="doc-btn" style="flex:0 0 auto;margin-right:.3rem" onclick="borrarViaje(\''+v.id+'\',event)">Borrar</button>'+
+      '<span class="vj-card-chev">›</span></div>';
+  }).join('');
+}
+
+/** Abre un viaje: carga sus datos en los globales y usa la pantalla de
+    resultado que ya existía, con su botón de publicar y todo. */
+function abrirViaje(id){
+  var v=VIAJES.find(function(x){return x.id===id;});
+  if(!v)return;
+  VIAJE_ABIERTO=id;
+  files=v.arch.map(function(i){return {name:BIBLIO[i].name,size:BIBLIO[i].size,type:BIBLIO[i].type};});
+  filesB64=v.arch.map(function(i){return BIBLIO[i].b64;});
+  filesType=v.arch.map(function(i){return BIBLIO[i].type;});
+  /* Los índices de sourceFile son los de BIBLIO; acá pasan a ser los del
+     viaje, así que se reencauzan antes de pintar. */
+  /* Los sourceFile guardados ya son locales a v.arch —el mismo orden que
+     filesB64 de arriba—, así que se usan tal cual. Reencauzarlos otra vez
+     era lo que dejaba la lista de comprobantes vacía. */
+  gData=JSON.parse(JSON.stringify(v.data));
+  _sinUsar=v.sinUsar||[];
+  renderResult();
+}
+
+/** Cambia cada sourceFile por el índice que le toca dentro del viaje. */
+function reindexar(d,mapa){
+  (function rec(x){
+    if(!x)return;
+    if(Array.isArray(x)){x.forEach(rec);return;}
+    if(typeof x==='object'){
+      if(typeof x.sourceFile==='number')x.sourceFile=(mapa[x.sourceFile]!==undefined?mapa[x.sourceFile]:-1);
+      for(var k in x)rec(x[k]);
+    }
+  })(d);
+  return d;
+}
+
+function volverAViajes(){
+  /* Lo que se cargó con "Más docs" dentro del viaje abierto se guarda
+     antes de salir: si no, se perdía al volver a la lista. */
+  if(VIAJE_ABIERTO&&gData){
+    var v=VIAJES.find(function(x){return x.id===VIAJE_ABIERTO;});
+    if(v){
+      v.data=JSON.parse(JSON.stringify(gData));
+      v.cliente=gData.client||v.cliente;
+      v.dates=gData.dates||v.dates;
+    }
+  }
+  VIAJE_ABIERTO=null;
+  renderViajes();
+  guardarTodo();
+  show('sc-viajes');
+}
+
+function nuevoViajeAMano(){
+  files=[];filesB64=[];filesType=[];personalFiles=[];personalDocs_meta=[];
+  gData=null;_vData={};_summaryData={};_sinUsar=[];VIAJE_ABIERTO=null;
+  document.getElementById('flist').innerHTML='';
+  var fd=document.getElementById('flist-docs');if(fd)fd.innerHTML='';
+  document.getElementById('inp-client').value='';
+  document.getElementById('inp-dates').value='';
+  show('sc-editor');
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║  QUE NO SE PIERDA NADA                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   Todo esto vivía en memoria: cerrabas la pestaña y se iban los viajes y
+   los cuarenta vouchers. Ahora queda guardado en el navegador.
+
+   En IndexedDB y no en localStorage, que es lo primero que uno agarra:
+   localStorage aguanta unos 5 MB y guarda sólo texto, y acá hay PDFs en
+   base64 que se van a decenas de MB. IndexedDB no tiene ese techo.
+
+   Dos depósitos: `arch` con un registro por archivo —se escriben una sola
+   vez y nunca se reescriben, así que sumar una tanda nueva no vuelve a
+   grabar lo viejo— y `meta` con la lista de viajes, que es chica.
+
+   Esto es el navegador de Lara, no un servidor: si abre la app en otra
+   computadora no va a ver nada. Para eso haría falta subirlo a algún
+   lado, que es otra conversación.                                      */
+var _db=null, _archGuardados=0;
+
+function chispaDB(){
+  if(_db)return Promise.resolve(_db);
+  return new Promise(function(ok,mal){
+    if(!window.indexedDB)return mal(new Error('sin IndexedDB'));
+    var q=indexedDB.open('chispa-generador',1);
+    q.onupgradeneeded=function(e){
+      var d=e.target.result;
+      if(!d.objectStoreNames.contains('arch'))d.createObjectStore('arch');
+      if(!d.objectStoreNames.contains('meta'))d.createObjectStore('meta');
+    };
+    q.onsuccess=function(){_db=q.result;ok(_db);};
+    q.onerror=function(){mal(q.error||new Error('no pude abrir la base'));};
+  });
+}
+function _tx(store,modo,fn){
+  return chispaDB().then(function(d){
+    return new Promise(function(ok,mal){
+      var t=d.transaction(store,modo),st=t.objectStore(store),r=fn(st);
+      t.oncomplete=function(){ok(r&&r.result!==undefined?r.result:r);};
+      t.onerror=function(){mal(t.error);};
+      t.onabort=function(){mal(t.error||new Error('transacción cancelada'));};
+    });
+  });
+}
+
+/** Graba los archivos que todavía no estaban. Nunca reescribe los viejos. */
+function guardarArchivos(){
+  if(_archGuardados>=BIBLIO.length)return Promise.resolve();
+  var desde=_archGuardados,hasta=BIBLIO.length;
+  return _tx('arch','readwrite',function(st){
+    for(var i=desde;i<hasta;i++)st.put(BIBLIO[i],i);
+  }).then(function(){_archGuardados=hasta;});
+}
+
+function guardarViajes(){
+  return _tx('meta','readwrite',function(st){st.put({viajes:VIAJES,cuando:Date.now()},'estado');});
+}
+
+/** Se llama después de cada cosa que cambia algo. Si falla —el navegador
+    sin espacio, o en modo incógnito— se dice, no se calla. */
+var _avisoGuardado=false;
+function guardarTodo(){
+  return guardarArchivos().then(guardarViajes).catch(function(e){
+    if(!_avisoGuardado){
+      _avisoGuardado=true;
+      showToast('No pude guardar en este navegador: si cerrás la pestaña se pierde. ('+(e&&e.message||'sin espacio')+')','error',9000);
+    }
+  });
+}
+
+function cargarDeDisco(){
+  return chispaDB().then(function(){
+    return _tx('meta','readonly',function(st){return st.get('estado');});
+  }).then(function(est){
+    if(!est||!est.viajes||!est.viajes.length)return;
+    return _tx('arch','readonly',function(st){return st.getAll();}).then(function(todos){
+      BIBLIO=todos||[];
+      _archGuardados=BIBLIO.length;
+      VIAJES=est.viajes;
+      renderViajes();
+    });
+  }).catch(function(){ /* primera vez, o el navegador no deja: se arranca vacío */ });
+}
+
+function borrarViaje(id,ev){
+  if(ev&&ev.stopPropagation)ev.stopPropagation();
+  var v=VIAJES.find(function(x){return x.id===id;});
+  if(!v)return;
+  if(!confirm('¿Borro el viaje de '+v.cliente+'?\n\nSe van sus '+v.arch.length+' archivo(s). Si ya lo publicaste, el link sigue andando.'))return;
+  VIAJES=VIAJES.filter(function(x){return x.id!==id;});
+  /* Los archivos quedan en la biblioteca a propósito: los índices de los
+     otros viajes apuntan por posición, y correrlos los rompería todos. */
+  renderViajes();
+  guardarTodo();
+  showToast('Viaje borrado','info');
+}
+
+renderViajes();
+cargarDeDisco();
 </script>
 </body>
 </html>
